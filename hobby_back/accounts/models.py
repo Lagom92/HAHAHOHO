@@ -10,7 +10,7 @@ class User(models.Model):
     userImage = models.ImageField(blank=True)
     userGrade = models.IntegerField()
 
-    def __srt__(self):
+    def __str__(self):
         return self.userName
 
 class PostOnetone(models.Model):
@@ -27,17 +27,3 @@ class PostOnetone(models.Model):
 #             options={'quality':90}, # 원본의 90퍼센트 품질로 저장
 #     	)
 
-# 카테고리 대분류
-class Section(models.Model):
-    sectionName = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.sectionName
-
-# 카테고리 소분류
-class Group(models.Model):
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    groupName = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.groupName
