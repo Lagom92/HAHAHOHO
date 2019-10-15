@@ -71,7 +71,7 @@ class Notice(models.Model):
         return self.title
 
 
-# F&Q 게시판
+# FAQ 게시판
 class Faq(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
