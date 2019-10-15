@@ -5,5 +5,4 @@ from .models import PostFree
 class PostFreeserializer(serializers.ModelSerializer):
     class Meta:
         model = PostFree
-        fields = ('post', 'group', 'title', 'user',  'contents', 'createDate')
-
+        fields = '__all__'
