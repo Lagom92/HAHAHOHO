@@ -1,4 +1,3 @@
-# from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -7,7 +6,7 @@ from .models import PostHobby
 from .serializers import PostHobbySerializer
 
 @api_view(['GET', 'POST'])
-def postHobby_list(request):
+def postHobby_lpoist(request):
     # Read
     if request.method == 'GET':
         queryset = PostHobby.objects.all()
