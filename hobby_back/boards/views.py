@@ -7,7 +7,7 @@ from .serializers import PostHobbySerializer, PostFreeserializer
 
 
 @api_view(['GET', 'POST'])
-def postHobby_lpoist(request):
+def postHobby_list(request):
     # Read
     if request.method == 'GET':
         queryset = PostHobby.objects.all()
