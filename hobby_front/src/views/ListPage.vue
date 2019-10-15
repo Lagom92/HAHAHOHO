@@ -1,5 +1,6 @@
 <template>
     <div>
+        <TopBanner></TopBanner>
         <v-container>
             <div>
                 <h1>모임 목록</h1>
@@ -14,12 +15,14 @@
 </template>
 
 <script>
+import TopBanner from '../components/TopBanner'
 import MeetingList from '../components/MeetingList'
 
 export default {
     name: 'ListPage',
     components: {
-        MeetingList
+        MeetingList,
+        TopBanner
     }
 }
 </script>
