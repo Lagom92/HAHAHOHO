@@ -7,17 +7,17 @@ class PostHobbySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PostFreeserializer(serializers.ModelSerializer):
+class PostFreeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostFree
         fields = '__all__'
 
-class Noticeserializer(serializers.ModelSerializer):
+class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
         fields = '__all__'
 
-class Faqserializer(serializers.ModelSerializer):
+class FaqSerializer(serializers.ModelSerializer):
     class Meta:
         model = Faq
         fields = '__all__'
