@@ -23,18 +23,24 @@ def postHobby_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def postHobby_detail(request, id):
-    try:
-        postHobby = PostHobby.objects.get(id=id)
-    except postHobby.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    #try/except code
+    # try:
+    #     posthobby = PostHobby.objects.get(id=id)
+    # except posthobby.DoesNotExist:
+    #     return Response(status=status.HTTP_404_NOT_FOUND)
+
+    #404 NOT FOUND Short cut code
+    posthobby = get_object_or_404(PostHobby, id=id)
+
     # Detail
     if request.method == 'GET':
-        serializer = PostHobbySerializer(postHobby)
+        serializer = PostHobbySerializer(posthobby)
         return Response(serializer.data)
 
     # Update
     elif request.method == 'PUT':
-        serializer = PostHobbySerializer(postHobby, data=request.data)
+        serializer = PostHobbySerializer(posthobby, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -42,7 +48,7 @@ def postHobby_detail(request, id):
 
     # Delete
     elif request.method == 'DELETE':
-        postHobby.delete()
+        posthobby.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -67,11 +73,16 @@ def postFree_list(request):
 
 @api_view(['GET','PUT','DELETE'])
 def postFree_detail(request,id):
-    try:
-        postfree = PostFree.objects.get(id=id)
-    except PostFree.DoesNotExist:
 
-        return Response(status= status.HTTP_404_NOT_FOUND)
+    # try/except code
+    # try:
+    #     postfree = PostFree.objects.get(id=id)
+    # except PostFree.DoesNotExist:
+
+    #     return Response(status= status.HTTP_404_NOT_FOUND)
+
+    #get 404 short cut code
+    postfree = get_object_or_404(PostFree, id=id)
 
     #특정 게시글 조회하기
     if request.method == 'GET':
@@ -111,10 +122,16 @@ def notice_list(request):
 
 @api_view(['GET','POST','DELETE'])
 def notice_detail(request, id):
-    try:
-        notice = Notice.objects.get(id=id)
-    except Notice.DoesNotExist:
-        return Response(status.HTTP__404_NOT_FOUND)
+    #try/except code
+    # try:
+    #     notice = Notice.objects.get(id=id)
+    # except Notice.DoesNotExist:
+    #     return Response(status.HTTP__404_NOT_FOUND)
+
+    #get 404 short cut code
+    notice = get_object_or_404(Notice, id=id)
+
+    
 
     #특정 공지사항글 조회하기
 
@@ -157,10 +174,14 @@ def faq_list(request):
 
 @api_view(['GET','PUT','DELETE'])
 def faq_detail(request, id):
-    try:
-        faq = Faq.objects.get(id=id)
-    except Faq.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    #try/except code
+    # try:
+    #     faq = Faq.objects.get(id=id)
+    # except Faq.DoesNotExist:
+    #     return Response(status=status.HTTP_404_NOT_FOUND)
+
+    #get 404 short code
+    faq = get_object_or_404(Faq, id=id)
 
     
     #특정FAQ게시글 조회
