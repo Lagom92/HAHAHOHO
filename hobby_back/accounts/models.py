@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
@@ -8,7 +9,12 @@ class User(models.Model):
     userSex = models.CharField(max_length=20)
     userAge = models.IntegerField()
     userImage = models.ImageField(blank=True)
-    userGrade = models.IntegerField()
+    userGrade = models.IntegerField(default=1)
+    userAddress = models.CharField(max_length=200, blank=True)
+    userLike = ArrayField(
+        models.CharField(max_length=50, blank=True),
+        size=8,
+    )
 
     def __str__(self):
         return self.userName
