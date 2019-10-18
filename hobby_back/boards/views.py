@@ -5,21 +5,28 @@ from .models import PostHobby, PostFree, Faq, Notice
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer, FaqSerializer
 from django.shortcuts import get_object_or_404
 
+from rest_framework import generics, filters
+
 #취미게시판 
-@api_view(['GET', 'POST'])
-def postHobby_list(request):
-    # Read
-    if request.method == 'GET':
-        queryset = PostHobby.objects.all()
-        serializer = PostHobbySerializer(queryset, many=True)
-        return Response(serializer.data)
-    # Create
-    elif request.method == 'POST':
-        serializer = PostHobbySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATE)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Hobby_list(generics.ListCreateAPIView):
+    queryset = PostHobby.objects.all()
+    serializer_class = PostHobbySerializer
+
+# @api_view(['GET', 'POST'])
+# def postHobby_list(request):
+#     # Read
+#     if request.method == 'GET':
+#         queryset = PostHobby.objects.all()
+#         serializer = PostHobbySerializer(queryset, many=True)
+#         return Response(serializer.data)
+#     # Create
+#     elif request.method == 'POST':
+#         serializer = PostHobbySerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATE)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -54,22 +61,28 @@ def postHobby_detail(request, id):
 
 
 #자유게시판
-@api_view(['GET','POST'])
-def postFree_list(request):
-    #자유게시판 조회기능
-    if request.method == 'GET':
-        queryset = PostFree.objects.all()
-        serializer = PostFreeSerializer(queryset, many = True)
-        return Response(serializer.data)
+# generic으로 수정 중...
+class Free_list(generics.ListCreateAPIView):
+    queryset = PostFree.objects.all()
+    serializer_class = PostFreeSerializer
 
 
-    #자유게시판 글 생성기능
-    elif request.method == 'POST':
-        serializer = PostFreeSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATE)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+# @api_view(['GET','POST'])
+# def postFree_list(request):
+#     #자유게시판 조회기능
+#     if request.method == 'GET':
+#         queryset = PostFree.objects.all()
+#         serializer = PostFreeSerializer(queryset, many = True)
+#         return Response(serializer.data)
+
+
+#     #자유게시판 글 생성기능
+#     elif request.method == 'POST':
+#         serializer = PostFreeSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status = status.HTTP_201_CREATE)
+#         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET','PUT','DELETE'])
