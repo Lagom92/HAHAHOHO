@@ -11,8 +11,8 @@ import requests, json
 
 class KakaoLogin(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter
-    print(dir(adapter_class))
-    print(adapter_class)
+    # print(dir(adapter_class))
+    # print(adapter_class)
 
     
     '''
