@@ -11,7 +11,7 @@
             <v-btn text>모임</v-btn>
             <v-btn text>커뮤니티</v-btn>
           </v-col>
-          
+
           <v-col md="2" offset-md="5">
             <!-- 카카오로그인 버튼 노출 영역 -->
             <v-btn @click="kakaologin">카카오로그인</v-btn>
@@ -38,7 +38,13 @@ export default {
       Kakao.Auth.createLoginButton({
         container: '#kakao-login-btn',
         success: function(authObj) {
-          alert(JSON.stringify(authObj));
+          console.log(authObj);
+          /* 요청사항입니다.
+            1. http://127.0.0.1:8000/accounts/rest-auth/kakao/ 여기에 post요청
+              1-1. return으로 jwt토큰을 저장(jwt토큰은 사용자 인증에 사용)
+            2. http://127.0.0.1:8000/accounts/kakaoLogin/
+              2-1. return으로 유저 정보를 사용해서 유저페이지 꾸미기
+          */
         },
         fail: function(err) {
           alert(JSON.stringify(err));
@@ -70,4 +76,3 @@ export default {
   }
 }
 </script>
-
