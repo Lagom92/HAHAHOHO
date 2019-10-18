@@ -10,3 +10,5 @@ urlpatterns = [
     url('kakaoLogin/', views.Kakao_Login),
     url('naverLogin/', views.Naver_Login),
 ]
+
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -37,7 +37,8 @@ def Kakao_Login(request):
     # userAge = response.get("age_range")
     userSex = "남자"
     userAge = 20
-    userImage = response.get("")
+    userImage = response.get("properties").get("profile_image")
+    print(userImage)
     try: 
         userSet = User.objects.get(userName=userName)
     except:
