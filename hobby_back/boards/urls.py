@@ -1,15 +1,18 @@
 from django.urls import path
 from . import views
+from django.conf.urls import url
+from rest_framework.urlpatterns import format_suffix_patterns
+from boards import views
 
 urlpatterns = [
-    # path('hobby/', views.postHobby_list),
-    path('hobby/', views.Hobby_list.as_view()),
-    # path('free/', views.postFree_list),
-    path('free/', views.Free_list.as_view()),
-    path('notice/', views.notice_list),
-    path('faq/', views.faq_list),
-    path('hobby/<int:id>/', views.postHobby_detail),
-    path('free/<int:id>/', views.postFree_detail),
-    path('notice/<int:id>/', views.notice_detail),
-    path('faq/<int:id>/', views.faq_detail),
+    path('hobby/', views.postHobby_list.as_view()),
+    path('free/', views.postFree_list.as_view()),
+    path('notice/', views.notice_list.as_view()),
+    path('faq/', views.faq_list.as_view()),
+    path('hobby/<int:id>/', views.postHobby_detail.as_view()),
+    path('free/<int:id>/', views.postFree_detail.as_view()),
+    path('notice/<int:id>/', views.notice_detail.as_view()),
+    path('faq/<int:id>/', views.faq_detail.as_view()),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

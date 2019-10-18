@@ -1,10 +1,8 @@
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from .models import PostHobby, PostFree, Faq, Notice
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer, FaqSerializer
-from django.shortcuts import get_object_or_404
+from rest_framework import generics
 
+<<<<<<< HEAD
 from rest_framework import generics, filters
 
 #취미게시판 
@@ -27,33 +25,37 @@ class Hobby_list(generics.ListCreateAPIView):
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATE)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+=======
+class postHobby_list(generics.ListCreateAPIView):
+    queryset = PostHobby.objects.all()
+    serializer_class = PostHobbySerializer
+>>>>>>> 695fc66a107b76842a4f152408fc2a177cf7b1ed
 
+class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PostHobby.objects.all()
+    serializer_class = PostHobbySerializer
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def postHobby_detail(request, id):
+class postFree_list(generics.ListCreateAPIView):
+    queryset = PostFree.objects.all()
+    serializer_class = PostFreeSerializer
 
-    #try/except code
-    # try:
-    #     posthobby = PostHobby.objects.get(id=id)
-    # except posthobby.DoesNotExist:
-    #     return Response(status=status.HTTP_404_NOT_FOUND)
+class postFree_detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PostFree.objects.all()
+    serializer_class = PostFreeSerializer
 
-    #404 NOT FOUND Short cut code
-    posthobby = get_object_or_404(PostHobby, id=id)
+class notice_list(generics.ListCreateAPIView):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
 
-    # Detail
-    if request.method == 'GET':
-        serializer = PostHobbySerializer(posthobby)
-        return Response(serializer.data)
+class notice_detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
 
-    # Update
-    elif request.method == 'PUT':
-        serializer = PostHobbySerializer(posthobby, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class faq_list(generics.ListCreateAPIView):
+    queryset = Faq.objects.all()
+    serializer_class = FaqSerializer
 
+<<<<<<< HEAD
     # Delete
     elif request.method == 'DELETE':
         posthobby.delete()
@@ -216,3 +218,8 @@ def faq_detail(request, id):
     elif request.method == 'DELETE':
         fap.delete()
         return Response(status=status.HTTP_204_NO_CONTENT) 
+=======
+class faq_detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Faq.objects.all()
+    serializer_class = FaqSerializer
+>>>>>>> 695fc66a107b76842a4f152408fc2a177cf7b1ed
