@@ -4,42 +4,64 @@
         <div class="map_wrap">
           <div id="map"></div>
 
-          <div id="menu_wrap" class="bg_white">
+          <div id="menu_wrap" class="bg_white" v-show="searchService && searchWindow">
             <div class="option">
-              <div>
-                키워드 : <input type="text" size="15" v-model="keyword"/>
-                <v-btn @click="searchPlaces">검색하기</v-btn>
+              <div class="d-flex">
+                <v-text-field
+                  class="mx-3"
+                  v-model="keyword"
+                  :counter="15"
+                  label="키워드"
+                  @keydown.enter="searchPlaces"
+                ></v-text-field>
+                <v-btn
+                  class="align-self-center px-2 mr-2"
+                  outlined
+                  color="blue-grey"
+                  @click="searchPlaces"
+                >검색하기</v-btn>
               </div>
             </div>
             <hr>
-            <ul id="placesList"></ul>
+            <ul id="placesList" class="pl-0"></ul>
             <div id="pagination"></div>
+          </div>
+
+          <div v-show="searchService && !searchWindow" @click="openSearch">
+            <v-btn id="menu_btn"><v-icon>mdi-magnify</v-icon></v-btn>
           </div>
         </div>
     </v-container>
 </template>
 
 <script>
+import { type } from 'os'
   export default {
     name: 'MapService',
     data(){
       return {
         mapContainer: '', // 지도를 표시할 div
-        mapCenterY: 35.20553, // 지도의 중심 경도
-        mapCenterX: 126.81142, // 지도의 중심 위도
-        mapLevel: 4, // 지도의 확대 레벨
         markers: [], // 마커를 담을 배열
-        keyword: '',
-        map: '',
+        keyword: '', // 검색 키워드
+        map: '', // 지도 객체
         infowindow: '', // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우
-        ps: '' // 장소 검색 객체 생성
+        ps: '', // 장소 검색 객체 생성
+        searchWindow: true, // 장소 검색창 열림
+        mainMarker: '' // 마커 객체
       }
+    },
+    props: {
+      searchService: {type: Boolean, default: false}, // 장소 검색 기능 사용유무
+      mapCenterY: {type: Number, default: 35.20553}, // 지도의 중심 경도
+      mapCenterX: {type: Number, default: 126.81142}, // 지도의 중심 위도
+      mapLevel: {type: Number, default: 4} // 지도의 확대 레벨
     },
     mounted(){
       this.mapContainer = document.getElementById('map')
       this.map = this.createMap(this.mapCenterY, this.mapCenterX)
       this.infowindow = new kakao.maps.InfoWindow({zIndex:1})
       this.ps = new kakao.maps.services.Places()
+      this.mainMarker = new kakao.maps.Marker()
 
     },
     methods: {
@@ -117,7 +139,11 @@
           // 마커와 검색결과 항목에 mouseover 했을때
           // 해당 장소를 인포윈도우에 장소명을 표시
           // mouseout 했을 때는 인포윈도우를 닫음
-          (function(marker, title, infowindow, displayInfowindow) {
+          (function(title, infowindow, displayInfowindow, map, closeSearch, searchWindow) {
+
+            let oneBound = new kakao.maps.LatLngBounds()
+            oneBound.extend(placePosition)
+
             kakao.maps.event.addListener(marker, 'mouseover', function() {
               displayInfowindow(marker, title)
             })
@@ -126,14 +152,27 @@
               infowindow.close()
             })
 
-            itemEl.onmouseover = function() {
+            kakao.maps.event.addListener(marker, 'click', function() {
+              map.setBounds(oneBound)
+              closeSearch(placePosition)
               displayInfowindow(marker, title)
-            };
+            })
 
-            itemEl.onmouseout = function () {
+            itemEl.onmouseover = function() {
+              map.setBounds(bounds)
+              displayInfowindow(marker, title)
+            }
+
+            itemEl.onmouseout = function() {
               infowindow.close()
             }
-          })(marker, places[i].place_name, this.infowindow, this.displayInfowindow);
+
+            itemEl.onclick = function() {
+              map.setBounds(oneBound)
+              closeSearch(placePosition)
+              displayInfowindow(marker, title)
+            }
+          })(places[i].place_name, this.infowindow, this.displayInfowindow, this.map, this.closeSearch, this.searchWindow);
 
           fragment.appendChild(itemEl)
         }
@@ -235,7 +274,7 @@
       // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수
       // 인포윈도우에 장소명을 표시
       displayInfowindow(marker, title) {
-        let content = '<div style="padding:5px;z-index:1;">' + title + '</div>'
+        let content = '<div id="info_window">' + title + '</div>'
 
         this.infowindow.setContent(content)
         this.infowindow.open(this.map, marker)
@@ -246,14 +285,38 @@
         while (el.hasChildNodes()) {
           el.removeChild(el.lastChild)
         }
+      },
+
+      // 검색창 여닫기
+      closeSearch(latlng) {
+        this.mainMarker.setPosition(latlng)
+        this.mainMarker.setMap(this.map)
+        this.mapCenterY = latlng.Ha
+        this.mapCenterX = latlng.Ga
+        this.searchWindow = false
+      },
+      openSearch() {
+        this.mainMarker.setMap(null)
+        this.searchWindow = true
       }
     },
   }
 </script>
 <style lang="stylus">
+
+  #info_window
+    padding 5px
+    z-index 1
+
+  #menu_btn
+    position absolute
+    top 1rem
+    left 1rem
+    z-index 1
+
   #map
     width 100%
-    height 600px
+    height 30rem
     position relative
     overflow hidden
   
@@ -270,18 +333,18 @@
   .map_wrap
     position relative
     width 100%
-    height 500px
+    height 30rem
   
   #menu_wrap
     position absolute
     top 0
     left 0
     bottom 0
-    width 300px
-    margin 10px 0 30px 10px
+    width 18rem
+    margin 10px 10px 30px 10px
     padding 5px
     overflow-y auto
-    background rgba(255, 255, 255, 0.7)
+    background rgba(255, 255, 255, 0.8)
     z-index 1
     font-size 12px
     border-radius 10px
@@ -291,10 +354,10 @@
 
   #menu_wrap hr
     display block
-     height 1px
-     border 0
-     border-top 2px solid #5F5F5F
-     margin 3px 0
+    height 1px
+    border 0
+    border-top 2px solid #5F5F5F
+    margin 3px 0
     
   #menu_wrap .option
     text-align center
@@ -320,12 +383,12 @@
     margin-top 4px
 
   #placesList .item h5, #placesList .item .mapinfo
-   text-overflow ellipsis
-   overflow hidden
-   white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
+    white-space nowrap
 
   #placesList .item .mapinfo
-   padding 10px 0 10px 55px
+    padding 10px 0 10px 55px
 
   #placesList .mapinfo .gray
     color #8a8a8a
@@ -391,12 +454,14 @@
     background-position 0 -654px
 
   #pagination
-    margin: 0px auto
+    margin 0px auto
     text-align center
 
   #pagination a
     display inline-block
     margin-right 10px
+    font-size medium
+    text-decoration none
 
   #pagination .on
     font-weight bold
