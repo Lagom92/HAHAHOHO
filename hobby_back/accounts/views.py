@@ -20,8 +20,9 @@ class KakaoLogin(SocialLoginView):
 class NaverLogin(SocialLoginView):
     adapter_class = NaverOAuth2Adapter
 
+
 @api_view(['POST'])
-def kakaoLogin(request):
+def Kakao_Login(request):
     user_url = "https://kapi.kakao.com/v2/user/me"
     user_headers = {
         'Authorization' : "Bearer " + request.data['access_token'],
@@ -48,34 +49,7 @@ def kakaoLogin(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-def kakaoLogin(request):
-    user_url = ""
-    user_headers = {
-        'Authorization' : "Bearer " + request.data['access_token'],
-        'Content-Type': 'application/json; charset=utf-8'
-    }
-    response = requests.post(user_url, headers=user_headers)
-    response = json.loads(response.text)
-    print(response)
-    print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-    userName = response.get("properties").get("nickname")
-    # userSex = response.get("gender")
-    # userAge = response.get("age_range")
-    userSex = "남자"
-    userAge = 20
-    userImage = response.get("")
-    try: 
-        userSet = User.objects.get(userName=userName)
-    except:
-        User.objects.create(
-            userName=userName, userSex=userSex, userAge=userAge, userImage=userImage
-        )
-    userSet = User.objects.get(userName=userName)
-    serializer = UserSerializer(userSet)
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def NaverLogin(request):
+def Naver_Login(request):
     pass
     # user_url = "https://kapi.kakao.com/v2/user/me"
     # user_headers = {

@@ -7,6 +7,6 @@ app_name = 'accounts'
 urlpatterns = [
     url('rest-auth/kakao/',  KakaoLogin.as_view(), name='kakao_login'),
     url('rest-auth/naver/',  NaverLogin.as_view(), name='naver_login'),
-    url('kakaoLogin/', views.kakaoLogin),
-    url('naverLogin/', views.NaverLogin),
+    url('kakaoLogin/', views.Kakao_Login),
+    url('naverLogin/', views.Naver_Login),
 ]
