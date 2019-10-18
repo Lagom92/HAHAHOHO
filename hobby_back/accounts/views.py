@@ -10,11 +10,7 @@ import requests, json
 
 
 class KakaoLogin(SocialLoginView):
-    adapter_class = KakaoOAuth2Adapter
-    # print(dir(adapter_class))
-    # print(adapter_class)
-
-    
+    adapter_class = KakaoOAuth2Adapter    
     '''
     1. access token을 넣어서 리턴받은 jwt 토큰을 가져오기
     2. 가져온 토큰으로 https://kapi.kakao.com/v2/user/me 에 요청보내기
@@ -25,36 +21,83 @@ class NaverLogin(SocialLoginView):
     adapter_class = NaverOAuth2Adapter
 
 @api_view(['POST'])
-def login(request):
-    pass
-#     print("------------------------")
-#     print(request.data['access_token'])
-#     baseUrl = 'http://127.0.0.1:8000'
-#     url =  f"{baseUrl}/accounts/rest-auth/kakao/"
-#     data = {'access_token' : request.data['access_token']}
-#     headers = {'Content-Type': 'application/json; charset=utf-8'}
-#     res = requests.post(url, headers=headers,  data=json.dumps(data))
-#     token = json.loads(res.text)
-#     jwt = token['token']
-#     print(token)
-#     print("=========")
-#     user_url = "https://kapi.kakao.com/v2/user/me"
-#     user_headers = {
-#         'Authorization' : "Bearer " + request.data['access_token'],
-#         'Content-Type': 'application/json; charset=utf-8'
-#     }
-#     response = requests.post(user_url, headers=user_headers)
-#     response = json.loads(response.text)
-#     print(response)
-#     print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-#     userName = response.get("properties").get("nickname")
-#     userSex = response.get("gender")
-#     userAge = response.get("age_range")
-#     userImage = response.get("")
+def kakaoLogin(request):
+    user_url = "https://kapi.kakao.com/v2/user/me"
+    user_headers = {
+        'Authorization' : "Bearer " + request.data['access_token'],
+        'Content-Type': 'application/json; charset=utf-8'
+    }
+    response = requests.post(user_url, headers=user_headers)
+    response = json.loads(response.text)
+    print(response)
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+    userName = response.get("properties").get("nickname")
+    # userSex = response.get("gender")
+    # userAge = response.get("age_range")
+    userSex = "남자"
+    userAge = 20
+    userImage = response.get("")
+    try: 
+        userSet = User.objects.get(userName=userName)
+    except:
+        User.objects.create(
+            userName=userName, userSex=userSex, userAge=userAge, userImage=userImage
+        )
+    userSet = User.objects.get(userName=userName)
+    serializer = UserSerializer(userSet)
+    return Response(serializer.data)
 
-#     User.objects.create(
-#         userName,
-#         userSex,
-#         userAge,
-#         userImage
-#     )
+@api_view(['POST'])
+def kakaoLogin(request):
+    user_url = ""
+    user_headers = {
+        'Authorization' : "Bearer " + request.data['access_token'],
+        'Content-Type': 'application/json; charset=utf-8'
+    }
+    response = requests.post(user_url, headers=user_headers)
+    response = json.loads(response.text)
+    print(response)
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+    userName = response.get("properties").get("nickname")
+    # userSex = response.get("gender")
+    # userAge = response.get("age_range")
+    userSex = "남자"
+    userAge = 20
+    userImage = response.get("")
+    try: 
+        userSet = User.objects.get(userName=userName)
+    except:
+        User.objects.create(
+            userName=userName, userSex=userSex, userAge=userAge, userImage=userImage
+        )
+    userSet = User.objects.get(userName=userName)
+    serializer = UserSerializer(userSet)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def NaverLogin(request):
+    pass
+    # user_url = "https://kapi.kakao.com/v2/user/me"
+    # user_headers = {
+    #     'Authorization' : "Bearer " + request.data['access_token'],
+    #     'Content-Type': 'application/json; charset=utf-8'
+    # }
+    # response = requests.post(user_url, headers=user_headers)
+    # response = json.loads(response.text)
+    # print(response)
+    # print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+    # userName = response.get("properties").get("nickname")
+    # # userSex = response.get("gender")
+    # # userAge = response.get("age_range")
+    # userSex = "남자"
+    # userAge = 20
+    # userImage = response.get("")
+    # try: 
+    #     userSet = User.objects.get(userName=userName)
+    # except:
+    #     User.objects.create(
+    #         userName=userName, userSex=userSex, userAge=userAge, userImage=userImage
+    #     )
+    # userSet = User.objects.get(userName=userName)
+    # serializer = UserSerializer(userSet)
+    # return Response(serializer.data)

@@ -12,8 +12,15 @@ class User(models.Model):
     userGrade = models.IntegerField(default=1)
     userAddress = models.CharField(max_length=200, blank=True)
     userLike = ArrayField(
-        models.CharField(max_length=50, blank=True),
-        size=8,
+        ArrayField(
+            models.CharField(max_length=50, blank=True, default=''),
+            size=8,
+            blank=True,
+            default=list,
+            null=True
+        ),
+        size=2,
+        null=True
     )
 
     def __str__(self):
