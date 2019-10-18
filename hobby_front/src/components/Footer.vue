@@ -1,5 +1,5 @@
 <template>
-  <v-footer dark padless height="auto" absolute>
+  <v-footer dark padless height="auto">
     <v-card flat tile width="100%" class="indigo lighten-1 text-center" >
       <v-card-text class="white--text">
         하하호호 즐거운 취미생활
