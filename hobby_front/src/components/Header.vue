@@ -45,6 +45,10 @@ export default {
             2. http://127.0.0.1:8000/accounts/kakaoLogin/
               2-1. return으로 유저 정보를 사용해서 유저페이지 꾸미기
           */
+         axios.post('http://127.0.0.1:8000/accounts/rest-auth/kakao/', {access_token : accesstoken})
+         .then(res => {
+           console.log(res.data)
+         })
         },
         fail: function(err) {
           alert(JSON.stringify(err));
