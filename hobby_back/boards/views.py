@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import PostHobby, PostFree, Faq, Notice
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer, FaqSerializer
+from django.shortcuts import get_object_or_404
 
 #취미게시판 
 @api_view(['GET', 'POST'])
