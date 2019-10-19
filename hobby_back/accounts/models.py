@@ -6,6 +6,7 @@ from imagekit.processors import ResizeToFill
 
 class User(models.Model):
     userName = models.CharField(max_length=100)
+    userNickName = models.CharField(max_length=100)
     userSex = models.CharField(max_length=20)
     userAge = models.IntegerField()
     userImage = models.ImageField(blank=True)
@@ -25,6 +26,12 @@ class User(models.Model):
 
     def __str__(self):
         return self.userName
+
+class payInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payNum = models.CharField(max_length=100)
+    payAmount = models.IntegerField()
+    payDate = models.CharField(max_length=100)
 
 class PostOnetone(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

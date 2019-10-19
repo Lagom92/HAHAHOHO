@@ -9,6 +9,7 @@ urlpatterns = [
     url('rest-auth/naver/',  NaverLogin.as_view(), name='naver_login'),
     url('kakaoLogin/', views.Kakao_Login),
     url('naverLogin/', views.Naver_Login),
+    url('kakaoPay/', views.kakaoPay),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
