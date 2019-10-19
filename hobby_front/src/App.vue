@@ -3,6 +3,7 @@
     <v-content>
       <Header></Header>
       <router-view></router-view>
+      <Payment></Payment>
       <Footer></Footer>
     </v-content>
   </v-app>
@@ -11,6 +12,7 @@
 <script>
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Payment from '@/components/Payment'
 
 export default {
   name: 'App',
@@ -19,7 +21,8 @@ export default {
   }),
   components: {
     Header,
-    Footer
+    Footer,
+    Payment
   }
 }
 </script>
