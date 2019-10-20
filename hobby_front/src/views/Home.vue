@@ -27,6 +27,22 @@ export default {
   name: 'Home',
   components: {
     TopBanner
+  },
+  data (){
+    return{
+      jwt:''
+    }
+  },
+  mounted (){
+    this.getJwt()
+  },
+  methods:{
+    getJwt(){
+      if(this.$route.query.jwt){
+        // 네이버 로그인 시 jwt가 여기서 날아오기 때문에 store에 저장하기
+        this.jwt = this.$route.query.jwt
+      }
+    }
   }
 }
 </script>
