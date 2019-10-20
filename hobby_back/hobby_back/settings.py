@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'accounts',
     'imagekit',
     'corsheaders',
+    # graph model
+    # 'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -181,3 +183,9 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 # cors
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
+
+# graph model
+# GRAPH_MODELS = {
+#   'all_applications': True,
+#   'group_models': True,
+# }
