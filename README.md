@@ -66,9 +66,8 @@
 
 ### ERD
 
-그려주세요...
 
-
+![erd](/hobby_back/my_project_visulized.png)
 
 
 
