@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
 from allauth.socialaccount.providers.naver.views import NaverOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
@@ -58,9 +59,35 @@ def editUser(request):
     ## 닉네임
     pass
 
-@api_view(['POST'])
+@api_view(['GET'])
 def Naver_Login(request):
-    pass
+    code = request.GET.get('code')
+    state = request.GET.get('state')
+    clientId = 'IaquHgHTmPlf_gc_a8es'
+    secretId = 'nUsvfl0B6c'
+    apiUrl = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&"
+    apiUrl += "client_id=" + clientId + "&client_secret=" + secretId + "&code=" + str(code) + "&state=" + str(state)
+    response = requests.get(apiUrl)
+    response = json.loads(response.text)
+    # print("================")
+    # print(response)
+    access_token = response.get('access_token')
+    refresh_token = response.get('refresh_token')
+    # print("---------------")
+    # print(code)
+    # print(access_token, refresh_token)
+    body = {
+        'access_token': access_token,
+        'code': code,
+    }
+    auth_response = requests.post("http://127.0.0.1:8000/accounts/rest-auth/naver/", data=body)
+    # print("*******************")
+    # print(auth_response.text)
+    auth_response = json.loads(auth_response.text)
+    redirect_url = "http://localhost:8080"
+    redirect_url += "?jwt=" + auth_response.get('token')
+    return redirect(redirect_url)
+    
 
 
 
