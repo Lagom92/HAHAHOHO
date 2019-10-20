@@ -67,7 +67,7 @@
 ### ERD
 
 
-![erd](/hobby_back/my_project_visulized.png)
+![erd](/hobby_back/my_project_visualized.png)
 
 
 
