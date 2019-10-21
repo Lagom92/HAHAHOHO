@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import PostHobby, PostFree, Notice, Faq, HobbyImage
+from .models import PostHobby, PostFree, Notice, Faq, HobbyImage, CommentFree
 
 class PostHobbySerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,5 +24,10 @@ class FaqSerializer(serializers.ModelSerializer):
 class ImgSerializer(serializers.ModelSerializer):
     class Meta:
         model = HobbyImage
+        fields = '__all__'
+        
+class CommentFreeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentFree
         fields = '__all__'
 
