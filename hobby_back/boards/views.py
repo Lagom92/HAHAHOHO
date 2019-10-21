@@ -1,16 +1,23 @@
 from .models import PostHobby, PostFree, Faq, Notice
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer, FaqSerializer
 from rest_framework import generics
+# from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 class postHobby_list(generics.ListCreateAPIView):
+    search_fields = ['title', 'contents', 'location']
+    filter_backends = (filters.SearchFilter,)
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
+    
 
 class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
 
 class postFree_list(generics.ListCreateAPIView):
+    search_fields = ['title', 'contents']
+    filter_backends = (filters.SearchFilter,)
     queryset = PostFree.objects.all()
     serializer_class = PostFreeSerializer
 
