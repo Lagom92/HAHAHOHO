@@ -7,11 +7,13 @@ from imagekit.processors import ResizeToFill
 class User(models.Model):
     userName = models.CharField(max_length=100)
     userNickName = models.CharField(max_length=100)
+    userId = models.CharField(max_length=50)
     userSex = models.CharField(max_length=20)
-    userAge = models.IntegerField()
+    userAge = models.CharField(max_length=50)
     userImage = models.ImageField(blank=True)
     userGrade = models.IntegerField(default=1)
     userAddress = models.CharField(max_length=200, blank=True)
+    userPoint = models.IntegerField(default=0)
     userLike = ArrayField(
         ArrayField(
             models.CharField(max_length=50, blank=True, default=''),
