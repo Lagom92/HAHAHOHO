@@ -13,6 +13,8 @@ urlpatterns = [
     path('free/<int:pk>/', views.postFree_detail.as_view()),
     path('notice/<int:pk>/', views.notice_detail.as_view()),
     path('faq/<int:pk>/', views.faq_detail.as_view()),
+    path('img/', views.img_list.as_view()),
+    path('img/<int:pk>/', views.img_detail.as_view()),
     path('free/<int:pk>/comment', views.commentFree_list.as_view()),
     path('free/<int:pk>/comment/<int:comment_pk>', views.commentFree_detail)
 ]

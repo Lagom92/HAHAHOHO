@@ -1,10 +1,12 @@
-from .models import PostHobby, PostFree, Faq, Notice, CommentFree
+from .models import PostHobby, PostFree, Faq, Notice, HobbyImage, CommentFree
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer, FaqSerializer, CommentFreeSerializer
+from .serializers import ImgSerializer
 from rest_framework import generics
-# from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 
 class postHobby_list(generics.ListCreateAPIView):
     search_fields = ['title', 'contents', 'location']
@@ -12,10 +14,19 @@ class postHobby_list(generics.ListCreateAPIView):
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
     
-
 class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
+
+# hobby게시판의 img list
+class img_list(generics.ListCreateAPIView):
+    queryset = HobbyImage.objects.all()
+    serializer_class = ImgSerializer
+
+# hobby게시판의 img detail
+class img_detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HobbyImage.objects.all()
+    serializer_class = ImgSerializer
 
 class postFree_list(generics.ListCreateAPIView):
     search_fields = ['title', 'contents']
@@ -71,6 +82,7 @@ def commentFree_detail(request, pk, comment_pk):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
     #특정 댓글 삭제
     elif request.method == 'DELETE':
         commentfree.delete()
