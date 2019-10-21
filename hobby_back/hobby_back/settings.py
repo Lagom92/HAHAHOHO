@@ -42,6 +42,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'suit',
     'django.contrib.admin',
     'django.contrib.sites',
     'django.contrib.auth',
@@ -192,3 +193,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 #   'all_applications': True,
 #   'group_models': True,
 # }
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': '관리자 페이지',
+    'HEADER_DATE_FORMAT': 'Y F j일',
+    'HEADER_TIME_FORMAT': 'h:i',    
+}
