@@ -65,6 +65,9 @@ INSTALLED_APPS = [
     'corsheaders',
     # graph model
     # 'django_extensions',
+    # chat
+    'chat',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -192,3 +195,14 @@ CORS_ORIGIN_ALLOW_ALL = True
 #   'all_applications': True,
 #   'group_models': True,
 # }
+
+# Channels
+ASGI_APPLICATION = 'hobby_back.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
