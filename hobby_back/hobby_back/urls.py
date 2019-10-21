@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
@@ -24,5 +26,10 @@ urlpatterns = [
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('boards/', include('boards.urls')),
-
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.site.site_header = "HAHAHOHO 관리자"
+admin.site.site_title = "HAHAHOHO 관리자 페이지"
+admin.site.index_title = "Welcome to HAHAHOHO"

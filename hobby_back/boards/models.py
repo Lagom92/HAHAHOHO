@@ -36,7 +36,7 @@ class PostHobby(models.Model):
     title = models.CharField(max_length=300)    # 제목
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # 작성자
     contents = models.TextField()   # 내용
-    createdAt = models.DateTimeField(auto_now_add=True)    # 글 작성 날짜
+    created_at = models.DateTimeField(auto_now_add=True)    # 글 작성 날짜
     startDate = models.DateTimeField()  # 모임 시작 시간
     regardless = 'NO'
     male = 'MA'
@@ -74,7 +74,7 @@ class PostFree(models.Model):
     title = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.TextField()
-    createDate = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -84,9 +84,9 @@ class PostFree(models.Model):
 class Notice(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, default='관리자')
     contents = models.TextField()
-    createDate = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -98,7 +98,7 @@ class Faq(models.Model):
     title = models.CharField(max_length=200)
     name = models.CharField(max_length=50)
     contents = models.TextField()
-    createDate = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -110,12 +110,12 @@ class CommentHobby(models.Model):
     postHobby = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
     # 유저와 1:n
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField(max_length=100)
+    contents = models.CharField(max_length=100)
     # 생성날짜
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content
+        return self.contents
 
 
 # 자유게시판 댓글
@@ -124,9 +124,9 @@ class CommentFree(models.Model):
     postFree = models.ForeignKey(PostFree, on_delete=models.CASCADE)
     # 유저와 1:n
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField(max_length=100)
+    contents = models.CharField(max_length=100)
     # 생성날짜
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content
+        return self.contents
