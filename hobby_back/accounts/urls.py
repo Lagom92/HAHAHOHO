@@ -10,6 +10,7 @@ urlpatterns = [
     url('kakaoLogin/', views.Kakao_Login),
     url('naverLogin/', views.Naver_Login),
     url('kakaoPay/', views.kakaoPay),
+    url('edit/<int:id>/', views.editUser),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
