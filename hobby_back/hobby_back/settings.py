@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     # graph model
     # 'django_extensions',
     'drf_yasg',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 ]
 
@@ -200,3 +202,6 @@ SUIT_CONFIG = {
     'HEADER_DATE_FORMAT': 'Y F j일',
     'HEADER_TIME_FORMAT': 'h:i',    
 }
+
+# 해당 IP에서 디버그 툴바가 보인다.
+INTERNAL_IPS = ('127.0.0.1',)
