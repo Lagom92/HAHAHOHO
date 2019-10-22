@@ -2,14 +2,55 @@ from django.shortcuts import redirect
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
 from allauth.socialaccount.providers.naver.views import NaverOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
+from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import User, payInfo
-from .serializers import UserSerializer
+from .models import User, payInfo, Follow
+from .serializers import UserSerializer,FollowSerializer
 import requests, json
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+@api_view(['GET','POST'])
+def follow_list(request):
+    #자유게시판 조회기능
+    if request.method == 'GET':
+        queryset = Follow.objects.all()
+        serializer = FollowSerializer(queryset, many = True)
+        return Response(serializer.data)
 
 
+    #자유게시판 글 생성기능
+    elif request.method == 'POST':
+        serializer = FollowSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATE)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET','PUT','DELETE'])
+def follow_detail(request, pk):
+    try:
+        follow = Follow.objects.get(pk=pk)
+    except Follow.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    #팔로우 조회
+    if request.method == 'GET':
+        serializer = FollowSerializer(follow)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = FollowSerializer(follow, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        follow.delete()
+        return Response(status=status.HTTP_204_NOT_CONTENT)
+    
 class KakaoLogin(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter    
 

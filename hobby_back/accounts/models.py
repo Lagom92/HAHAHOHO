@@ -1,7 +1,9 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.conf import settings
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(models.Model):
@@ -49,3 +51,10 @@ class PostOnetone(models.Model):
 #             options={'quality':90}, # 원본의 90퍼센트 품질로 저장
 #     	)
 
+class Follow(models.Model):
+      following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="who_follows")
+      follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="who_is_followed")
+      follow_time = models.DateTimeField(auto_now=True)
+
+      def __str__(self):
+        return self.following
