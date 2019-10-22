@@ -5,7 +5,7 @@
                 <div id="kakao-login-btn"></div>
                 <a href="http://developers.kakao.com/logout"></a>
             </v-row>
-            <v-btn @click="Chk()">확인</v-btn>
+            <!-- <v-btn @click="Chk()">확인</v-btn> -->
         </v-container>
     </div>
 </template>
