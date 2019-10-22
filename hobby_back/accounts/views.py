@@ -16,39 +16,31 @@ class KakaoLogin(SocialLoginView):
 class NaverLogin(SocialLoginView):
     adapter_class = NaverOAuth2Adapter
 
+@api_view(['POST'])
+def userInfo(request):
+    userId = request.data.get('id')
+    userSet = User.objects.get(userId=userId)
+    serializer = UserSerializer(userSet)
+    return Response(serializer.data)
 
 @api_view(['POST'])
-def Kakao_Login(request):
+def userSave(request):
     ## 수정
     ### 프론트와 카카오가 통신
     ### 프론트는 백하고 통신
-    user_url = "https://kapi.kakao.com/v2/user/me"
-    user_headers = {
-        'Authorization' : "Bearer " + request.data['access_token'],
-        'Content-Type': 'application/json; charset=utf-8'
-    }
-    user_data = {
-        'property_keys': 'kakao_account.age_range',
-        'property_keys': 'kakao_account.gender',
-    }
-    response = requests.post(user_url, headers=user_headers, data=user_data)
-    response = json.loads(response.text)
-    userName = response.get("properties").get("nickname")
-    userNickName = response.get("properties").get("nickname")
-    userId = "kakao_" + str(response.get("id"))
-    userSex = response.get("gender")
-    userAge = response.get("age_range")
-    userImage = response.get("properties").get("profile_image")
+    userName = request.data.get('userName')
+    userNickName = request.data.get("nickname")
+    userId = request.data.get('userId')
+    userSex = request.data.get('userSex')
+    userAge = request.data.get("userAge")
+    userImage = request.data.get('userImage')
     try: 
         userSet = User.objects.get(userId=userId)
     except:
         User.objects.create(
             userName=userName, userNickName=userName, userSex=userSex, userAge=userAge, userImage=userImage, userId=userId
         )
-    userSet = User.objects.get(userName=userName)
-    serializer = UserSerializer(userSet)
-    return Response(serializer.data)
-
+    return Response("database save")
 
 
 @api_view(['POST'])
