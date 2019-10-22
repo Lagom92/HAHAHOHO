@@ -56,5 +56,5 @@ class Follow(models.Model):
       follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="who_is_followed")
       follow_time = models.DateTimeField(auto_now=True)
 
-      def __unicode__(self):
-          return str(self.follow_time)
+      def __str__(self):
+        return self.following
