@@ -19,7 +19,7 @@
 
                         <v-textarea
                             outlined
-                            v-model="content"
+                            v-model="contents"
                             label="글 내용"
                         ></v-textarea>
 
@@ -42,7 +42,7 @@
                         <v-row>
                             <v-col cols="12" md="6">
                                 <v-select
-                                    v-model="select"
+                                    v-model="gender"
                                     :items="items"
                                     label="성별"
                                     required
@@ -50,7 +50,7 @@
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-text-field
-                                    v-model="num"
+                                    v-model="member"
                                     label="최소 인원"
                                 ></v-text-field>
                             </v-col>
@@ -151,15 +151,13 @@
                                 <v-btn text color="primary">
                                     임시저장
                                 </v-btn>
-
                                 <v-btn text color="primary">
                                     등록하기
                                 </v-btn>
                             </div>
                         </v-row>
-                     </v-form>
+                    </v-form>
                 </v-col>
-
             </v-row>
         </v-container>
     </div>
@@ -169,12 +167,15 @@
 export default {
     name: 'createmeeting',
     data: () => ({
-        valid: true,
         title: '',
-        content: '',
+        contents: '',
         date: new Date().toISOString().substr(0, 10),
-        num:'',
-        select: null,
+        time: null,
+        gender: null,
+        agerange:[20,100],
+        member:'',
+
+        valid: true,
         items: [
             '상관없음',
             '남성',
@@ -191,12 +192,10 @@ export default {
         selectClass: '',
         selectSubClass: '',
         selectSub: '',
-        time: null,
         meetingDate: false,
         meetingTime: false,
         agemin: 15,
         agemax: 100,
-        agerange:[20,100],
         e6: 1,
     }),
     methods: {
