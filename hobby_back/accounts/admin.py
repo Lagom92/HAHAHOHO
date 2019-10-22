@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, PostOnetone
+from .models import User, PostOnetone, Follow
 
 # # admin.site.register(Image)
 
@@ -12,3 +12,8 @@ class UserAdmin(admin.ModelAdmin):
 class PostOnetoneAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'contents', 'answer']
     list_display_links = ['user']
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = ['following', 'follower']
+    list_display_links = []

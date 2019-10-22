@@ -1,6 +1,7 @@
 from django.conf.urls import include, url
 from .views import KakaoLogin, NaverLogin
 from . import views
+from django.urls import path
 
 app_name = 'accounts'
 
@@ -11,6 +12,8 @@ urlpatterns = [
     url('naverLogin/', views.Naver_Login),
     url('kakaoPay/', views.kakaoPay),
     url('edit/<int:id>/', views.editUser),
+    path('follow/<int:pk>/', views.follow_detail),
+    path('follow/', views.follow_list),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
