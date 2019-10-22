@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # graph model
     # 'django_extensions',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
