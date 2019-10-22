@@ -15,7 +15,6 @@
           <v-col md="2" offset-md="5">
             <!-- 카카오로그인 버튼 노출 영역 -->
             <KakaoLogin></KakaoLogin>
-            <NaverLogin></NaverLogin>
           </v-col>
         </v-row>
       </v-container>
@@ -25,7 +24,6 @@
 
 <script>
 import KakaoLogin from '@/components/KakaoLogin'
-import NaverLogin from '@/components/NaverLogin'
 
 export default {
   name: 'Header',
@@ -36,7 +34,6 @@ export default {
   },
   components: {
     KakaoLogin,
-    NaverLogin
   }
 }
 </script>
