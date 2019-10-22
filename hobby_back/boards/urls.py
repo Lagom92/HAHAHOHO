@@ -6,12 +6,12 @@ from boards import views
 
 urlpatterns = [
     path('hobby/', views.postHobby_list.as_view()),
-    path('free/', views.postFree_list.as_view()),
-    path('notice/', views.notice_list.as_view()),
-    path('faq/', views.faq_list.as_view()),
     path('hobby/<int:pk>/', views.postHobby_detail.as_view()),
+    path('free/', views.postFree_list.as_view()),
     path('free/<int:pk>/', views.postFree_detail.as_view()),
+    path('notice/', views.notice_list.as_view()),
     path('notice/<int:pk>/', views.notice_detail.as_view()),
+    path('faq/', views.faq_list.as_view()),
     path('faq/<int:pk>/', views.faq_detail.as_view()),
     path('img/', views.img_list.as_view()),
     path('img/<int:pk>/', views.img_detail.as_view()),

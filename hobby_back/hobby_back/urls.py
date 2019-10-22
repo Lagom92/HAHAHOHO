@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_jwt.views import obtain_jwt_token
-from .yasg import *
+from .doc import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),

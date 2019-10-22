@@ -54,7 +54,6 @@ class img_list(generics.ListCreateAPIView):
     취미 게시판의 이미지들을 생성, 조회 하는 API
     
     ---
-    
     ## 내용
         - photo: 이미지
         
@@ -63,12 +62,11 @@ class img_list(generics.ListCreateAPIView):
     serializer_class = ImgSerializer
 
 # hobby게시판의 img detail
-class img_detail(generics.RetrieveUpdateDestroyAPIView):
+class img_detail(generics.RetrieveAPIView):
     '''
-    취미 게시판의 이미지들을 생성, 조회 하는 API
+    취미 게시판의 이미지를 조회 하는 API
     
     ---
-    
     ## 내용
         - photo: 이미지
         
@@ -112,9 +110,9 @@ class postFree_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostFree.objects.all()
     serializer_class = PostFreeSerializer
 
-class notice_list(generics.ListCreateAPIView):
+class notice_list(generics.ListAPIView):
     '''
-    공지사항 게시판 list page를 생성, 조회 하는 API
+    공지사항 게시판 list page를 조회 하는 API
     
     ---
     ## `/boards/notice/`
@@ -127,9 +125,9 @@ class notice_list(generics.ListCreateAPIView):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
 
-class notice_detail(generics.RetrieveUpdateDestroyAPIView):
+class notice_detail(generics.RetrieveAPIView):
     '''
-    공지사항 게시판 detail page를 조회, 수정, 삭제 하는 API
+    공지사항 게시판 detail page를 조회 하는 API
     
     ---
     ## `/boards/notice/{id}/`
@@ -142,9 +140,9 @@ class notice_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
 
-class faq_list(generics.ListCreateAPIView):
+class faq_list(generics.ListAPIView):
     '''
-    FAQ 게시판 list page를 생성, 조회 하는 API
+    FAQ 게시판 list page를 조회 하는 API
     
     ---
     ## `/boards/faq/`
@@ -157,9 +155,9 @@ class faq_list(generics.ListCreateAPIView):
     queryset = Faq.objects.all()
     serializer_class = FaqSerializer
 
-class faq_detail(generics.RetrieveUpdateDestroyAPIView):
+class faq_detail(generics.RetrieveAPIView):
     '''
-    FAQ 게시판 detail page를 조회, 수정, 삭제 하는 API
+    FAQ 게시판 detail page를 조회 하는 API
     
     ---
     ## `/boards/faq/{id}/`
