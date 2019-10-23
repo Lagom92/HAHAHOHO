@@ -2,23 +2,22 @@ from django.shortcuts import redirect, get_object_or_404
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
 from allauth.socialaccount.providers.naver.views import NaverOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
-from .serializers import UserSerializer,FollowSerializer
-from .models import User, payInfo, Follow
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.decorators import api_view
-from rest_framework.views import APIView
 from rest_framework.response import Response
 import requests, json
+from .serializers import UserSerializer,FollowSerializer
+from .models import User, payInfo, Follow
 
 @api_view(['GET','POST'])
 def follow_list(request):
-    #follow 명단 조회 기능
+    # follow 명단 조회 기능
     if request.method == 'GET':
         queryset = Follow.objects.all()
         serializer = FollowSerializer(queryset, many = True)
         return Response(serializer.data)
     
-    #follow 연결기능
+    # follow 연결기능
     elif request.method == 'POST':
         serializer = FollowSerializer(data=request.data)
         if serializer.is_valid():
@@ -28,12 +27,12 @@ def follow_list(request):
 
 @api_view(['GET','PUT','DELETE'])
 def follow_detail(request, pk):
-    follow = get_object_or_404(Follow, pk=question_id)
-    #특정 follow 조회 기능
+    follow = get_object_or_404(Follow, pk=pk)
+    # 특정 follow 조회 기능
     if request.method == 'GET':
         serializer = FollowSerializer(follow)
         return Response(serializer.data)
-    #특정 follow 수정 기능
+    # 특정 follow 수정 기능
     elif request.method == 'PUT':
         serializer = FollowSerializer(follow, data=request.data)
         if serializer.is_valid():
@@ -41,7 +40,7 @@ def follow_detail(request, pk):
             return Response(serializer.data)
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
 
-    #특정 follow 삭제 기능
+    # 특정 follow 삭제 기능
     elif request.method == 'DELETE':
         follow.delete()
         return Response(status=status.HTTP_204_NOT_CONTENT)
@@ -165,7 +164,7 @@ def kakaoPay(request):
     params['total_amount'] = request.data.get('amount')
     response = requests.post(url+"/v1/payment/ready", params=params, headers=headers)
     response = json.loads(response.text)
-    if(response.get('code')):
+    if response.get('code'):
         # 에러일때 
         pass
     else:

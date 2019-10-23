@@ -58,8 +58,6 @@ class FaqAdmin(admin.ModelAdmin):
     list_display_links = ['id', 'title']
     search_fields = ['title']
 
-
-# admin.site.register(HobbyImage)
 @admin.register(HobbyImage)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ['id', 'posthobby']

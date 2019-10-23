@@ -1,8 +1,7 @@
 from django.urls import path
-from . import views
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
-from boards import views
+from . import views
 
 urlpatterns = [
     path('hobby/', views.postHobby_list.as_view()),

@@ -1,13 +1,10 @@
 from django.shortcuts import redirect, get_object_or_404
-from .models import PostHobby, PostFree, Faq, Notice, HobbyImage, CommentFree
-from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer, FaqSerializer, CommentFreeSerializer
-from .serializers import ImgSerializer
-from rest_framework import generics
-from rest_framework import filters
-from rest_framework import status
+from rest_framework import generics, filters, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from .models import PostHobby, PostFree, Faq, Notice, HobbyImage, CommentFree
+from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer
+from .serializers import ImgSerializer, FaqSerializer, CommentFreeSerializer
 
 class postHobby_list(generics.ListCreateAPIView):
     '''
@@ -175,20 +172,16 @@ class commentFree_list(generics.ListCreateAPIView):
     queryset = CommentFree.objects.all()
     serializer_class = CommentFreeSerializer
 
-# class commentFree_detail(generics.RetrieveUpdateDestroyAPIView, pk, comment_pk):
-#     queryset = CommentFree.objects.all()
-#     serializer_class = CommentFreeSerializer   
-
-
+# 체크! pk와 question_pk는 어디서 사용되는가???
 @api_view(['GET','PUT','DELETE'])
 def commentFree_detail(request, pk, comment_pk):
     commentfree = get_object_or_404(CommentFree, pk=question_id)
-    #특정 댓글 조회하기
+    # 특정 댓글 조회하기
     if request.method == 'GET':
         serializer = CommentFreeSerializer(commentfree)
         return Response(serializer.data)
 
-    #특정 댓글 수정
+    # 특정 댓글 수정
     elif request.method == 'PUT':
         serializer = CommentFreeSerializer(commentfree, data=request.data)
         if serializer.is_valid():
@@ -196,11 +189,7 @@ def commentFree_detail(request, pk, comment_pk):
             return Response(serializer.data)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
-    #특정 댓글 삭제
+    # 특정 댓글 삭제
     elif request.method == 'DELETE':
         commentfree.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
