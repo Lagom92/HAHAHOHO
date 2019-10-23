@@ -42,8 +42,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
-    'chat',
     'suit',
     'django.contrib.admin',
     'django.contrib.sites',
@@ -106,8 +104,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hobby_back.wsgi.application'
 
-# Channels
-ASGI_APPLICATION = 'hobby_back.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
