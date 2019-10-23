@@ -1,3 +1,4 @@
+from django.shortcuts import redirect, get_object_or_404
 from .models import PostHobby, PostFree, Faq, Notice, HobbyImage, CommentFree
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer, FaqSerializer, CommentFreeSerializer
 from .serializers import ImgSerializer
@@ -181,11 +182,7 @@ class commentFree_list(generics.ListCreateAPIView):
 
 @api_view(['GET','PUT','DELETE'])
 def commentFree_detail(request, pk, comment_pk):
-    try:
-        commentfree = CommentFree.objects.get(pk=comment_pk)
-    except CommentFree.DoesNotExist:
-        raise Http404
-
+    commentfree = get_object_or_404(CommentFree, pk=question_id)
     #특정 댓글 조회하기
     if request.method == 'GET':
         serializer = CommentFreeSerializer(commentfree)
