@@ -66,9 +66,8 @@
 
 ### ERD
 
-그려주세요...
 
-
+![erd](/hobby_back/my_project_visualized.png)
 
 
 
@@ -101,6 +100,7 @@ pip install djangorestframework-jwt
 pip install django-rest-auth
 pip install "django-rest-auth[with_social]"
 pip install django-allauth
+pip install django-cors-headers
 ```
 
 

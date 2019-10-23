@@ -3,94 +3,175 @@
     <v-container>
       <div>
         <v-row align="center">
-          <v-col cols="4">
-            <v-img src="../assets/logo.png" max-height="100px" max-width="100px" class="mx-auto"></v-img>
-          </v-col>
-          <v-col cols="8">
-            <div id="el1">
-              <v-row align="center">
-                <v-col cols="6">
-                  <span>닉네임</span>
-                </v-col>
-                <v-col cols="2">
-                  <v-btn class="ma-2" color="orange darken-2" dark>
-                    수정하기
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </div>
-            <div>
-              <v-row>
-                <v-col cols="3">
-                  <span>참여모임 50</span>
-                </v-col>
-                <v-col cols="3">
-                  <span>팔로워 100</span>
-                </v-col>
-                <v-col cols="3">
-                  <span>팔로우 130</span>
-                </v-col>
-              </v-row>
-            </div>
-            <div id="el2">
-              <v-chip
-                v-for="i in this.tags"
-                :key="i"
-                class="ma-2"
-                color="indigo"
-                text-color="white"
+          <v-card id="contain_card" class="my-10">
+            <v-row>
+              <v-card
+                class="mx-auto my-auto"
+                max-width="344"
+                elevation="0"
               >
-                <v-avatar left>
-                  <v-icon>mdi-account-circle</v-icon>
-                </v-avatar>
-                {{i}}
-              </v-chip>
-            </div>
-          </v-col>
+                <v-list-item three-line>
+                  <v-list-item-content>
+                    <v-img src="../assets/logo.png" max-height="100px" max-width="100px" class="mx-auto"></v-img>
+                    <v-list-item-title class="headline mb-1 text-center">
+                      닉네임
+                        <v-btn class="ma-2" color="#9AB878" fab outlined x-small dark>
+                          <v-icon>mdi-account-edit</v-icon>
+                        </v-btn>
+                    </v-list-item-title>
+                    
+                    <v-list-item-subtitle class="text-center">
+                      <div>
+                        <v-chip
+                          v-for="i in this.tags"
+                          :key="i"
+                          class="ma-1"
+                          color="#F3B749"
+                          text-color="white"
+                        >
+                          {{i}}
+                        </v-chip>
+                      </div>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-card>
+              <v-divider class="my-5" vertical></v-divider>
+              <v-card
+                class="mx-auto my-auto"
+                max-width="344"
+                elevation="0"
+              >
+                <v-list-item three-line>
+                  <v-list-item-content>
+                    <v-img src="../assets/logo.png" max-height="100px" max-width="100px" class="mx-auto"></v-img>(등급아이콘자리)
+                      <v-list-item-title class="headline mb-1 text-center">
+                        <v-row justify="center">
+                          <span class="my-auto mr-3">포인트 5,000 P</span>
+                          <Payment></Payment>
+                        </v-row>
+                      </v-list-item-title>
+                    
+                    <v-list-item-subtitle class="text-center">
+                      <div>
+                        <v-row>
+                          <v-col cols="4" >
+                            <span>참여모임 50</span>
+                          </v-col>
+                          <v-col cols="4">
+                            <v-dialog v-model="followerdialog" scrollable max-width="300px">
+                              <template v-slot:activator="{ on }">
+                                <span v-on="on">팔로워 100</span>
+                              </template>
+                              <!-- 팔로워 목록 모달 -->
+                              <v-card>
+                                <v-card-title>팔로워</v-card-title>
+                                <v-divider></v-divider>
+                                <v-card-text style="height: 300px;">
+                                  <v-list>
+                                    <v-list-item
+                                      v-for="item in items"
+                                      :key="item.title"                            
+                                    >
+                                      <v-list-item-avatar>
+                                        <v-img :src="item.avatar"></v-img>
+                                      </v-list-item-avatar>
+
+                                      <v-list-item-content>
+                                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                                      </v-list-item-content>
+
+                                    </v-list-item>
+                                  </v-list>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-btn color="#2E1E11" text @click="followerdialog = false">Close</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-col>
+                          <v-col cols="4">
+                            <v-dialog v-model="followdialog" scrollable max-width="300px">
+                              <template v-slot:activator="{ on }">
+                                <span v-on="on">팔로우 5</span>
+                              </template>
+                              <!-- 팔로우 목록 모달 -->
+                              <v-card>
+                                <v-card-title>팔로우</v-card-title>
+                                <v-divider></v-divider>
+                                <v-card-text style="height: 300px;">
+                                  <v-list>
+                                    <v-list-item
+                                      v-for="item in items"
+                                      :key="item.title"
+                                    >
+                                      <v-list-item-avatar>
+                                        <v-img :src="item.avatar"></v-img>
+                                      </v-list-item-avatar>
+                                      <v-list-item-content>
+                                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                                      </v-list-item-content>
+
+                                    </v-list-item>
+                                  </v-list>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-btn color="#2E1E11" text @click="followdialog = false">Close</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-card>
+            </v-row>
+          </v-card>
         </v-row>
       </div>
 
-      <v-divider></v-divider>
-
       <div>
-        <h2>참여 목록 페이지</h2>
         <v-card>
-          <v-tabs
-            v-model="tab"
-            background-color="deep-purple accent-4"
-            centered
-            dark
-            icons-and-text
-          >
-            <v-tabs-slider></v-tabs-slider>
-
-            <v-tab href="#tab-1">
-              찜리스트
-              <v-icon>mdi-phone</v-icon>
+          <v-tabs vertical color="#F3B749">
+            <v-tab>
+              <v-icon left>mdi-account</v-icon>
+              찜목록
+            </v-tab>
+            <v-tab>
+              <v-icon left>mdi-lock</v-icon>
+              참여예정 목록
+            </v-tab>
+            <v-tab>
+              <v-icon left>mdi-access-point</v-icon>
+              참여한 목록
             </v-tab>
 
-            <v-tab href="#tab-2">
-              참여한모임
-              <v-icon>mdi-heart</v-icon>
-            </v-tab>
-
-            <v-tab href="#tab-3">
-              참여예정모임
-              <v-icon>mdi-account-box</v-icon>
-            </v-tab>
-          </v-tabs>
-
-          <v-tabs-items v-model="tab">
-            <v-tab-item
-              v-for="i in 3"
-              :key="i"
-              :value="'tab-' + i"
-            >
+            <v-tab-item>
               <v-card flat>
-                <v-card-text>{{ text[i-1] }}</v-card-text>
+                <v-card-text>
+                  <p class="mb-0">찜목록</p>
+                </v-card-text>
               </v-card>
             </v-tab-item>
-          </v-tabs-items>
+            <v-tab-item>
+              <v-card flat>
+                <v-card-text>
+                  <p class="mb-0">참여예정 목록</p>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+            <v-tab-item>
+              <v-card flat>
+                <v-card-text>
+                  <p class="mb-0">참여한 목록</p>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs>
         </v-card>
       </div>
 
@@ -99,30 +180,35 @@
 </template>
 
 <script>
+import Payment from '@/components/Payment'
+
 export default {
   name: 'UserPage',
-  data: () => ({
+  components: {
+    Payment
+  },
+  data () {
+    return {
       tags: [
         '스포츠',
         '독서',
         '여행'
       ],
-      tab: null,
-      text: [
-        '찜 리스트',
-        '참여했던 리스트',
-        '참여예정 리스트'
-      ]
+      followdialog: false,
+      followerdialog: false,
+      items: [
+        { title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
+        { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
+        { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
+        { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
+      ],
     }
-  ),
+  },
 }
 </script>
 
 <style>
-#el1 {
-  height: 50%;
-}
-#el2 {
-  height: 50%;
+#contain_card {
+  width: 100%
 }
 </style>
