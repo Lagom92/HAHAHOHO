@@ -5,7 +5,6 @@
                 <div id="kakao-login-btn"></div>
                 <a href="http://developers.kakao.com/logout"></a>
             </v-row>
-            <!-- <v-btn @click="Chk()">확인</v-btn> -->
         </v-container>
     </div>
 </template>
@@ -19,7 +18,8 @@ export default {
     data () {
         return {
             jwt:'',
-            id:''
+            id:'',
+            user_id:''
         }
     },
     mounted() {
@@ -54,10 +54,22 @@ export default {
 
             axios.post(baseUrl+'accounts/rest-auth/kakao/',form).then(res =>{
                 this.jwt = res.data.token
+                this.$store.commit('jwtSave', this.jwt)
             }).catch(e =>{
                 console.log(e)
             })
+
             this.id = "kakao_"+ (res.id).toString()
+            
+            axios.post(baseUrl+'accounts/userInfo/', {
+                headers: {'Authorization': 'JWT'+this.jwt},
+                id: this.id
+            }).then(res => {
+                // console.log(res)
+                this.user_id = res.data.id
+                this.$store.commit('idSave', this.user_id)
+            })
+            
             let userForm = new FormData()
             userForm.append('userName', res.kakao_account.profile.nickname)
             userForm.append('userNickName', res.kakao_account.profile.nickname)
@@ -69,19 +81,6 @@ export default {
                 console.log(res.data)
             })
         },
-        // 이 부분은 유저 정보 사이트에 mounted로 넣어주면 될거같습니다.ㅇ
-        Chk() {
-            let baseUrl = 'http://localhost:8000/'
-            axios.post(baseUrl + 'accounts/userInfo/', 
-                {
-                    headers: 
-                        {'Authorization': 'JWT '+ this.jwt },
-                    id:this.id
-                }
-            ).then(res =>{
-                console.log(res)
-            })
-        }
     }
 }
 </script>

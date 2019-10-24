@@ -5,11 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    access_token: '',
-    jwt: ''
+    user_id: '',
+    user_jwt: ''
   },
   mutations: {
-
+    idSave(state, id) {
+      state.user_id = id
+    },
+    jwtSave(state, jwt) {
+      state.user_jwt = jwt
+    }
   },
   actions: {
 
