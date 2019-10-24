@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user_id: '',
-    user_jwt: ''
+    user_jwt: '',
+    baseUrl: "http://127.0.0.1:8000/"
   },
   mutations: {
     idSave(state, id) {
