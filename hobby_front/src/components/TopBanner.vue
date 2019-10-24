@@ -1,14 +1,19 @@
 <template>
     <div class="topBanner">
-        <v-container>
-            <h1>배너부분</h1>
+        <v-container id="SearchBar">
+            <SearchBar></SearchBar>
         </v-container>
     </div>
 </template>
 
 <script>
+import SearchBar from "./SearchBar"
+
 export default {
-    name: 'TopBanner'
+    name: 'TopBanner',
+    components: {
+        SearchBar
+    }
 }
 </script>
 
@@ -16,8 +21,12 @@ export default {
     .topBanner {
         position: relative;
         height: 50vh;
-        width: 100vw;
         background-color: #f2f2f2;
         margin-bottom: 50px;
+    }
+    #SearchBar {
+        position: relative;
+        width: 50vw;
+        top: 70%;
     }
 </style>
