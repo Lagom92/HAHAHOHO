@@ -58,15 +58,29 @@
 
                         <v-row>
                             <v-col cols="12" md="6">
-                                <v-text-field
-                                    v-model="date"
-                                    label="만나는 날짜"
-                                ></v-text-field>
+                                <v-menu
+                                    v-model="meetingDate"
+                                    :close-on-content-click="false"
+                                    :nudge-right="40"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="290px"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        v-model="date"
+                                        label="만나는 날짜"
+                                        readonly
+                                        v-on="on"
+                                    ></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="date" @input="meetingDate = false"></v-date-picker>
+                                </v-menu>
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-menu
                                     ref="menu"
-                                    v-model="menu2"
+                                    v-model="meetingTime"
                                     :close-on-content-click="false"
                                     :nudge-right="40"
                                     :return-value.sync="time"
@@ -84,7 +98,7 @@
                                     ></v-text-field>
                                     </template>
                                     <v-time-picker
-                                    v-if="menu2"
+                                    v-if="meetingTime"
                                     v-model="time"
                                     full-width
                                     @click:minute="$refs.menu.save(time)"
@@ -93,29 +107,56 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col cols="2">
+                            <v-col cols="12" md="3">
                                 <span>카테고리</span>
                             </v-col>
-                            <v-col cols="10">
-                                <v-chip-group
-                                    v-model="selection"
-                                    active-class="deep-purple--text text--accent-4"
-                                    mandatory
-                                >
-                                    <v-chip>스포츠</v-chip>
-                                    <v-chip>공연</v-chip>
-                                    <v-chip>음악</v-chip>
-                                </v-chip-group>
+                            <v-col cols="12" md="9">
+                                <v-stepper v-model="e6" vertical>
+                                    <v-stepper-step :complete="e6 > 1" step="1" editable> 
+                                        대분류 - {{this.selectClass}}
+                                    </v-stepper-step>
+
+                                    <v-stepper-content step="1">
+                                        <v-chip-group
+                                            active-class="deep-purple--text text--accent-4"
+                                            column
+                                        >
+                                            <v-chip @click="selectClassification(k,v), e6 = 2" filter v-for="(v,k) in classification" :key="(v,k)">
+                                                {{ k }}
+                                            </v-chip>
+
+                                        </v-chip-group>
+                                    </v-stepper-content>
+
+                                    <v-stepper-step :complete="e6 > 2" step="2">
+                                        소분류 - {{this.selectSub}}
+                                    </v-stepper-step>
+
+                                    <v-stepper-content step="2">
+                                        <v-chip-group
+                                            active-class="deep-purple--text text--accent-4"
+                                            column
+                                        >
+                                            <v-chip @click="selectSubClassification(v)" filter v-for="v in this.selectSubClass" :key="v">
+                                                {{ v }}
+                                            </v-chip>
+                                        </v-chip-group>
+                                    <v-btn color="primary" >선택완료</v-btn>
+                                    </v-stepper-content>
+                                </v-stepper>
                             </v-col>
                         </v-row>
-                        
-                        <v-btn>
-                            임시저장
-                        </v-btn>
+                        <v-row>
+                            <div class="ml-auto">
+                                <v-btn text color="primary">
+                                    임시저장
+                                </v-btn>
 
-                        <v-btn>
-                            확인
-                        </v-btn>
+                                <v-btn text color="primary">
+                                    등록하기
+                                </v-btn>
+                            </div>
+                        </v-row>
                      </v-form>
                 </v-col>
 
@@ -131,7 +172,7 @@ export default {
         valid: true,
         title: '',
         content: '',
-        date: '',
+        date: new Date().toISOString().substr(0, 10),
         num:'',
         select: null,
         items: [
@@ -139,12 +180,33 @@ export default {
             '남성',
             '여성'
         ],
-        selection: 0,
+        classification: {
+            '여행':['등산','산책','캠핑'],
+            '스포츠':['자전거','배드민턴','볼링'],
+            '여행':['국내여행','해외여행'],
+            '공연':['영화','전시회','연극','뮤지컬'],
+            '음악':['노래','기타', '피아노'],
+            '사교':['봉사활동','연애'],
+        },
+        selectClass: '',
+        selectSubClass: '',
+        selectSub: '',
         time: null,
-        menu2: false,
+        meetingDate: false,
+        meetingTime: false,
         agemin: 15,
         agemax: 100,
-        agerange:[20,100]
+        agerange:[20,100],
+        e6: 1,
     }),
+    methods: {
+        selectClassification(key, value) {
+            this.selectClass = key,
+            this.selectSubClass = value
+        },
+        selectSubClassification(value) {
+            this.selectSub = value
+        }
+    }
 }
 </script>
