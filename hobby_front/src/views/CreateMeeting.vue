@@ -52,6 +52,7 @@
                                 <v-text-field
                                     v-model="lineUp"
                                     label="최소 인원"
+                                    type="number"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
