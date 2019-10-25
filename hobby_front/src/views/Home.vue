@@ -6,9 +6,11 @@
         <v-card height="400px">
           <v-card-title class="justify-center" color="#F3B749">
             모임 목록
-            <v-icon class="ml-3" color="#F3B749">
-              mdi-plus-circle
-            </v-icon>
+            <v-btn text icon to="/list">
+              <v-icon color="#F3B749">
+                mdi-plus-circle
+              </v-icon>
+            </v-btn>
           </v-card-title>
           <v-divider class="mx-4" inset></v-divider>
         </v-card>
@@ -18,9 +20,11 @@
           <v-card height="400px">
             <v-card-title class="justify-center" color="#F3B749">
               공지사항
-              <v-icon class="ml-3" color="#F3B749">
-                mdi-plus-circle
-              </v-icon>
+              <v-btn text icon to="/board">
+                <v-icon color="#F3B749">
+                  mdi-plus-circle
+                </v-icon>
+              </v-btn>
             </v-card-title>
             <v-divider class="mx-4" inset></v-divider>
           </v-card>
@@ -29,9 +33,11 @@
           <v-card height="400px">
             <v-card-title class="justify-center" color="#F3B749">
               자유게시판
-              <v-icon class="ml-3" color="#F3B749">
-                mdi-plus-circle
-              </v-icon>
+              <v-btn text icon to="/board">
+                <v-icon color="#F3B749">
+                  mdi-plus-circle
+                </v-icon>
+              </v-btn>
             </v-card-title>
             <v-divider class="mx-4" inset></v-divider>
           </v-card>
