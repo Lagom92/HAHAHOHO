@@ -3,8 +3,14 @@
         <TopBanner></TopBanner>
         <v-container>
             <v-row>
-                <h1>모임 목록</h1>
-                <v-btn class="ml-auto" text to="/list/createmeeting">글쓰기</v-btn>
+                <h1 class="mx-auto">
+                    모임 목록
+                </h1>
+            </v-row>
+            <v-row>
+                <v-btn class="ml-auto pr-10 pb-10" text to="/list/createmeeting">
+                    <v-icon large>mdi-pencil-plus</v-icon>
+                </v-btn>
             </v-row>
             <v-layout>
                 <v-flex>
@@ -28,6 +34,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
 
 </style>
