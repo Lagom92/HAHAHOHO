@@ -1,11 +1,11 @@
 <template>
   <v-responsive min-height="100%">
-    <v-btn id="searchBtn" @click="openSearch" v-if="searchWindow === '100%'" color="primary">Open</v-btn>
-    <v-btn id="searchBtn" @click="closeSearch" v-else color="primary">Close</v-btn>
+    <v-btn id="searchBtn" @click="openSearch" v-if="mapWindow === '100%' && searchService" color="primary">Open</v-btn>
+    <v-btn id="searchBtn" @click="closeSearch" v-if="mapWindow === '0%' && searchService" color="primary">Close</v-btn>
     
-    <v-responsive id="map" :min-height="searchWindow"></v-responsive>
+    <v-responsive id="map" :min-height="mapWindow"></v-responsive>
     
-    <v-container v-if="searchWindow === '0%'">
+    <v-container v-if="mapWindow === '0%' && searchService">
       <v-row>
         <v-col>
           <v-text-field
@@ -42,11 +42,11 @@ export default {
     return {
       map: '', // 지도 객체
       mapContainer: '', // 지도를 표시할 div
+      mapWindow: '100%', // 지도 창 크기
       ps: '', // 장소 검색 객체 생성
       keyword: '', // 검색 키워드
       places: '', // 검색 결과 15개
       pagination: '', // 검색 결과 이동 기능 객체
-      searchWindow: '100%', // 장소 검색창 열림유무
       mainMarker: '', // 마커 객체
       infowindow: '', // 마커의 위치 정보를 보여줄 인포윈도우 객체
       markerInfo: '', // 마커 위치 정보
@@ -175,13 +175,13 @@ export default {
 
     // 검색창 여닫기
     closeSearch() {
-      this.searchWindow = '100%'
+      this.mapWindow = '100%'
       this.createMarker(this.placeX, this.placeY)
     },
     openSearch() {
+      this.mapWindow = '0%'
       this.mainMarker.setMap(null)
       this.infowindow.close()
-      this.searchWindow = '0%'
     }
   },
 }
