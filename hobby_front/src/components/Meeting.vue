@@ -5,6 +5,8 @@
             <div>
                 <div class='headline'>title</div>
                 <span class='grey--text'>body</span>
+                <v-divider class="my-3"></v-divider>
+                <v-btn text to="/list/detail">상세보기</v-btn>
             </div>
         </v-card-title>
     </v-card>

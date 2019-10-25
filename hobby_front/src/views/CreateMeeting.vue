@@ -106,6 +106,9 @@
                                 </v-menu>
                             </v-col>
                         </v-row>
+                        <div class="mb-5" id="mapsize">
+                            <MapService :searchService="true"></MapService>
+                        </div>
                         <v-row>
                             <v-col cols="12" md="3">
                                 <span>카테고리</span>
@@ -166,8 +169,13 @@
 </template>
 
 <script>
+import MapService from "../components/MapService"
+
 export default {
     name: 'createmeeting',
+    components: {
+        MapService
+    },
     data: () => ({
         valid: true,
         title: '',
@@ -210,3 +218,10 @@ export default {
     }
 }
 </script>
+
+<style>
+#mapsize {
+    height: 200px;
+    overflow: auto;
+}
+</style>

@@ -5,11 +5,13 @@
         <v-row>
           <v-app-bar-nav-icon id="mobilemenu"></v-app-bar-nav-icon>
 
-          <v-toolbar-title id="title">하하호호</v-toolbar-title>
+          <v-btn text to="/">
+            <v-toolbar-title id="title">하하호호</v-toolbar-title>
+          </v-btn>
 
           <v-toolbar-items id="webmenu">
-            <v-btn text>모임</v-btn>
-            <v-btn text>커뮤니티</v-btn>
+            <v-btn text to="/list">모임</v-btn>
+            <v-btn text to="/board">커뮤니티</v-btn>
           </v-toolbar-items>
           <v-spacer></v-spacer>
           <v-toolbar-items>
