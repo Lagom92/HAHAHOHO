@@ -3,19 +3,33 @@
     <v-toolbar fixed>
       <v-container>
         <v-row>
-          <v-col md="2">
-            <v-toolbar-title>하하호호</v-toolbar-title>
-          </v-col>
+          <v-app-bar-nav-icon id="mobilemenu"></v-app-bar-nav-icon>
 
-          <v-col md="3">
-            <v-btn text>모임</v-btn>
-            <v-btn text>커뮤니티</v-btn>
-          </v-col>
+          <v-btn text to="/">
+            <v-toolbar-title id="title">하하호호</v-toolbar-title>
+          </v-btn>
 
-          <v-col md="2" offset-md="5">
-            <!-- 카카오로그인 버튼 노출 영역 -->
-            <KakaoLogin></KakaoLogin>
-          </v-col>
+          <v-toolbar-items id="webmenu">
+            <v-btn text to="/list">모임</v-btn>
+            <v-btn text to="/board">커뮤니티</v-btn>
+          </v-toolbar-items>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn text @click.stop="dialog = true">
+              로그인
+            </v-btn>
+
+            <v-dialog v-model="dialog" max-width="290" >
+              <v-card>
+                <v-card-title class="headline justify-center">로그인</v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <KakaoLogin></KakaoLogin>
+                  <NaverLogin></NaverLogin>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+          </v-toolbar-items>
         </v-row>
       </v-container>
     </v-toolbar>
@@ -24,16 +38,46 @@
 
 <script>
 import KakaoLogin from '@/components/KakaoLogin'
+import NaverLogin from '@/components/NaverLogin'
 
 export default {
   name: 'Header',
-  data () {
-    return {
-      dialog: false
-    }
-  },
   components: {
     KakaoLogin,
-  }
+    NaverLogin,
+  },
+  data () {
+    return {
+      dialog: false,
+    }
+  },
 }
 </script>
+
+<style>
+@media screen and (min-width:600px) {
+  #mobilemenu {
+    display: none;
+  }
+  #title {
+    margin: auto;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+}
+@media screen and (max-width:599px) {
+  #webmenu {
+    display: none;
+  }
+  #title {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding-top: 13px;
+  }
+}
+</style>

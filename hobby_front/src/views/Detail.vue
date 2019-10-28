@@ -22,7 +22,9 @@
                 </v-col>
                 <v-col cols="12" md="4" offset-md="1">
                     <v-card class="excard">성별, 연령, 비용 등..</v-card>
-                    <v-img :src='exImgUrl' class="mb-12"></v-img>
+                    <div class="mb-12" id="mapview">
+                        <MapService></MapService>
+                    </div>
                     <v-card class="excard">
                         <div id="leader">
                             <h3>모임 개설자</h3>
@@ -39,11 +41,16 @@
 </template>
 
 <script>
+import MapService from '../components/MapService'
+
 export default {
     name: 'Detail',
+    components: {
+        MapService
+    },
     data() {
         return {
-            exImgUrl: 'https://www.google.com/maps/vt/data=STaK-IgFQ8MvHmsBZyhWu0RONtd44KLqPZwgrft2U3OekXRl65Ic0WzehqSi7iRZyjV28YbgetlJUlPJ21uwp4Y7To6K6ZV45tf06YJXxBBBwJBJiQW5Rkv_ebETrk5VeL_3l6W1Ezm5vV3pW2o1yWsSDw-NmFWxtq9DTnglFCmR6zrgpn1AgxPQ9ZPnvrvBdso0-VMrXTFH1WXmH7uxesoYJpy22iLLXR5D'
+            //
         }
     }
 }
@@ -59,5 +66,8 @@ export default {
 }
 #member {
     height: 50%;
+}
+#mapview {
+    height: 300px;
 }
 </style>

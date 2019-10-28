@@ -11,17 +11,19 @@
 <script>
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import store from "./store";
+import store from './store'
 
 export default {
   name: 'App',
-  data: () => ({
-    //
-  }),
+  data () {
+    return {
+      //
+    }
+  },
   components: {
     Header,
     Footer
   },
-  store,
+  store
 }
 </script>

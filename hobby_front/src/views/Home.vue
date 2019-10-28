@@ -6,9 +6,11 @@
         <v-card height="400px">
           <v-card-title class="justify-center" color="#F3B749">
             모임 목록
-            <v-icon class="ml-3" color="#F3B749">
-              mdi-plus-circle
-            </v-icon>
+            <v-btn text icon to="/list">
+              <v-icon color="#F3B749">
+                mdi-plus-circle
+              </v-icon>
+            </v-btn>
           </v-card-title>
           <v-divider class="mx-4" inset></v-divider>
         </v-card>
@@ -18,9 +20,11 @@
           <v-card height="400px">
             <v-card-title class="justify-center" color="#F3B749">
               공지사항
-              <v-icon class="ml-3" color="#F3B749">
-                mdi-plus-circle
-              </v-icon>
+              <v-btn text icon to="/board">
+                <v-icon color="#F3B749">
+                  mdi-plus-circle
+                </v-icon>
+              </v-btn>
             </v-card-title>
             <v-divider class="mx-4" inset></v-divider>
           </v-card>
@@ -29,9 +33,11 @@
           <v-card height="400px">
             <v-card-title class="justify-center" color="#F3B749">
               자유게시판
-              <v-icon class="ml-3" color="#F3B749">
-                mdi-plus-circle
-              </v-icon>
+              <v-btn text icon to="/board">
+                <v-icon color="#F3B749">
+                  mdi-plus-circle
+                </v-icon>
+              </v-btn>
             </v-card-title>
             <v-divider class="mx-4" inset></v-divider>
           </v-card>
@@ -43,7 +49,7 @@
         <v-card-title class="headline justify-center">하하호호 하비하비 호비호비</v-card-title>
         <v-card-text class="text-center">
           안녕하세요. 즐거운 취미생활을 즐겨보아요~~ 저희가 더 궁금하시다면?
-          <v-btn text>하하호호 자세히보기 
+          <v-btn text>하하호호 자세히보기
             <v-icon color="#F3B749">mdi-arrow-right-bold</v-icon>
           </v-btn>
         </v-card-text>
@@ -60,17 +66,17 @@ export default {
   components: {
     TopBanner
   },
-  data (){
-    return{
-      jwt:''
+  data () {
+    return {
+      jwt: ''
     }
   },
-  mounted (){
+  mounted () {
     this.getJwt()
   },
-  methods:{
-    getJwt(){
-      if(this.$route.query.jwt){
+  methods: {
+    getJwt () {
+      if (this.$route.query.jwt) {
         // 네이버 로그인 시 jwt가 여기서 날아오기 때문에 store에 저장하기
         this.jwt = this.$route.query.jwt
       }
@@ -79,15 +85,14 @@ export default {
 }
 </script>
 
-<style>
-  .intro {
-    position: relative;
-    height: 30vh;
-    background-color: #f2f2f2;
-    margin-bottom: 50px;
-  }
-  #cardcontent {
-    position: relative;
-    top: 20%;
-  }
+<style lang="stylus">
+.intro
+  position relative
+  height 30vh
+  background-color #f2f2f2
+  margin-bottom 50px
+
+#cardcontent
+  position relative
+  top 20%
 </style>
