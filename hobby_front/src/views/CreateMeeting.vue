@@ -32,6 +32,7 @@
                                 :min="agemin"
                                 hide-details
                                 thumb-label="always"
+                                step="10"
                                 class="align-center"
                                 track-color="grey"
                             >
@@ -174,7 +175,7 @@ export default {
     data: () => ({
         title: '',
         content: '',
-        ageRange: [20, 100],
+        ageRange: [20, 40],
         gender: null,
         lineUp: '',
         date: new Date().toISOString().substr(0, 10),
@@ -199,7 +200,7 @@ export default {
         selectSubClass: '',
         meetingDate: false,
         meetingTime: false,
-        agemin: 15,
+        agemin: 10,
         agemax: 100,
         e6: 1,
     }),
@@ -218,14 +219,14 @@ export default {
             form.append("title", this.title)
             form.append("contents", this.content)
             form.append("startDate", this.data + "T" + this.time + ":00Z")
-            form.append("gender", null)
-            form.append("age", null)
-            form.append("member", null)
+            form.append("gender", this.gender) // back 수정
+            form.append("age", this.ageRange) // back 수정
+            form.append("member", this.lineUp)
             form.append("location", null)
             form.append("fee", null)
-            form.append("post", null)
+            form.append("post", 1) // 1 : 모임 게시판
             form.append("group", this.groups)
-            form.append("user", null)
+            form.append("user", this.$store.state.user_id)
 
             axios.post(baseUrl+"boards/hobby/", form, {
                 headers: {
