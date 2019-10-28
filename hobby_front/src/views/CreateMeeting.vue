@@ -108,6 +108,9 @@
                                 </v-menu>
                             </v-col>
                         </v-row>
+                        <div class="mb-5" id="mapsize">
+                            <MapService :searchService="true"></MapService>
+                        </div>
                         <v-row>
                             <v-col cols="12" md="3">
                                 <span>카테고리</span>
@@ -167,10 +170,14 @@
 </template>
 
 <script>
+import MapService from "../components/MapService"
 import axios from 'axios'
 
 export default {
     name: 'createmeeting',
+    components: {
+        MapService
+    },
     data: () => ({
         title: '',
         content: '',
@@ -236,3 +243,9 @@ export default {
     }
 }
 </script>
+
+<style lang="stylus">
+#mapsize
+    height 200px
+    overflow auto
+</style>
