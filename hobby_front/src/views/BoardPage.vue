@@ -4,13 +4,25 @@
       <v-row>
         <v-col cols="2">
           <v-list-item>
-            <v-list-item-content @click="currentpage = 0">공지사항</v-list-item-content>
+            <v-list-item-content
+            @click="currentpage = 0"
+            >
+              공지사항
+          </v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-list-item-content @click="currentpage = 1">자유게시판</v-list-item-content>
+            <v-list-item-content
+            @click="currentpage = 1"
+            >
+              자유게시판
+            </v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-list-item-content @click="currentpage = 2">FAQ</v-list-item-content>
+            <v-list-item-content
+            @click="currentpage = 2"
+            >
+              FAQ
+            </v-list-item-content>
           </v-list-item>
         </v-col>
         <v-col cols="10">

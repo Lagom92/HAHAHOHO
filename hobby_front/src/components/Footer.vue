@@ -16,16 +16,18 @@
 
 <script>
 export default {
-  name: "Footer",
-  data: () => ({
-    icons: [
-      'fab fa-facebook',
-      'fab fa-twitter',
-      'fab fa-google-plus',
-      'fab fa-linkedin',
-      'fab fa-instagram',
-    ],
-  }),
+  name: 'Footer',
+  data () {
+    return {
+      icons: [
+        'fab fa-facebook',
+        'fab fa-twitter',
+        'fab fa-google-plus',
+        'fab fa-linkedin',
+        'fab fa-instagram'
+      ]
+    }
+  },
   components: {
     //
   }

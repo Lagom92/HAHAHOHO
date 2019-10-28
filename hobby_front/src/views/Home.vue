@@ -46,7 +46,9 @@
     </v-container>
     <v-card class="intro">
       <div id="cardcontent">
-        <v-card-title class="headline justify-center">하하호호 하비하비 호비호비</v-card-title>
+        <v-card-title class="headline justify-center">
+          하하호호 하비하비 호비호비
+        </v-card-title>
         <v-card-text class="text-center">
           안녕하세요. 즐거운 취미생활을 즐겨보아요~~ 저희가 더 궁금하시다면?
           <v-btn text>하하호호 자세히보기

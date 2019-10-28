@@ -8,13 +8,13 @@ export default new Vuex.Store({
     user_id: '',
     user_jwt: '',
     // baseUrl: "http://54.180.148.99:8000/"
-    baseUrl: "http://localhost:8000/"
+    baseUrl: 'http://localhost:8000/'
   },
   mutations: {
-    idSave(state, id) {
+    idSave (state, id) {
       state.user_id = id
     },
-    jwtSave(state, jwt) {
+    jwtSave (state, jwt) {
       state.user_jwt = jwt
     }
   },
