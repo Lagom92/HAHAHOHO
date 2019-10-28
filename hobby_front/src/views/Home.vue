@@ -2,21 +2,59 @@
   <div>
     <TopBanner></TopBanner>
     <v-container>
-      <div class="intro">
-        <h1>소개글</h1>
+      <div>
+        <v-card height="400px">
+          <v-card-title class="justify-center" color="#F3B749">
+            모임 목록
+            <v-btn text icon to="/list">
+              <v-icon color="#F3B749">
+                mdi-plus-circle
+              </v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-divider class="mx-4" inset></v-divider>
+        </v-card>
       </div>
       <v-row>
         <v-col cols="12" md="6">
-          <v-card height="400px">모임목록</v-card>
+          <v-card height="400px">
+            <v-card-title class="justify-center" color="#F3B749">
+              공지사항
+              <v-btn text icon to="/board">
+                <v-icon color="#F3B749">
+                  mdi-plus-circle
+                </v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-divider class="mx-4" inset></v-divider>
+          </v-card>
         </v-col>
-        <v-col cols="6" md="3">
-          <v-card height="400px">공지사항</v-card>
-        </v-col>
-        <v-col cols="6" md="3">
-          <v-card height="400px">자유게시판</v-card>
+        <v-col cols="12" md="6">
+          <v-card height="400px">
+            <v-card-title class="justify-center" color="#F3B749">
+              자유게시판
+              <v-btn text icon to="/board">
+                <v-icon color="#F3B749">
+                  mdi-plus-circle
+                </v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-divider class="mx-4" inset></v-divider>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
+    <v-card class="intro">
+      <div id="cardcontent">
+        <v-card-title class="headline justify-center">하하호호 하비하비 호비호비</v-card-title>
+        <v-card-text class="text-center">
+          안녕하세요. 즐거운 취미생활을 즐겨보아요~~ 저희가 더 궁금하시다면?
+          <v-btn text>하하호호 자세히보기 
+            <v-icon color="#F3B749">mdi-arrow-right-bold</v-icon>
+          </v-btn>
+        </v-card-text>
+      </div>
+    </v-card>
   </div>
 </template>
 
@@ -49,8 +87,13 @@ export default {
 
 <style>
   .intro {
+    position: relative;
     height: 30vh;
     background-color: #f2f2f2;
     margin-bottom: 50px;
+  }
+  #cardcontent {
+    position: relative;
+    top: 20%;
   }
 </style>

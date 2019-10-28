@@ -2,9 +2,10 @@
     <div>
         <TopBanner></TopBanner>
         <v-container>
-            <div>
+            <v-row>
                 <h1>모임 목록</h1>
-            </div>
+                <v-btn class="ml-auto" text to="/list/createmeeting">글쓰기</v-btn>
+            </v-row>
             <v-layout>
                 <v-flex>
                     <MeetingList></MeetingList>    
