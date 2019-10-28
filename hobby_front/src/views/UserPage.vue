@@ -12,10 +12,22 @@
               >
                 <v-list-item three-line>
                   <v-list-item-content>
-                    <v-img src="../assets/logo.png" max-height="100px" max-width="100px" class="mx-auto"></v-img>
+                    <v-img
+                    src="../assets/logo.png"
+                    max-height="100px"
+                    max-width="100px"
+                    class="mx-auto"
+                    ></v-img>
                     <v-list-item-title class="headline mb-1 text-center">
                       닉네임
-                      <v-btn class="ma-2" color="#9AB878" fab outlined x-small dark>
+                      <v-btn
+                      class="ma-2"
+                      color="#9AB878"
+                      fab
+                      outlined
+                      x-small
+                      dark
+                      >
                         <v-icon>mdi-account-edit</v-icon>
                       </v-btn>
                     </v-list-item-title>
@@ -43,7 +55,12 @@
               >
                 <v-list-item three-line>
                   <v-list-item-content>
-                    <v-img src="../assets/logo.png" max-height="100px" max-width="100px" class="mx-auto"></v-img>(등급아이콘자리)
+                    <v-img
+                    src="../assets/logo.png"
+                    max-height="100px"
+                    max-width="100px"
+                    class="mx-auto"
+                    ></v-img>(등급아이콘자리)
                     <v-list-item-title class="headline mb-1 text-center">
                       <v-row justify="center">
                         <span class="my-auto mr-3">포인트 5,000 P</span>
@@ -57,7 +74,11 @@
                             <span>참여모임 50</span>
                           </v-col>
                           <v-col cols="4">
-                            <v-dialog v-model="followerdialog" scrollable max-width="300px">
+                            <v-dialog
+                            v-model="followerdialog"
+                            scrollable
+                            max-width="300px"
+                            >
                               <template v-slot:activator="{ on }">
                                 <span v-on="on">팔로워 100</span>
                               </template>
@@ -75,20 +96,31 @@
                                         <v-img :src="item.avatar"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                                        <v-list-item-title v-text="item.title">
+                                        </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
                                   </v-list>
                                 </v-card-text>
                                 <v-divider></v-divider>
                                 <v-card-actions>
-                                  <v-btn color="#2E1E11" text @click="followerdialog = false">Close</v-btn>
+                                  <v-btn
+                                  color="#2E1E11"
+                                  text
+                                  @click="followerdialog = false"
+                                  >
+                                    Close
+                                  </v-btn>
                                 </v-card-actions>
                               </v-card>
                             </v-dialog>
                           </v-col>
                           <v-col cols="4">
-                            <v-dialog v-model="followdialog" scrollable max-width="300px">
+                            <v-dialog
+                            v-model="followdialog"
+                            scrollable
+                            max-width="300px"
+                            >
                               <template v-slot:activator="{ on }">
                                 <span v-on="on">팔로우 5</span>
                               </template>
@@ -106,14 +138,21 @@
                                         <v-img :src="item.avatar"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                                        <v-list-item-title v-text="item.title">
+                                        </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
                                   </v-list>
                                 </v-card-text>
                                 <v-divider></v-divider>
                                 <v-card-actions>
-                                  <v-btn color="#2E1E11" text @click="followdialog = false">Close</v-btn>
+                                  <v-btn
+                                  color="#2E1E11"
+                                  text
+                                  @click="followdialog = false"
+                                  >
+                                    Close
+                                  </v-btn>
                                 </v-card-actions>
                               </v-card>
                             </v-dialog>
@@ -189,10 +228,22 @@ export default {
       followdialog: false,
       followerdialog: false,
       items: [
-        { title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-        { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-        { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-        { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' }
+        {
+          title: 'Jason Oner',
+          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+        },
+        {
+          title: 'Travis Howard',
+          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
+        },
+        {
+          title: 'Ali Connors',
+          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
+        },
+        {
+          title: 'Cindy Baker',
+          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg'
+        }
       ]
     }
   }

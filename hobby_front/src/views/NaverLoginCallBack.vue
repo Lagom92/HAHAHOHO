@@ -22,7 +22,10 @@ export default {
     }
   },
   mounted () {
-    this.naver_id_login = new naver_id_login('IaquHgHTmPlf_gc_a8es', 'http://localhost:8080/login/')
+    this.naver_id_login = new naver_id_login(
+      'IaquHgHTmPlf_gc_a8es',
+      'http://localhost:8080/login/'
+    )
     // 접근 토큰 값 출력
     this.$store.access_token = this.naver_id_login.oauthParams.access_token
     // 네이버 사용자 프로필 조회
@@ -63,7 +66,13 @@ export default {
     getInfo () {
       let baseUrl = 'http://localhost:8000/'
       let form = new FormData()
-      console.log(this.userNickName, this.userName, this.userSex, this.userAge, this.userImage, this.userId)
+      console.log(this.userNickName,
+        this.userName,
+        this.userSex,
+        this.userAge,
+        this.userImage,
+        this.userId
+      )
       form.append('userNickName', this.userNickName)
       form.append('userName', this.userName)
       form.append('userSex', this.userSex)
