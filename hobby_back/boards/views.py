@@ -2,9 +2,10 @@ from django.shortcuts import redirect, get_object_or_404
 from rest_framework import generics, filters, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import PostHobby, PostFree, Faq, Notice, HobbyImage, CommentFree
+import json
+from .models import PostHobby, PostFree, Faq, Notice, HobbyImage, CommentFree, ParticipantCheck, User
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer
-from .serializers import ImgSerializer, FaqSerializer, CommentFreeSerializer
+from .serializers import ImgSerializer, FaqSerializer, CommentFreeSerializer, ParticipantCheckSerializer
 
 class postHobby_list(generics.ListCreateAPIView):
     '''
@@ -193,3 +194,40 @@ def commentFree_detail(request, pk, comment_pk):
     elif request.method == 'DELETE':
         commentfree.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST',  'DELETE'])
+def participantCheck(request, post_id, user_id):
+    if request.method == 'POST':
+        # post요청이면 모임목록에 유저 추가  
+        try:
+            ParticipantCheck.objects.get(post=post_id, user=user_id)          
+            return Response("이미 모임에 존재하는 유저입니다")
+        except:
+            user = User.objects.get(id=user_id)
+            post = PostHobby.objects.get(id=post_id)
+            participant = ParticipantCheck.objects.create(
+                post=post, user=user
+            )
+            return Response("success : post={}, user={}".format(post_id, user_id))
+    elif request.method == 'DELETE':
+        # delete요청이면 해당 모임에 대해 취소 신청을 했기 때문에 해당 유저 삭제
+        participant = ParticipantCheck.objects.get(post=post_id, user=user_id)
+        participant.delete()
+        return Response("delete success")
+    else:
+        raise NameError
+
+@api_view(['GET'])
+def participantCheckList(request, post_id):
+    participant = ParticipantCheck.objects.filter(post_id=post_id).values()
+    user_groups = {
+        'user_group' : []
+    }
+    for i in participant:
+        user = User.objects.get(id=i.get('user_id'))
+        user_groups['user_group'].append({
+            'user_id':i.get('user_id'),
+            'user_name':user.userName
+            })
+    return Response(user_groups)
