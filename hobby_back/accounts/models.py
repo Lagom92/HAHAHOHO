@@ -24,6 +24,7 @@ class User(models.Model):
             null=True
         ),
         size=2,
+        blank=True,
         null=True
     )
 

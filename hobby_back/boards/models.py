@@ -1,26 +1,38 @@
 import os
 from django.db import models
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 from accounts.models import User
 
 # 게시판 대분류
 class Post(models.Model):
-    name = models.CharField(max_length=50)
+    hobby = '모임 게시판'
+    free = '자유 게시판'
+    notice = '공지사항'
+    faq = 'FAQ'
+    
+    what_board = (
+        (hobby, '모임 게시판'),
+        (free, '자유 게시판'),
+        (notice, '공지사항'),
+        (faq, 'FAQ')
+    )
+    name = models.CharField(max_length=50, choices=what_board, default=hobby)
     
     def __str__(self):
         return self.name
 
 # 카테고리 대분류
-class Section(models.Model):
-    name = models.CharField(max_length=50)
+class Category(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
 # 카테고리 소분류
-class Group(models.Model):
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+class Subclass(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -28,22 +40,23 @@ class Group(models.Model):
 # 취미 게시판
 class PostHobby(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    subclass = models.ForeignKey(Subclass, on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  
     contents = models.TextField() 
     created_at = models.DateTimeField(auto_now_add=True) 
-    startDate = models.DateTimeField()
-    regardless = 'NO'
-    male = 'MA'
-    female = 'FE'
+    startDay = models.DateField()
+    startTime = models.TimeField()
+    regardless = '상관없음'
+    male = '남성'
+    female = '여성'
     about_gender = (
-        (regardless, 'Regardless'),
-        (male, 'Male'),
-        (female, 'Female')
+        (regardless, '상관없음'),
+        (male, '남성'),
+        (female, '여성')
     )
     gender = models.CharField(max_length=10, choices=about_gender, default=regardless) 
-    age = models.IntegerField()    
+    age = ArrayField(models.IntegerField(), size=6)   
     member = models.IntegerField() 
     location = models.CharField(max_length=500) 
     fee = models.IntegerField(default=10000) 
@@ -65,7 +78,7 @@ class HobbyImage(models.Model):
 # 자유게시판
 class PostFree(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    subclass = models.ForeignKey(Subclass, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.TextField()
@@ -78,7 +91,7 @@ class PostFree(models.Model):
 class Notice(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    name = models.CharField(max_length=50, default='관리자')
+    name = models.CharField(max_length=50, default='운영자')
     contents = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
 
@@ -89,7 +102,7 @@ class Notice(models.Model):
 class Faq(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, default='운영자')
     contents = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
 

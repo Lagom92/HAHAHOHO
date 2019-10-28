@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Post, Section, Group
+from .models import Post, Category, Subclass
 from .models import PostHobby, PostFree, Notice, Faq, HobbyImage
 from .models import CommentHobby, CommentFree
 
@@ -9,14 +9,14 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
     list_display_links = ['id', 'name']
 
-@admin.register(Section)
-class SectionAdmin(admin.ModelAdmin):
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
     list_display_links = ['id', 'name']
 
-@admin.register(Group)
-class GroupAdmin(admin.ModelAdmin):
-    list_display = ['id', 'section', 'name']
+@admin.register(Subclass)
+class SubclassAdmin(admin.ModelAdmin):
+    list_display = ['id', 'category', 'name']
     list_display_links = ['id', 'name']
 
 class ImgInline(admin.StackedInline):
@@ -33,16 +33,16 @@ class ImgInline(admin.StackedInline):
 
 @admin.register(PostHobby)
 class HobbyAdmin(admin.ModelAdmin):
-    list_display = ['id', 'post', 'group', 'title', 'user', 'created_at']
+    list_display = ['id', 'post', 'subclass', 'title', 'user', 'created_at']
     list_display_links = ['id', 'title']
     search_fields = ['title', 'user']
-    list_filter = ['group', 'gender']
+    list_filter = ['subclass', 'gender']
 
     inlines = [ImgInline]
 
 @admin.register(PostFree)
 class FreeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'post', 'group', 'title', 'user', 'created_at']
+    list_display = ['id', 'post', 'subclass', 'title', 'user', 'created_at']
     list_display_links = ['id', 'title']
     search_fields = ['title']
 
@@ -75,12 +75,12 @@ class ImageAdmin(admin.ModelAdmin):
 
 @admin.register(CommentHobby)
 class CommentHobbyAdmin(admin.ModelAdmin):
-    list_display = ['postHobby', 'user', 'contents', 'created_at']
-    list_display_links = ['contents']
+    list_display = ['id', 'postHobby', 'user', 'contents', 'created_at']
+    list_display_links = ['id', 'contents']
     search_fields = ['postHobby']
 
 @admin.register(CommentFree)
 class CommentFreeAdmin(admin.ModelAdmin):
-    list_display = ['postFree', 'user', 'contents', 'created_at']
-    list_display_links = ['contents']
+    list_display = ['id', 'postFree', 'user', 'contents', 'created_at']
+    list_display_links = ['id', 'contents']
     search_fields = ['postFree']
