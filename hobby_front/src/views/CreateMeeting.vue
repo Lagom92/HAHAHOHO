@@ -19,7 +19,7 @@
 
                         <v-textarea
                             outlined
-                            v-model="content"
+                            v-model="contents"
                             label="글 내용"
                         ></v-textarea>
 
@@ -159,9 +159,8 @@
                                 </v-btn>
                             </div>
                         </v-row>
-                     </v-form>
+                    </v-form>
                 </v-col>
-
             </v-row>
         </v-container>
     </div>
