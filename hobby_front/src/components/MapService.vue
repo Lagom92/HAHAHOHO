@@ -2,20 +2,17 @@
   <v-responsive min-height="100%">
     <v-btn id="searchBtn" @click="openSearch" v-if="mapWindow === '100%' && searchService" color="primary">Open</v-btn>
     <v-btn id="searchBtn" @click="closeSearch" v-if="mapWindow === '0%' && searchService" color="primary">Close</v-btn>
-    
     <v-responsive id="map" :min-height="mapWindow"></v-responsive>
-    
     <v-container v-if="mapWindow === '0%' && searchService">
       <v-row>
         <v-col>
           <v-text-field
-            v-model="keyword"
-            :rules="searchRules"
-            :counter="15"
-            label="키워드"
-            @keydown.enter="searchPlaces"
+          v-model="keyword"
+          :rules="searchRules"
+          :counter="15"
+          label="키워드"
+          @keydown.enter="searchPlaces"
           ></v-text-field>
-          
           <v-card v-if="places">
             <v-list two-line>
               <template v-for="(place, index) in places">
@@ -38,7 +35,7 @@
 <script>
 export default {
   name: 'MapService',
-  data(){
+  data () {
     return {
       map: '', // 지도 객체
       mapContainer: '', // 지도를 표시할 div
@@ -59,36 +56,32 @@ export default {
     }
   },
   props: {
-    searchService: {type: Boolean, default: false}, // 장소 검색 기능 사용유무
-    mapCenterY: {type: Number, default: 35.20553}, // 지도의 중심 경도
-    mapCenterX: {type: Number, default: 126.81142}, // 지도의 중심 위도
-    mapLevel: {type: Number, default: 4} // 지도의 확대 레벨
+    searchService: { type: Boolean, default: false }, // 장소 검색 기능 사용유무
+    mapCenterY: { type: Number, default: 35.20553 }, // 지도의 중심 경도
+    mapCenterX: { type: Number, default: 126.81142 }, // 지도의 중심 위도
+    mapLevel: { type: Number, default: 4 } // 지도의 확대 레벨
   },
-  mounted(){
+  mounted () {
     this.mapContainer = document.getElementById('map')
     this.map = this.createMap(this.placeY, this.placeX)
-    this.infowindow = new kakao.maps.InfoWindow({zIndex:1})
+    this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
     this.ps = new kakao.maps.services.Places()
     this.mainMarker = new kakao.maps.Marker()
     this.createMarker(this.placeX, this.placeY)
   },
   methods: {
-
     // 지도 생성 함수
-    createMap(y, x) {
-
+    createMap (y, x) {
       let options = {
         center: new kakao.maps.LatLng(y, x),
         level: this.mapLevel,
-        mapTypeId : kakao.maps.MapTypeId.ROADMAP
+        mapTypeId: kakao.maps.MapTypeId.ROADMAP
       }
-
       return new kakao.maps.Map(this.mapContainer, options)
     },
 
     // 마커 생성 함수
-    async createMarker(x, y) {
-
+    async createMarker (x, y) {
       // 좌표 값을 주소로 변경해주는 기능을 가진 객체
       let geocoder = new kakao.maps.services.Geocoder()
 
@@ -107,85 +100,75 @@ export default {
     },
 
     // 상세 주소 검색 콜백 함수
-    setInfo(result, status) {
-
+    setInfo (result, status) {
       // 주소 검색에 성공하면
       if (status === kakao.maps.services.Status.OK) {
-
         // 도로명 주소가 있다면 도로명 주소, 없다면 번지 주소
         if (result[0].road_address.address_name) {
           this.markerInfo = result[0].road_address.address_name
         } else {
           this.markerInfo = result[0].address.address_name
         }
-        
+
         // 마커 위에 정보 표시
         this.displayInfowindow(this.mainMarker, this.markerInfo)
-
       }
     },
 
     // 키워드 검색을 요청하는 함수
-    searchPlaces() {
-
+    searchPlaces () {
       // 장소검색 객체를 통해 키워드로 장소검색을 요청
       this.ps.keywordSearch(this.keyword, this.placesSearchCB)
     },
 
     // 장소검색이 완료됐을 때 호출되는 콜백함수
-    placesSearchCB(data, status, pagination) {
+    placesSearchCB (data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
-
         // 정상적으로 검색이 완료되면, 실행
         this.places = data
         this.pagination = pagination
-        
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-          alert('검색 결과가 존재하지 않습니다.')
-          return
-
+        alert('검색 결과가 존재하지 않습니다.')
+        return false
       } else if (status === kakao.maps.services.Status.ERROR) {
-
         alert('검색 결과 중 오류가 발생했습니다.')
-        return
+        return false
       }
     },
 
     // 인포윈도우에 장소명을 표시
-    displayInfowindow(marker, title) {
+    displayInfowindow (marker, title) {
       let content = '<div class="py-1 px-2">' + title + ' .</div>'
-
       this.infowindow.setContent(content)
       this.infowindow.open(this.map, marker)
     },
 
     // 검색된 장소 클릭하여 지도에 표시
-    setPlaces(x, y) {
+    setPlaces (x, y) {
       this.placeX = Number(x)
       this.placeY = Number(y)
 
       let center = new kakao.maps.LatLng(this.placeY, this.placeX)
       let oneBound = new kakao.maps.LatLngBounds()
       oneBound.extend(center)
-
       this.map.setBounds(oneBound)
       this.closeSearch()
     },
 
     // 검색창 여닫기
-    closeSearch() {
+    closeSearch () {
       this.mapWindow = '100%'
       this.createMarker(this.placeX, this.placeY)
     },
-    openSearch() {
+    openSearch () {
       this.mapWindow = '0%'
       this.mainMarker.setMap(null)
       this.infowindow.close()
     }
-  },
+  }
 }
 </script>
+
 <style lang="stylus">
 #searchBtn
   position absolute
