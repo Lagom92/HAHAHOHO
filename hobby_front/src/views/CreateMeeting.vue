@@ -19,19 +19,20 @@
 
                         <v-textarea
                             outlined
-                            v-model="content"
+                            v-model="contents"
                             label="글 내용"
                         ></v-textarea>
 
                           <v-row>
                             <v-col class="px-4">
                             <v-range-slider
-                                v-model="agerange"
+                                v-model="ageRange"
                                 label="연령범위"
                                 :max="agemax"
                                 :min="agemin"
                                 hide-details
                                 thumb-label="always"
+                                step="10"
                                 class="align-center"
                                 track-color="grey"
                             >
@@ -42,7 +43,7 @@
                         <v-row>
                             <v-col cols="12" md="6">
                                 <v-select
-                                    v-model="select"
+                                    v-model="gender"
                                     :items="items"
                                     label="성별"
                                     required
@@ -50,8 +51,9 @@
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-text-field
-                                    v-model="num"
+                                    v-model="lineUp"
                                     label="최소 인원"
+                                    type="number"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -116,7 +118,7 @@
                             <v-col cols="12" md="9">
                                 <v-stepper v-model="e6" vertical>
                                     <v-stepper-step :complete="e6 > 1" step="1" editable> 
-                                        대분류 - {{this.selectClass}}
+                                        대분류 - {{this.sections}}
                                     </v-stepper-step>
 
                                     <v-stepper-content step="1">
@@ -132,7 +134,7 @@
                                     </v-stepper-content>
 
                                     <v-stepper-step :complete="e6 > 2" step="2">
-                                        소분류 - {{this.selectSub}}
+                                        소분류 - {{this.groups}}
                                     </v-stepper-step>
 
                                     <v-stepper-content step="2">
@@ -155,14 +157,13 @@
                                     임시저장
                                 </v-btn>
 
-                                <v-btn text color="primary">
+                                <v-btn @click="onUpload()" text color="primary">
                                     등록하기
                                 </v-btn>
                             </div>
                         </v-row>
-                     </v-form>
+                    </v-form>
                 </v-col>
-
             </v-row>
         </v-container>
     </div>
@@ -170,6 +171,7 @@
 
 <script>
 import MapService from "../components/MapService"
+import axios from 'axios'
 
 export default {
     name: 'createmeeting',
@@ -177,12 +179,16 @@ export default {
         MapService
     },
     data: () => ({
-        valid: true,
         title: '',
         content: '',
+        ageRange: [20, 40],
+        gender: null,
+        lineUp: '',
         date: new Date().toISOString().substr(0, 10),
-        num:'',
-        select: null,
+        time: null,
+        groups: '',
+
+        valid: true,
         items: [
             '상관없음',
             '남성',
@@ -196,32 +202,50 @@ export default {
             '음악':['노래','기타', '피아노'],
             '사교':['봉사활동','연애'],
         },
-        selectClass: '',
+        sections: '',
         selectSubClass: '',
-        selectSub: '',
-        time: null,
         meetingDate: false,
         meetingTime: false,
-        agemin: 15,
+        agemin: 10,
         agemax: 100,
-        agerange:[20,100],
         e6: 1,
     }),
     methods: {
         selectClassification(key, value) {
-            this.selectClass = key,
+            this.sections = key,
             this.selectSubClass = value
         },
         selectSubClassification(value) {
-            this.selectSub = value
+            this.groups = value
+        },
+        onUpload() {
+            const baseUrl = this.$store.state.baseUrl
+            let form = new FormData()
+
+            form.append("title", this.title)
+            form.append("contents", this.content)
+            form.append("startDate", this.data + "T" + this.time + ":00Z")
+            form.append("gender", this.gender) // back 수정
+            form.append("age", this.ageRange) // back 수정
+            form.append("member", this.lineUp)
+            form.append("location", null)
+            form.append("fee", null)
+            form.append("post", 1) // 1 : 모임 게시판
+            form.append("group", this.groups)
+            form.append("user", this.$store.state.user_id)
+
+            axios.post(baseUrl+"boards/hobby/", form, {
+                headers: {
+                    "Authorization": "Bearer " + this.$store.state.user_jwt
+                }
+            })
         }
     }
 }
 </script>
 
-<style>
-#mapsize {
-    height: 200px;
-    overflow: auto;
-}
+<style lang="stylus">
+#mapsize
+    height 200px
+    overflow auto
 </style>

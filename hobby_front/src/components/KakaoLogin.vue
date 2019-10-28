@@ -24,7 +24,6 @@ export default {
     },
     mounted() {
         let scope = this
-        let baseUrl = this.$store.state.baseUrl
         Kakao.init('b9b23d9b337a41dca3e1632a4677e0af');
         Kakao.Auth.createLoginButton({
             container: '#kakao-login-btn',

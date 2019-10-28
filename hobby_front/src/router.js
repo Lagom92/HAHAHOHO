@@ -6,7 +6,7 @@ import Board from './views/BoardPage.vue'
 import User from './views/UserPage.vue'
 import UserUpdate from './views/UserUpdate.vue'
 import Detail from './views/Detail.vue'
-import naverLoginCallBack from './views/NaverLoginCallBack.vue'
+import NaverLoginCallBack from './views/NaverLoginCallBack.vue'
 import CreateMeeting from './views/CreateMeeting.vue'
 
 Vue.use(Router)
@@ -48,7 +48,7 @@ export default new Router({
     {
       path: '/login',
       name: 'naverLoginCallBack',
-      component: naverLoginCallBack
+      component: NaverLoginCallBack
     },
     {
       path: '/list/createmeeting',
