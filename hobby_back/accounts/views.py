@@ -54,7 +54,10 @@ class NaverLogin(SocialLoginView):
 @api_view(['POST'])
 def userInfo(request):
     userId = request.data.get('id')
-    userSet = User.objects.get(userId=userId)
+    if userId[0] == "k" or userId[0] == "n":
+        userSet = User.objects.get(userId=userId)
+    else:
+        userSet = User.objects.get(pk=userId)
     serializer = UserSerializer(userSet)
     return Response(serializer.data)
 
