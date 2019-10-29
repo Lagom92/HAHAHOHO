@@ -167,44 +167,89 @@
           </v-card>
         </v-row>
       </div>
+      <!-- 유저 달력 -->
       <div>
-        <v-card>
-          <v-tabs vertical color="#F3B749">
-            <v-tab>
-              <v-icon left>mdi-account</v-icon>
-              찜목록
-            </v-tab>
-            <v-tab>
-              <v-icon left>mdi-lock</v-icon>
-              참여예정 목록
-            </v-tab>
-            <v-tab>
-              <v-icon left>mdi-access-point</v-icon>
-              참여한 목록
-            </v-tab>
-            <v-tab-item>
-              <v-card flat>
-                <v-card-text>
-                  <p class="mb-0">찜목록</p>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-            <v-tab-item>
-              <v-card flat>
-                <v-card-text>
-                  <p class="mb-0">참여예정 목록</p>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-            <v-tab-item>
-              <v-card flat>
-                <v-card-text>
-                  <p class="mb-0">참여한 목록</p>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-          </v-tabs>
-        </v-card>
+        <v-row class="fill-height">
+          <v-col>
+            <v-sheet height="64">
+              <v-toolbar flat color="white">
+                <v-btn text @click="setToday">
+                  Today
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn fab text small @click="prev">
+                  <v-icon small>mdi-chevron-left</v-icon>
+                </v-btn>
+                <v-toolbar-title>{{ title }}</v-toolbar-title>
+                <v-btn fab text small @click="next">
+                  <v-icon small>mdi-chevron-right</v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <div>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small color="#f9c00c" v-on="on" class="ma-1">mdi-circle</v-icon>
+                    </template>
+                    <span>찜하기</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small color="#60c5ba" v-on="on" class="ma-1">mdi-circle</v-icon>
+                    </template>
+                    <span>참여완료</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon small color="#ff7473" v-on="on" class="ma-1">mdi-circle</v-icon>
+                    </template>
+                    <span>참여예정</span>
+                  </v-tooltip>
+                  <br>
+                </div>
+              </v-toolbar>
+            </v-sheet>
+            <v-sheet height="600">
+              <v-calendar
+                ref="calendar"
+                v-model="focus"
+                color="primary"
+                :events="events"
+                :event-color="getEventColor"
+                :event-margin-bottom="3"
+                @click:event="showEvent"
+                @click:more="viewMore"
+                @change="updateRange"
+              ></v-calendar>
+              <v-menu
+                v-model="selectedOpen"
+                :close-on-content-click="false"
+                :activator="selectedElement"
+                full-width
+                offset-x
+              >
+                <v-card color="grey lighten-4" min-width="350px" flat >
+                  <v-toolbar
+                    :color="selectedEvent.color"
+                    dark
+                    flat
+                  >
+                    <v-btn icon>
+                      <v-icon>mdi-bell-alert</v-icon>
+                    </v-btn>
+                    <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="selectedOpen = false">
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </v-toolbar>
+                  <v-card-text>
+                    <span v-html="selectedEvent.details"></span>
+                  </v-card-text>
+                </v-card>
+              </v-menu>
+            </v-sheet>
+          </v-col>
+        </v-row>
       </div>
     </v-container>
   </div>
@@ -244,8 +289,111 @@ export default {
           title: 'Cindy Baker',
           avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg'
         }
-      ]
+      ],
+      today: new Date().toISOString(),
+      focus: new Date().toISOString(),
+      type: 'month',
+      start: null,
+      end: null,
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
+      events: [
+        {
+          name: '하하호호 회의',
+          details: '광천터미널 빅브로 3시',
+          start: '2019-10-01',
+          end: '2019-10-02',
+          color: '#60c5ba',
+        },
+        {
+          name: '등산',
+          details: '무등산',
+          start: '2019-10-13',
+          end: '2019-10-13',
+          color: '#f9c00c',
+        },
+        {
+          name: '비엔날레',
+          details: '비엔날레 전시관',
+          start: '2019-10-26',
+          end: '2019-10-26',
+          color: '#60c5ba',
+        },
+        {
+          name: 'Holloween Party',
+          details: '오후 6시 상무지구 파티룸',
+          start: '2019-10-31',
+          end: '2019-10-31',
+          color: '#ff7473',
+        },
+        {
+          name: 'Christmas Party',
+          details: '오후 6시 상무지구 파티룸',
+          start: '2019-12-25',
+          end: '2019-12-25',
+          color: '#ff7473',
+        },
+      ],
     }
+  },
+  computed: {
+    title () {
+      const { start, end } = this
+      if (!start || !end) {
+        return ''
+      }
+
+      const startMonth = this.monthFormatter(start)
+      const startYear = start.year
+
+      return `${startYear}년 ${startMonth}`
+    },
+    monthFormatter () {
+      return this.$refs.calendar.getFormatter({
+        timeZone: 'UTC', month: 'long',
+      })
+    },
+  },
+  mounted () {
+    this.$refs.calendar.checkChange()
+  },
+  methods: {
+    viewMore ({ date }) {
+      this.focus = date
+    },
+    getEventColor (event) {
+      return event.color
+    },
+    setToday () {
+      this.focus = this.today
+    },
+    prev () {
+      this.$refs.calendar.prev()
+    },
+    next () {
+      this.$refs.calendar.next()
+    },
+    showEvent ({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event
+        this.selectedElement = nativeEvent.target
+        setTimeout(() => this.selectedOpen = true, 10)
+      }
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        setTimeout(open, 10)
+      } else {
+        open()
+      }
+
+      nativeEvent.stopPropagation()
+    },
+    updateRange ({ start, end }) {
+      this.start = start
+      this.end = end
+    },
   }
 }
 </script>
