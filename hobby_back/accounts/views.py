@@ -43,7 +43,7 @@ def follow_detail(request, pk):
     # 특정 follow 삭제 기능
     elif request.method == 'DELETE':
         follow.delete()
-        return Response(status=status.HTTP_204_NOT_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 class KakaoLogin(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter    
