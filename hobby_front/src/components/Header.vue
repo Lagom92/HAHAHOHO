@@ -19,11 +19,16 @@
               로그인
             </v-btn>
 
-            <v-dialog v-model="dialog" max-width="290" >
+            <v-dialog v-model="dialog" max-width="280">
               <v-card>
-                <v-card-title class="headline justify-center">로그인</v-card-title>
+                <v-card-title class="headline">
+                  로그인
+                  <v-btn class="ml-auto" text @click="dialog = false" >
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-card-title>
                 <v-divider></v-divider>
-                <v-card-text>
+                <v-card-text class="justify-center">
                   <KakaoLogin></KakaoLogin>
                   <NaverLogin></NaverLogin>
                 </v-card-text>
