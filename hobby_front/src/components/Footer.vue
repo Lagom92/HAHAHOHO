@@ -1,13 +1,11 @@
 <template>
-  <v-footer dark padless height="auto">
-    <v-card flat tile width="100%" class="indigo lighten-1 text-center" >
-      <v-card-text class="white--text">
+  <v-footer dark padless>
+    <v-card flat tile width="100%" class="text-center" >
+      <v-card-text>
         하하호호 즐거운 취미생활
       </v-card-text>
-
       <v-divider></v-divider>
-
-      <v-card-text class="white--text">
+      <v-card-text>
         2019 — <strong>SSAFY</strong>
       </v-card-text>
     </v-card>
