@@ -17,7 +17,9 @@ urlpatterns = [
     path('free/<int:pk>/comment', views.commentFree_list.as_view()),
     path('free/<int:pk>/comment/<int:comment_pk>', views.commentFree_detail),
     path('participantCheck/<int:post_id>/<int:user_id>', views.participantCheck),
-    path('participantCheck/<int:post_id>', views.participantCheckList),
+    path('participantCheckListByUser/<int:user_id>', views.participantCheckListByUser),
+    path('participantCheckListByPost/<int:post_id>', views.participantCheckListByPost),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

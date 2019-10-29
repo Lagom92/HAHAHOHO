@@ -13,13 +13,13 @@
                 <v-list-item three-line>
                   <v-list-item-content>
                     <v-img
-                    src="../assets/logo.png"
+                    :src="userInfo.userImage"
                     max-height="100px"
                     max-width="100px"
                     class="mx-auto"
                     ></v-img>
                     <v-list-item-title class="headline mb-1 text-center">
-                      닉네임
+                      {{userInfo.userNickName}}
                       <v-btn
                       class="ma-2"
                       color="#9AB878"
@@ -63,7 +63,7 @@
                     ></v-img>(등급아이콘자리)
                     <v-list-item-title class="headline mb-1 text-center">
                       <v-row justify="center">
-                        <span class="my-auto mr-3">포인트 5,000 P</span>
+                        <span class="my-auto mr-3">포인트 {{userInfo.userPoint}}P</span>
                         <Payment></Payment>
                       </v-row>
                     </v-list-item-title>
@@ -220,6 +220,20 @@ export default {
   },
   data () {
     return {
+      userInfo:{
+        'id': 0,
+        'userAddress': "",
+        'userAge': "",
+        'userGrade': 0,
+        'userId': "",
+        'userImage': "",
+        'userLike': "",
+        'userName': "",
+        'userNickName': "",
+        'userPoint': 0,
+        'userSex': "",
+      },
+      band:'',
       tags: [
         '스포츠',
         '독서',
@@ -246,7 +260,43 @@ export default {
         }
       ]
     }
-  }
+  },
+  mounted(){
+    let headers = {
+      'Authorization' : 'JWT '+this.$store.state.user_jwt
+    }
+    // user 프로필 정보
+    let form = new FormData()
+    let data = this.$store.state.user_id
+    form.append('id', data)
+    this.$http.post(this.$store.state.baseUrl+'accounts/userInfo', form).then(res =>{
+      this.userInfo.id = res.data.id
+      this.userInfo.userAddress = res.data.userAddress
+      this.userInfo.userAge = res.data.userAge
+      this.userInfo.userGrade = res.data.userGrade
+      this.userInfo.userId = res.data.userId
+      this.userInfo.userLike = res.data.userLike
+      this.userInfo.userName = res.data.userName
+      this.userInfo.userNickName = res.data.userNickName
+      this.userInfo.userPoint = res.data.userPoint
+      this.userInfo.userSex = res.data.userSex
+      let image = res.data.userImage
+      let counts = image.length
+      // 카카오만
+      image = image.substr(14, counts)
+      this.userInfo.userImage = 'https://'+image
+    }).catch(e =>{
+      console.log(e)
+    })
+    // user 팔로워
+
+    // user가  참여모임에 대한 모든 정보
+    this.$http.get(this.$store.state.baseUrl+'boards/participantCheckListByUser/'+this.$store.state.user_id).then(res =>{
+      console.log(res)
+    }).catch(e =>{
+      console.log(e)
+    })
+  },
 }
 </script>
 

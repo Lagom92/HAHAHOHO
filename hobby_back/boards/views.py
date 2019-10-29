@@ -219,7 +219,7 @@ def participantCheck(request, post_id, user_id):
         raise NameError
 
 @api_view(['GET'])
-def participantCheckList(request, post_id):
+def participantCheckListByPost(request, post_id):
     participant = ParticipantCheck.objects.filter(post_id=post_id).values()
     user_groups = {
         'user_group' : []
@@ -231,3 +231,14 @@ def participantCheckList(request, post_id):
             'user_name':user.userName
             })
     return Response(user_groups)
+
+@api_view(['GET'])
+def participantCheckListByUser(request, user_id):
+    participant = ParticipantCheck.objects.filter(user_id=user_id).values()
+    posts = {}
+    for i, idx in enumerate(participant):
+        postId = participant[i].get('post_id')
+        post = PostHobby.objects.get(id=postId)
+        serializer = PostHobbySerializer(post)
+        posts['{}'.format(idx)] = serializer.data  
+    return Response(posts)
