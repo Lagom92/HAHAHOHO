@@ -1,39 +1,29 @@
 <template>
-  <v-app-bar app>
-    <v-row>
-      <v-app-bar-nav-icon id="mobilemenu"></v-app-bar-nav-icon>
-
-      <v-btn text to="/">
-        <v-toolbar-title id="title">하하호호</v-toolbar-title>
-      </v-btn>
-
-      <v-toolbar-items id="webmenu">
-        <v-btn text to="/list">모임</v-btn>
-        <v-btn text to="/board">커뮤니티</v-btn>
-      </v-toolbar-items>
-      <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn text @click.stop="dialog = true">
-          로그인
+  <v-app-bar app elevate-on-scroll>
+    <v-container>
+      <v-toolbar flat>
+        <v-btn text>
+          <v-toolbar-title>하하호호</v-toolbar-title>
         </v-btn>
-
-        <v-dialog v-model="dialog" max-width="280">
-          <v-card>
-            <v-card-title class="headline">
-              로그인
-              <v-btn class="ml-auto" text @click="dialog = false" >
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text class="justify-center">
-              <KakaoLogin></KakaoLogin>
-              <NaverLogin></NaverLogin>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
-      </v-toolbar-items>
-    </v-row>
+        <v-toolbar-items>
+          <v-btn text @click="$router.push('/list')">모임</v-btn>
+          <v-btn text @click="$router.push('/board')">커뮤니티</v-btn>
+        </v-toolbar-items>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn text @click.stop="dialog = true">로그인</v-btn>
+          <v-dialog v-model="dialog">
+            <v-card>
+              <v-card-title>로그인</v-card-title>
+              <v-card-text>
+                <KakaoLogin></KakaoLogin>
+                <NaverLogin></NaverLogin>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+        </v-toolbar-items>
+      </v-toolbar>
+    </v-container>
   </v-app-bar>
 </template>
 
@@ -55,30 +45,6 @@ export default {
 }
 </script>
 
-<style>
-@media screen and (min-width:600px) {
-  #mobilemenu {
-    display: none;
-  }
-  #title {
-    margin: auto;
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-}
-@media screen and (max-width:599px) {
-  #webmenu {
-    display: none;
-  }
-  #title {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    padding-top: 13px;
-  }
-}
+<style lang="stylus">
+
 </style>

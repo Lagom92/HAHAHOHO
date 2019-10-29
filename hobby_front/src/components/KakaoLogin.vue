@@ -1,11 +1,7 @@
 <template>
   <div>
-    <v-container>
-      <v-row>
-        <div id="kakao-login-btn"></div>
-        <a href="http://developers.kakao.com/logout"></a>
-      </v-row>
-    </v-container>
+    <div id="kakao-login-btn"></div>
+    <a href="http://developers.kakao.com/logout"></a>
   </div>
 </template>
 
