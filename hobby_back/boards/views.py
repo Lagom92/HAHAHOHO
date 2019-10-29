@@ -47,31 +47,19 @@ class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
 
-# hobby게시판의 img list
-# class img_list(generics.ListCreateAPIView):
-#     '''
-#     취미 게시판의 이미지들을 생성, 조회 하는 API
-    
-#     ---
-#     ## 내용
-#         - photo: 이미지
-        
-#     '''
-#     queryset = HobbyImage.objects.all()
-#     serializer_class = ImgSerializer
+class main_hobby(generics.ListCreateAPIView):
+    '''
+    메인 페이지에서 보여주는 모임들
+    최근 만들어진 순으로 정렬
+    최대 6개
 
-# # hobby게시판의 img detail
-# class img_detail(generics.RetrieveAPIView):
-#     '''
-#     취미 게시판의 이미지를 조회 하는 API
-    
-#     ---
-#     ## 내용
-#         - photo: 이미지
-        
-#     '''
-#     queryset = HobbyImage.objects.all()
-#     serializer_class = ImgSerializer
+    ---
+    ## 내용
+
+    '''
+
+    queryset = PostHobby.objects.all().order_by('-id')[:6]
+    serializer_class = PostHobbySerializer
 
 class postFree_list(generics.ListCreateAPIView):
     '''
