@@ -42,7 +42,7 @@ export default new Router({
       component: UserUpdate
     },
     {
-      path: '/list/:id',
+      path: '/list/detail/:id',
       name: 'detail',
       component: Detail // 임시로 페이지 확인을 위해 만들어놓은 라우터, 나중에 수정해야함
     },
