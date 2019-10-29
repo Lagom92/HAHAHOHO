@@ -13,6 +13,9 @@
             </v-btn>
           </v-card-title>
           <v-divider class="mx-4" inset></v-divider>
+            <li v-for="post in this.posts" :key="post.id" xs12 sm6 md4>
+              {{post.title}}
+            </li>
         </v-card>
       </div>
       <v-row>
@@ -70,11 +73,13 @@ export default {
   },
   data () {
     return {
-      jwt: ''
+      jwt: '',
+      posts: []
     }
   },
   mounted () {
     this.getJwt()
+    this.getHobby()
   },
   methods: {
     getJwt () {
@@ -82,7 +87,17 @@ export default {
         // 네이버 로그인 시 jwt가 여기서 날아오기 때문에 store에 저장하기
         this.jwt = this.$route.query.jwt
       }
-    }
+    },
+    getHobby: function () {
+      const api_url = "http://localhost:8000/boards/main/hobby"
+      this.$http.get(api_url)
+        .then(request => {
+          this.posts = request.data 
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
   }
 }
 </script>

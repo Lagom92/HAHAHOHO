@@ -33,7 +33,7 @@
             small
             right
             top
-            :to="'/list/' + data.id"
+            :to="'/list/detail/' + data.id"
             
             >
               <v-icon>mdi-plus</v-icon>
