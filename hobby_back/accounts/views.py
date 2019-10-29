@@ -160,7 +160,7 @@ def kakaoPay(request):
         'fail_url': 'http://localhost:8080',
         'cancel_url': 'http://localhost:8080',
     }
-    params['partner_user_id'] = reqeust.data.get('userId')
+    params['partner_user_id'] = request.data.get('userId')
     params['total_amount'] = request.data.get('amount')
     response = requests.post(url+"/v1/payment/ready", params=params, headers=headers)
     response = json.loads(response.text)
