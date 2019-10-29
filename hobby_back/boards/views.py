@@ -3,9 +3,9 @@ from rest_framework import generics, filters, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
-from .models import PostHobby, PostFree, Faq, Notice, HobbyImage, CommentFree, ParticipantCheck, User
+from .models import PostHobby, PostFree, Faq, Notice, CommentFree, ParticipantCheck, User
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer
-from .serializers import ImgSerializer, FaqSerializer, CommentFreeSerializer, ParticipantCheckSerializer
+from .serializers import FaqSerializer, CommentFreeSerializer, ParticipantCheckSerializer
 
 class postHobby_list(generics.ListCreateAPIView):
     '''
@@ -48,30 +48,30 @@ class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostHobbySerializer
 
 # hobby게시판의 img list
-class img_list(generics.ListCreateAPIView):
-    '''
-    취미 게시판의 이미지들을 생성, 조회 하는 API
+# class img_list(generics.ListCreateAPIView):
+#     '''
+#     취미 게시판의 이미지들을 생성, 조회 하는 API
     
-    ---
-    ## 내용
-        - photo: 이미지
+#     ---
+#     ## 내용
+#         - photo: 이미지
         
-    '''
-    queryset = HobbyImage.objects.all()
-    serializer_class = ImgSerializer
+#     '''
+#     queryset = HobbyImage.objects.all()
+#     serializer_class = ImgSerializer
 
-# hobby게시판의 img detail
-class img_detail(generics.RetrieveAPIView):
-    '''
-    취미 게시판의 이미지를 조회 하는 API
+# # hobby게시판의 img detail
+# class img_detail(generics.RetrieveAPIView):
+#     '''
+#     취미 게시판의 이미지를 조회 하는 API
     
-    ---
-    ## 내용
-        - photo: 이미지
+#     ---
+#     ## 내용
+#         - photo: 이미지
         
-    '''
-    queryset = HobbyImage.objects.all()
-    serializer_class = ImgSerializer
+#     '''
+#     queryset = HobbyImage.objects.all()
+#     serializer_class = ImgSerializer
 
 class postFree_list(generics.ListCreateAPIView):
     '''
@@ -219,7 +219,7 @@ def participantCheck(request, post_id, user_id):
         raise NameError
 
 @api_view(['GET'])
-def participantCheckList(request, post_id):
+def participantCheckListByPost(request, post_id):
     participant = ParticipantCheck.objects.filter(post_id=post_id).values()
     user_groups = {
         'user_group' : []
@@ -231,3 +231,14 @@ def participantCheckList(request, post_id):
             'user_name':user.userName
             })
     return Response(user_groups)
+
+@api_view(['GET'])
+def participantCheckListByUser(request, user_id):
+    participant = ParticipantCheck.objects.filter(user_id=user_id).values()
+    posts = {}
+    for i, idx in enumerate(participant):
+        postId = participant[i].get('post_id')
+        post = PostHobby.objects.get(id=postId)
+        serializer = PostHobbySerializer(post)
+        posts['{}'.format(idx)] = serializer.data  
+    return Response(posts)

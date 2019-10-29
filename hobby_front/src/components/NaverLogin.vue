@@ -16,7 +16,7 @@ export default {
       'http://localhost:8080/login'
     )
     let state = this.naver_id_login.getUniqState()
-    this.naver_id_login.setButton('green', 2, 40)
+    this.naver_id_login.setButton('green', 4, 48)
     this.naver_id_login.setDomain('http://127.0.0.1:8000/')
     this.naver_id_login.setState(state)
     this.naver_id_login.setPopup()

@@ -59,21 +59,26 @@ class PostHobby(models.Model):
     age = ArrayField(models.IntegerField(), size=6)   
     member = models.IntegerField() 
     location = models.CharField(max_length=500) 
-    fee = models.IntegerField(default=10000) 
-
-    def __str__(self):
-        return self.title
-
-class HobbyImage(models.Model):
-    posthobby = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
+    fee = models.IntegerField(default=10000)
     photo = models.ImageField(blank=True, null=True, upload_to="hobby/%Y/%m/%d")   
     # delete 오버라이딩
     def delete(self, *args, **kwargs):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
-        super(HobbyImage, self).delete(*args, **kwargs)
+        super(PostHobby, self).delete(*args, **kwargs) 
 
     def __str__(self):
-        return '{}의 img'.format(self.posthobby)
+        return self.title
+
+# class HobbyImage(models.Model):
+#     posthobby = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
+#     photo = models.ImageField(blank=True, null=True, upload_to="hobby/%Y/%m/%d")   
+#     # delete 오버라이딩
+#     def delete(self, *args, **kwargs):
+#         os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
+#         super(HobbyImage, self).delete(*args, **kwargs)
+
+#     def __str__(self):
+#         return '{}의 img'.format(self.posthobby)
 
 # 자유게시판
 class PostFree(models.Model):

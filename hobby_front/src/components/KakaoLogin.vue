@@ -50,24 +50,22 @@ export default {
       let form = new FormData()
       form.append('access_token', accessToken)
 
-      axios.post(baseUrl + 'accounts/rest-auth/kakao/', form).then(res => {
+      axios.post(baseUrl + 'accounts/rest-auth/kakao', form).then(res => {
         this.jwt = res.data.token
         this.$store.commit('jwtSave', this.jwt)
       }).catch(e => {
         console.log(e)
       })
-
       this.id = 'kakao_' + (res.id).toString()
 
-      axios.post(baseUrl + 'accounts/userInfo/', {
+      axios.post(baseUrl + 'accounts/userInfo', {
         headers: { 'Authorization': 'JWT' + this.jwt },
         id: this.id
       }).then(res => {
         // console.log(res)
         this.user_id = res.data.id
         this.$store.commit('idSave', this.user_id)
-      })
-
+      })      
       let userForm = new FormData()
       userForm.append('userName', res.kakao_account.profile.nickname)
       userForm.append('userNickName', res.kakao_account.profile.nickname)
@@ -75,7 +73,7 @@ export default {
       userForm.append('userSex', res.kakao_account.gender)
       userForm.append('userAge', res.kakao_account.age_range)
       userForm.append('userImage', res.kakao_account.profile.profile_image_url)
-      axios.post(baseUrl + 'accounts/userSave/', userForm).then(res => {
+      axios.post(baseUrl + 'accounts/userSave', userForm).then(res => {
         console.log(res.data)
       })
     }

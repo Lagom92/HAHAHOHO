@@ -43,7 +43,7 @@ def follow_detail(request, pk):
     # 특정 follow 삭제 기능
     elif request.method == 'DELETE':
         follow.delete()
-        return Response(status=status.HTTP_204_NOT_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 class KakaoLogin(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter    
@@ -54,7 +54,10 @@ class NaverLogin(SocialLoginView):
 @api_view(['POST'])
 def userInfo(request):
     userId = request.data.get('id')
-    userSet = User.objects.get(userId=userId)
+    if userId[0] == "k" or userId[0] == "n":
+        userSet = User.objects.get(userId=userId)
+    else:
+        userSet = User.objects.get(pk=userId)
     serializer = UserSerializer(userSet)
     return Response(serializer.data)
 
@@ -160,7 +163,7 @@ def kakaoPay(request):
         'fail_url': 'http://localhost:8080',
         'cancel_url': 'http://localhost:8080',
     }
-    params['partner_user_id'] = reqeust.data.get('userId')
+    params['partner_user_id'] = request.data.get('userId')
     params['total_amount'] = request.data.get('amount')
     response = requests.post(url+"/v1/payment/ready", params=params, headers=headers)
     response = json.loads(response.text)

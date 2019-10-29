@@ -3,8 +3,8 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="5">
-          <v-chip small color="#9AB878" dark>국내여행</v-chip>
-          <h1>할로윈 파티 하실 분 모집</h1>
+          <v-chip small color="#9AB878" dark>{{data.subclassname}}</v-chip>
+          <h1>{{data.title}}</h1>
         </v-col>
         <v-col cols="12" md="2">
           <v-menu
@@ -15,7 +15,7 @@
                 <v-avatar left>
                   <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
                 </v-avatar>
-                작성자
+                {{data.username}}
               </v-chip>
             </template>
             <v-card width="300">
@@ -25,7 +25,7 @@
                     <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title>작성자</v-list-item-title>
+                    <v-list-item-title>{{data.username}}</v-list-item-title>
                     <v-list-item-subtitle>친절함 활발함</v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action>
@@ -45,7 +45,7 @@
       <v-row>
         <v-col cols="12" md="7">
           <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+          :src= "data.photo"
           class="mb-12"
           ></v-img>
           <v-card class="excard">
@@ -54,8 +54,7 @@
             </v-card-title>
             <v-card-text class="text--primary">
               <div>
-                할로윈파티 하고 싶은데 못하시는 분!!
-                <br>같이 놀아요~~
+                {{data.contents}}
               </div>
             </v-card-text>
           </v-card>
@@ -68,27 +67,27 @@
             <v-card-text class="text--primary">
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-calendar-month</v-icon>
-                2019년 10월 31일 목요일
+                {{data.startDay}}
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-clock-outline</v-icon>
-                오후 6시
+                {{data.startTime}}
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-map-marker</v-icon>
-                광주 서구 스타벅스 앞
+                {{data.location}}
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-account</v-icon>
-                10명 (20-30대)
+                최대 {{data.member}}명 / {{data.age[0]}}세 ~ {{data.age[1]}}세까지
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-gender-male-female</v-icon>
-                상관없음
+                {{data.gender}}
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-currency-krw</v-icon>
-                10,000원
+                {{data.fee}}원
               </div>
             </v-card-text>
           </v-card>
@@ -104,7 +103,7 @@
                 <v-avatar left>
                   <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
                 </v-avatar>
-                작성자
+                {{data.username}}
               </v-chip>
             </div>
           </v-card>
@@ -124,9 +123,28 @@ export default {
   },
   data () {
     return {
-      //
+      data: {age: [0,0]},
+      id: ''
+    }
+  },
+  mounted () {
+    this.id = this.$route.params.id
+    this.get_detail();
+},
+  methods: {
+    get_detail: function () {
+      const api = "http://localhost:8000/boards/hobby"
+      const api_url = api + '/' + this.id
+      this.$http.get(api_url)
+      .then(request => {
+        this.data = request.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
+
 }
 </script>
 
