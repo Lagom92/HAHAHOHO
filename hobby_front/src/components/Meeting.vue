@@ -12,7 +12,7 @@
         >
           <v-item v-slot:default="{ active, toggle }">
             <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+            :src= "data.photo"
             height="250px"
             class="text-right pa-2"
             @click="toggle"
@@ -33,21 +33,22 @@
             small
             right
             top
-            to="/list/detail"
+            :to="'/list/' + data.id"
+            
             >
-              <v-icon >mdi-plus</v-icon>
+              <v-icon>mdi-plus</v-icon>
             </v-btn>
             <div class="mb-2" >
-              <v-chip small color="#9AB878" dark>국내여행</v-chip>
+              <v-chip small color="#9AB878" dark>{{data.subclassname}}</v-chip>
             </div>
-            <h3 class="headline mb-2" color="#F3B749">제목입니다제목</h3>
+            <h3 class="headline mb-2" color="#F3B749">{{data.title}}</h3>
             <v-divider class="my-3"></v-divider>
             <v-row class="pl-3">
               <v-col class="pa-0">
-                <v-icon small>mdi-clock-outline</v-icon> 2019-10-31 오후 6시
+                <v-icon small>mdi-clock-outline</v-icon> {{data.startDay}}
               </v-col>
               <v-col class="pa-0">
-                <v-icon small>mdi-map-marker</v-icon> 광주 서구
+                <v-icon small>mdi-map-marker</v-icon> {{data.location}}
               </v-col>
             </v-row>
           </v-card-text>
@@ -62,8 +63,11 @@ export default {
   name: 'Meeting',
   data () {
     return {
-      selected: []
+      selected: [],
     }
+  },
+  props: {
+    data: {}
   }
 }
 </script>
