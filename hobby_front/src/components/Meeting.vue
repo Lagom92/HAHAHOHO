@@ -33,12 +33,13 @@
             small
             right
             top
-            to="/list/detail"
+            :to="'/list/' + data.id"
+            
             >
-              <v-icon >mdi-plus</v-icon>
+              <v-icon>mdi-plus</v-icon>
             </v-btn>
             <div class="mb-2" >
-              <v-chip small color="#9AB878" dark>{{data.subclass}}</v-chip>
+              <v-chip small color="#9AB878" dark>{{data.subclassname}}</v-chip>
             </div>
             <h3 class="headline mb-2" color="#F3B749">{{data.title}}</h3>
             <v-divider class="my-3"></v-divider>
@@ -68,6 +69,5 @@ export default {
   props: {
     data: {}
   }
-  
 }
 </script>

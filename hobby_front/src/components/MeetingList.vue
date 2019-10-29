@@ -11,9 +11,9 @@
   </div>
 </template>
 
+
 <script>
 import Meeting from '@/components/Meeting'
-
 
 export default {
   name: 'MeetingList',
@@ -34,7 +34,6 @@ export default {
       this.$http.get(api_url)
         .then(request => {
           this.posts = request.data 
-          console.log(request.data)
         })
         .catch(err => {
           console.log(err)

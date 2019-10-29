@@ -41,7 +41,7 @@ export default new Router({
       component: UserUpdate
     },
     {
-      path: '/list/detail',
+      path: '/list/:id',
       name: 'detail',
       component: Detail // 임시로 페이지 확인을 위해 만들어놓은 라우터, 나중에 수정해야함
     },
@@ -55,5 +55,8 @@ export default new Router({
       name: 'createmeeting',
       component: CreateMeeting
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
