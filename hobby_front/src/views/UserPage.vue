@@ -351,7 +351,6 @@ export default {
       ],
     }
   },
-<<<<<<< hobby_front/src/views/UserPage.vue
   computed: {
     title () {
       const { start, end } = this
