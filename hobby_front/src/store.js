@@ -19,6 +19,9 @@ export default new Vuex.Store({
     },
     jwtSave (state, jwt) {
       state.user_jwt = jwt
+    },
+    nameSave (state, name){
+      state.user_name = name
     }
   },
   actions: {
