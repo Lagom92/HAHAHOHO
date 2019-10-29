@@ -8,6 +8,7 @@ import UserUpdate from './views/UserUpdate.vue'
 import Detail from './views/Detail.vue'
 import NaverLoginCallBack from './views/NaverLoginCallBack.vue'
 import CreateMeeting from './views/CreateMeeting.vue'
+import About from './views/About.vue'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/list/createmeeting',
       name: 'createmeeting',
       component: CreateMeeting
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: About
     }
   ]
 })
