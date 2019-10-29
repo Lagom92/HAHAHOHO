@@ -3,7 +3,7 @@
     <TopBanner></TopBanner>
     <v-container>
       <v-row>
-        <h1 class="mx-auto">?? ??</h1>
+        <h1 class="mx-auto">모임 목록</h1>
       </v-row>
       <v-row>
         <v-btn class="ml-auto pr-10 pb-10" text to="/list/createmeeting">
