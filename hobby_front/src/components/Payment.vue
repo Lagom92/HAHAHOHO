@@ -49,18 +49,12 @@ export default {
   },
   methods: {
     pay () {
-      console.log(this.value)
-      // baseUrl 부분은 서버 배포시 수정해야 하는 부분이기 때문에
-      // store에 저장해서 가저오는게 하나로 관리하기가 편할것 같습니다.
-      let baseUrl = 'http://127.0.0.1:8000/'
       let form = new FormData()
       form.append('amount', this.value)
-      // 유저 아이디 넣어주기
-      // form.append('userId', this.userName)
-      axios.post(baseUrl + 'accounts/kakaoPay/', form)
+      form.append('userId', this.$store.state.user_id)
+      axios.post(this.$store.state.baseUrl + 'accounts/kakaoPay', form)
         .then(res => {
           let payUrl = res.data.next_redirect_pc_url
-          console.log(res)
           location.href = payUrl
           /*
           결제 끝나고 현재 home으로 이동하기 때문에

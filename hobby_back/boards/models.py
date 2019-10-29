@@ -47,6 +47,8 @@ class PostHobby(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) 
     startDay = models.DateField()
     startTime = models.TimeField()
+    endDay = models.DateField()
+    endTime = models.TimeField()
     regardless = '상관없음'
     male = '남성'
     female = '여성'
