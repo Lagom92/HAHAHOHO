@@ -13,9 +13,18 @@
             </v-btn>
           </v-card-title>
           <v-divider class="mx-4" inset></v-divider>
-            <li v-for="post in this.posts" :key="post.id" xs12 sm6 md4>
-              {{post.title}}
-            </li>
+            <!-- 모임 관련 내용 -->
+            <v-card-text 
+              v-for="post in this.posts" 
+              :key="post.id" 
+              class="text--primary"
+              xs12 
+              sm6 
+              md4>
+              제목: {{post.title}}
+              <!-- 이동 버튼 -->
+              <v-btn :to="'/list/detail/' + post.id">go!</v-btn>
+            </v-card-text>
         </v-card>
       </div>
       <v-row>
@@ -30,6 +39,17 @@
               </v-btn>
             </v-card-title>
             <v-divider class="mx-4" inset></v-divider>
+            <!-- 공지사항 관련 내용 -->
+            <v-card-text 
+              v-for="notice in this.notices" 
+              :key="notice.id" 
+              class="text--primary"
+              xs12 
+              sm6 
+              md4>
+              제목: {{notice.title}} <br/>
+              내용: {{notice.contents}}
+            </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
@@ -43,6 +63,16 @@
               </v-btn>
             </v-card-title>
             <v-divider class="mx-4" inset></v-divider>
+            <!-- 자유 게시판 관련 내용 -->
+            <v-card-text 
+              v-for="free in this.frees" 
+              :key="free.id" 
+              class="text--primary"
+              xs12 
+              sm6 
+              md4>
+              글 제목: {{free.title}}
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -74,12 +104,16 @@ export default {
   data () {
     return {
       jwt: '',
-      posts: []
+      posts: [],
+      notices: [],
+      frees: []
     }
   },
   mounted () {
     this.getJwt()
     this.getHobby()
+    this.getNotice()
+    this.getFree()
   },
   methods: {
     getJwt () {
@@ -89,15 +123,38 @@ export default {
       }
     },
     getHobby: function () {
-      const api_url = "http://localhost:8000/boards/main/hobby"
-      this.$http.get(api_url)
-        .then(request => {
-          this.posts = request.data 
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/main/hobby'
+      this.$http.get(apiUrl)
+        .then(res => {
+          this.posts = res.data 
         })
         .catch(err => {
           console.log(err)
         })
     },
+    getNotice: function () {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/main/notice'
+      this.$http.get(apiUrl)
+        .then(res => {
+          this.notices = res.data 
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getFree: function () {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/main/free'
+      this.$http.get(apiUrl)
+        .then(res => {
+          this.frees = res.data 
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>

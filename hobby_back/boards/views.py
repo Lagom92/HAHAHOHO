@@ -47,19 +47,7 @@ class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
 
-class main_hobby(generics.ListCreateAPIView):
-    '''
-    메인 페이지에서 보여주는 모임들
-    최근 만들어진 순으로 정렬
-    최대 6개
 
-    ---
-    ## 내용
-
-    '''
-
-    queryset = PostHobby.objects.all().order_by('-id')[:6]
-    serializer_class = PostHobbySerializer
 
 class postFree_list(generics.ListCreateAPIView):
     '''
@@ -156,6 +144,45 @@ class faq_detail(generics.RetrieveAPIView):
     '''
     queryset = Faq.objects.all()
     serializer_class = FaqSerializer
+
+class main_hobby(generics.ListAPIView):
+    '''
+    메인 페이지에서 보여주는 모임들
+    최근 만들어진 순으로 정렬
+    최대 6개
+
+    ---
+    ## 내용
+
+    '''
+    queryset = PostHobby.objects.all().order_by('-id')[:6]
+    serializer_class = PostHobbySerializer
+
+class main_notice(generics.ListAPIView):
+    '''
+    메인 페이지에서 보여주는 모임들
+    최근 만들어진 순으로 정렬
+    최대 6개
+
+    ---
+    ## 내용
+
+    '''
+    queryset = Notice.objects.all().order_by('-id')[:6]
+    serializer_class = NoticeSerializer
+
+class main_free(generics.ListAPIView):
+    '''
+    메인 페이지에서 보여주는 모임들
+    최근 만들어진 순으로 정렬
+    최대 6개
+
+    ---
+    ## 내용
+
+    '''
+    queryset = PostFree.objects.all().order_by('-id')[:6]
+    serializer_class = PostFreeSerializer
 
 class commentFree_list(generics.ListCreateAPIView):
     queryset = CommentFree.objects.all().order_by('-id')
