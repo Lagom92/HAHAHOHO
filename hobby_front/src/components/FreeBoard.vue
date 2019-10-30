@@ -4,7 +4,11 @@
       <v-row>
         <h1 class="mb-3">자유게시판</h1>
         <v-spacer></v-spacer>
-        <v-btn text icon>
+        <v-btn 
+        text 
+        icon
+        to= "/createfreeboard"
+        >
           <v-icon>mdi-pencil-plus</v-icon>
         </v-btn>
       </v-row>
