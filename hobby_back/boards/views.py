@@ -224,8 +224,8 @@ def participantCheckListByPost(request, post_id):
 def participantCheckListByUser(request, user_id):
     participant = ParticipantCheck.objects.filter(user_id=user_id).values()
     posts = {}
-    for i, idx in enumerate(participant):
-        postId = participant[i].get('post_id')
+    for idx, i in enumerate(participant):
+        postId = participant[idx].get('post_id')
         post = PostHobby.objects.get(id=postId)
         serializer = PostHobbySerializer(post)
         posts['{}'.format(idx)] = serializer.data  

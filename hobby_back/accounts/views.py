@@ -144,39 +144,38 @@ def Naver_Login(request):
 def kakaoPay(request):
     # request에 회원 id, 결제가격을 같이 보내줘야 함 : db에 결제정보를 저장하기 위해서
     url = "https://kapi.kakao.com"
+    front_url = 'http://localhost:8080'
     headers = {
         'Authorization': "KakaoAK " + "25f3b072b7bff63ee9a201aa1f5dc9d6",
         'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
     }
+    user_id = int(request.data.get('userId'))
     params = {
         'cid': "TC0ONETIME",
         'partner_order_id': '1001',
-        # 주문자 정보 id
         'partner_user_id': '',
         'item_name': '포인트',
         'quantity': 1,
-        # 결제 금액
         'total_amount': 0,
         'vat_amount': 200,
         'tax_free_amount': 0,
-        'approval_url': 'http://localhost:8080',
-        'fail_url': 'http://localhost:8080',
-        'cancel_url': 'http://localhost:8080',
+        'approval_url': front_url+'/user',
+        'fail_url': front_url,
+        'cancel_url': front_url,
     }
-    params['partner_user_id'] = request.data.get('userId')
+    params['partner_user_id'] = user_id
     params['total_amount'] = request.data.get('amount')
     response = requests.post(url+"/v1/payment/ready", params=params, headers=headers)
     response = json.loads(response.text)
+    user = User.objects.get(id=user_id)
     if response.get('code'):
-        # 에러일때 
-        pass
+        raise NameError
     else:
-        # 에러가 아닐 때
-        # db저장
-        # payInfo.objects.create(
-        #     user=request.data.get('userId'), payNum=response.get('tid'), 
-        #     payAmount=request.data.get('amount'), payDate=response.get('created_at')
-        # )
-        
+        payInfo.objects.create(
+            user=user, payNum=response.get('tid'), 
+            payAmount=request.data.get('amount'), payDate=response.get('created_at')
+        )
+        user.userPoint += int(request.data.get('amount'))
+        user.save()
         return Response(response)
     
