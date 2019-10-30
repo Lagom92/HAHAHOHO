@@ -53,13 +53,12 @@ export default {
             let form = new FormData()
 
             form.append('title', this.title)
-            form.append('contents', this.content)
+            form.append('contents', this.contents)
             // form.append('user', this.$store.state.user_id)
             // form.append('username', this.$store.state.user_name)
             form.append('user', 1)  // 수정 예정, 위에꺼로 변경
             form.append('username', 'master')   // 수정 예정, 위에꺼로 변경
             form.append('post', 2) // 2 : 자유 게시판 Default
-            form.append('subclass', 1)  // default:1, 수정 예정!
 
             const apiUrl = baseUrl + 'boards/free'
 
@@ -71,13 +70,15 @@ export default {
 
             this.$http.post(apiUrl, form)
             .then(res => {
-                console.log("success post freeboard")
+                console.log("글작성 성공!")
+                window.location.href = 'http://localhost:8080/board';
             })
             .catch(err => {
                 console.log("자유게시판 글작성에 실패하였습니다.")
                 console.log(err)
             })
-        }
+        },
+        
     }
 }
 </script>
