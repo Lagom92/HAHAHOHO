@@ -72,8 +72,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus">
-a
-  text-decoration none
-</style>
