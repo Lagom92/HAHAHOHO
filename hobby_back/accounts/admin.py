@@ -3,7 +3,7 @@ from .models import User, PostOnetone, Follow
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id', 'userName', 'userNickName', 'userSex', 'userAge', 'userGrade', 'userLike', 'userAddress']
+    list_display = ['id', 'userName', 'userNickName', 'userSex', 'userAge', 'userGrade', 'userLike', 'userAddress', 'userFame']
     list_display_links = ['userName']
 
 @admin.register(PostOnetone)
@@ -13,5 +13,6 @@ class PostOnetoneAdmin(admin.ModelAdmin):
 
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
-    list_display = ['following', 'follower']
+    list_display = ['following']
     list_display_links = []
+

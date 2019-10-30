@@ -27,9 +27,13 @@ class User(models.Model):
         blank=True,
         null=True
     )
+    userFame = [0,0,0,0]
 
     def __str__(self):
         return self.userName
+
+class Follow(models.Model):
+    following = models.ManyToManyField(User, related_name='followed')
 
 class payInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
