@@ -109,7 +109,7 @@ class notice_list(generics.ListAPIView):
         - contents: 게시판 내용
         - created_at: 게시판 작성 시간
     '''
-    queryset = Notice.objects.all()
+    queryset = Notice.objects.all().order_by('-id')
     serializer_class = NoticeSerializer
 
 class notice_detail(generics.RetrieveAPIView):
@@ -124,7 +124,7 @@ class notice_detail(generics.RetrieveAPIView):
         - contents: 게시판 내용
         - created_at: 게시판 작성 시간
     '''
-    queryset = Notice.objects.all()
+    queryset = Notice.objects.all().order_by('-id')
     serializer_class = NoticeSerializer
 
 class faq_list(generics.ListAPIView):
@@ -158,7 +158,7 @@ class faq_detail(generics.RetrieveAPIView):
     serializer_class = FaqSerializer
 
 class commentFree_list(generics.ListCreateAPIView):
-    queryset = CommentFree.objects.all()
+    queryset = CommentFree.objects.all().order_by('-id')
     serializer_class = CommentFreeSerializer
 
 # 체크! pk와 question_pk는 어디서 사용되는가???
