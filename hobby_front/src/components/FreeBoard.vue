@@ -14,7 +14,8 @@
       </v-row>
       <v-divider id='topdivider'></v-divider>
       <v-row class="font-weight-black">
-        <v-col cols='8'>내용</v-col>
+        <v-col cols='2'>번호</v-col>
+        <v-col cols='6'>내용</v-col>
         <v-col cols='2'>작성일시</v-col>
         <v-col cols='2'>작성자</v-col>
       </v-row>
@@ -24,7 +25,8 @@
       <div v-for="post in posts" :key="post.id">
         <a href="#">
           <v-row>
-            <v-col cols='8'>{{post.title}}</v-col>
+            <v-col cols='2'>{{post.id}} </v-col>
+            <v-col cols='6'>{{post.title}}</v-col>
             <v-col cols='2'>{{post.created_at}} </v-col>
             <v-col cols='2'>{{post.username}}</v-col>
           </v-row>

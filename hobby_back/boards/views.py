@@ -77,7 +77,7 @@ class postFree_list(generics.ListCreateAPIView):
     '''
     search_fields = ['title', 'contents']
     filter_backends = (filters.SearchFilter,)
-    queryset = PostFree.objects.all()
+    queryset = PostFree.objects.all().order_by('-id')
     serializer_class = PostFreeSerializer
 
 class postFree_detail(generics.RetrieveUpdateDestroyAPIView):
