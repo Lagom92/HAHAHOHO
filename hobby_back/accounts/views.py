@@ -8,42 +8,33 @@ from rest_framework.response import Response
 import requests, json
 from .serializers import UserSerializer,FollowSerializer
 from .models import User, payInfo, Follow
+from django.contrib.auth import get_user_model
 
-@api_view(['GET','POST'])
-def follow_list(request):
-    # follow 명단 조회 기능
-    if request.method == 'GET':
-        queryset = Follow.objects.all()
-        serializer = FollowSerializer(queryset, many = True)
-        return Response(serializer.data)
-    
-    # follow 연결기능
-    elif request.method == 'POST':
-        serializer = FollowSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATE)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+# 평판정보 조회 및 새로 추가하는 기능
+# 한명이 한개의 평판을 줄때 그것을을 1로 산정해서 추가해줌, defalt=0
+@api_view(['POST'])
+def fame_update(request):
+    user = User.objects.get(id = request.data.get('user_id'))
+    #유저아이디를 가지고 User 모델에서 데이터를 가져와 user 변수에 추가합니다.
+    print(user)
+    #1. 먼저 기존의 유저 정보의 평판 목록을 보는 프린트. ex)[0,0,0,0]
+    #2. 데이터 형식이 {"vote" : "energetic"} 으로 들어올경우 첫번째 리스트의 숫자가 1증가함
+    if request.data.get("vote") == 'energetic':
+        user.userFame[0] += 1
+    elif request.data.get("vote") == 'humorous':
+        user.userFame[1] += 1
+    elif request.data.get("vote") == 'leadership':
+        user.userFame[2] += 1
+    elif request.data.get("vote") == 'gentle':
+        user.userFame[3] += 1
+    #3. 데이터를 저장합니다.
+    user.save()
 
-@api_view(['GET','PUT','DELETE'])
-def follow_detail(request, pk):
-    follow = get_object_or_404(Follow, pk=pk)
-    # 특정 follow 조회 기능
-    if request.method == 'GET':
-        serializer = FollowSerializer(follow)
-        return Response(serializer.data)
-    # 특정 follow 수정 기능
-    elif request.method == 'PUT':
-        serializer = FollowSerializer(follow, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+    #4. 저장된 데이터를 확인하는 프린트 ex)[1,0,0,0]
+    #5. 평판의 정보는 user변수 내에 userFame에 저장되어 있기에 user.userFame으로 불러옵니다.
+    # print(user.userFame)
 
-    # 특정 follow 삭제 기능
-    elif request.method == 'DELETE':
-        follow.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+
     
 class KakaoLogin(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter    
@@ -54,10 +45,7 @@ class NaverLogin(SocialLoginView):
 @api_view(['POST'])
 def userInfo(request):
     userId = request.data.get('id')
-    if userId[0] == "k" or userId[0] == "n":
-        userSet = User.objects.get(userId=userId)
-    else:
-        userSet = User.objects.get(pk=userId)
+    userSet = User.objects.get(userId=userId)
     serializer = UserSerializer(userSet)
     return Response(serializer.data)
 
@@ -179,4 +167,40 @@ def kakaoPay(request):
         # )
         
         return Response(response)
+
+
+# @api_view(['GET','POST'])
+# def follow_list(request):
+#     # follow 명단 조회 기능
+#     if request.method == 'GET':
+#         queryset = Follow.objects.all()
+#         serializer = FollowSerializer(queryset, many = True)
+#         return Response(serializer.data)
     
+#     # follow 연결기능
+#     elif request.method == 'POST':
+#         serializer = FollowSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status = status.HTTP_201_CREATE)
+#         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+# @api_view(['GET','PUT','DELETE'])
+# def follow_detail(request, pk):
+#     follow = get_object_or_404(Follow, pk=pk)
+#     # 특정 follow 조회 기능
+#     if request.method == 'GET':
+#         serializer = FollowSerializer(follow)
+#         return Response(serializer.data)
+#     # 특정 follow 수정 기능
+#     elif request.method == 'PUT':
+#         serializer = FollowSerializer(follow, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
+#     # 특정 follow 삭제 기능
+#     elif request.method == 'DELETE':
+#         follow.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
