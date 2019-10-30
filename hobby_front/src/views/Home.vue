@@ -49,6 +49,8 @@
               md4>
               제목: {{notice.title}} <br/>
               내용: {{notice.contents}}
+              <!-- 이동 버튼 -->
+              <v-btn :to="'/notice/' + notice.id">go!</v-btn>
             </v-card-text>
           </v-card>
         </v-col>
