@@ -40,7 +40,7 @@ class HobbyAdmin(admin.ModelAdmin):
 
 @admin.register(PostFree)
 class FreeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'post', 'subclass', 'title', 'user', 'created_at']
+    list_display = ['id', 'post', 'title', 'user', 'created_at']
     list_display_links = ['id', 'title']
     search_fields = ['title']
 
