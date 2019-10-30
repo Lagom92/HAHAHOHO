@@ -27,15 +27,26 @@
             </v-row>
             <v-row>
               <v-col cols="3">
-                <h3>이메일</h3>
+                <h3>이미지</h3>
               </v-col>
               <v-col cols="9">
-                <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="E-mail"
-                required
-                ></v-text-field>
+                <v-img :src="img"></v-img>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="3">
+                <h3>주소</h3>
+              </v-col>
+              <v-col cols="9">
+                <v-dialog v-model="dialog" width="500">
+                  <template v-slot:activator="{ on }">
+                    <v-text-field v-model="result"></v-text-field>
+                    <v-btn v-on="on">Click Me</v-btn>
+                  </template>
+                  <v-card>
+                    <vue-daum-postcode @complete="result = $event, dialog=false, addResult()" />
+                  </v-card>
+                </v-dialog>
               </v-col>
             </v-row>
             <v-row>
@@ -127,10 +138,18 @@
 </template>
 
 <script>
+import { VueDaumPostcode } from "vue-daum-postcode"
+
 export default {
+  components: {
+    VueDaumPostcode
+  },
   data () {
     return {
+      dialog:false,
+      result:'',
       valid: true,
+      img:'',
       name: '',
       nameRules: [
         v => !!v || 'Name is required',
@@ -187,7 +206,22 @@ export default {
         this.selected = []
         this.loading = false
       }, 2000)
+    },
+    addResult () {
+      let res = this.result.address
+      this.result = res
     }
+  },
+  mounted() {
+    let form = new FormData()
+    this.$store.commit('idSave', 3)
+    form.append('id', this.$store.state.user_id)
+    this.$http.post(this.$store.state.baseUrl + 'accounts/userInfo', form).then(res =>{
+      console.log(res)
+      this.name = res.data.userName
+      this.result = res.data.userAddress
+      this.img = res.data.userImage
+    })
   },
   computed: {
     allSelected () {
