@@ -27,13 +27,12 @@
             </v-row>
             <v-row>
               <v-col cols="3">
-                <h3>이메일</h3>
+                <h3>주소</h3>
               </v-col>
               <v-col cols="9">
                 <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="E-mail"
+                v-model="address"
+                label="Address"
                 required
                 ></v-text-field>
               </v-col>
@@ -43,59 +42,120 @@
                 <h3>선호카테고리</h3>
               </v-col>
               <v-col cols="9">
-                <v-container class="py-0">
-                  <v-row
-                  align="center"
-                  justify="start"
-                  >
-                    <v-col
-                    v-for="(selection, i) in selections"
-                    :key="selection.text"
-                    class="shrink"
-                    >
-                      <v-chip
-                      :disabled="loading"
-                      close
-                      @click:close="selected.splice(i, 1)"
+                <v-card
+                  class="mx-auto"
+                  max-width="500"
+                >
+                  <v-card-title class="title font-weight-regular justify-space-between">
+                    <span>{{ currentTitle }}</span>
+                    <v-avatar
+                      color="primary lighten-2"
+                      class="subheading white--text"
+                      size="24"
+                      v-text="step"
+                    ></v-avatar>
+                  </v-card-title>
+
+                  <v-window v-model="step">
+                    <v-window-item :value="1">
+                      <v-card
+                        max-width="400"
+                        class="mx-auto"
                       >
-                        <v-icon
-                        left
-                        v-text="selection.icon"
-                        ></v-icon>
-                        {{ selection.text }}
-                      </v-chip>
-                    </v-col>
-                    <v-col v-if="!allSelected" cols="12">
-                      <v-text-field
-                      ref="search"
-                      v-model="search"
-                      full-width
-                      hide-details
-                      label="Search"
-                      single-line
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-                <v-divider v-if="!allSelected"></v-divider>
-                <v-list>
-                  <template v-for="(item, i) in categories">
-                    <v-list-item
-                    v-if="!selected.includes(i)"
-                    :key="i"
-                    :disabled="loading"
-                    @click="selected.push(i)"
+                        <v-container class="pa-1">
+                          <v-item-group
+                            v-model="selected"
+                            multiple
+                          >
+                            <v-row>
+                              <v-col
+                                v-for="(card, i) in cards"
+                                :key="i"
+                                cols="12"
+                                md="6"
+                              >
+                                <v-card>
+                                  <v-item v-slot:default="{ active, toggle }">
+                                    <v-img
+                                      :src="card.img"
+                                      class="white--text align-end"
+                                      height="150"
+                                      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                                      @click="toggle"
+                                    >
+                                      <v-card-title v-text="card.title"></v-card-title>
+                                      <v-btn icon dark >
+                                        <v-icon>
+                                          {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
+                                        </v-icon>
+                                      </v-btn>
+                                    </v-img>
+                                  </v-item>
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                          </v-item-group>
+                        </v-container>
+                      </v-card>
+                    </v-window-item>
+
+                    <v-window-item :value="2">
+                      <v-card-text 
+                        v-for="category in categoryList"
+                        :key="category">
+                        <h3 class="title mb-2">{{category}}</h3>
+
+                        <v-chip-group
+                          column
+                          multiple
+                        >
+                          <v-chip 
+                            filter 
+                            outlined
+                            v-for="sub in subCategoryList"
+                            :key="sub"
+                          >
+                            {{sub}}
+                          </v-chip>
+                        </v-chip-group>
+                      </v-card-text>
+                    </v-window-item>
+
+                    <v-window-item :value="3">
+                      <div class="pa-4 text-center">
+                        <v-img
+                          class="mb-4"
+                          contain
+                          height="128"
+                          src="https://cdn.vuetifyjs.com/images/logos/v.svg"
+                        ></v-img>
+                        <h3 class="title font-weight-light mb-2">Welcome to Vuetify</h3>
+                        <span class="caption grey--text">Thanks for signing up!</span>
+                      </div>
+                    </v-window-item>
+                  </v-window>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-btn
+                      :disabled="step === 1"
+                      text
+                      @click="backstep()"
                     >
-                      <v-list-item-avatar>
-                        <v-icon
-                        :disabled="loading"
-                        v-text="item.icon"
-                        ></v-icon>
-                      </v-list-item-avatar>
-                      <v-list-item-title v-text="item.text"></v-list-item-title>
-                    </v-list-item>
-                  </template>
-                </v-list>
+                      Back
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      :disabled="step === 3"
+                      color="primary"
+                      depressed
+                      @click="nextstep()"
+                    >
+                      Next
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
               </v-col>
             </v-row>
             <v-checkbox
@@ -136,38 +196,35 @@ export default {
         v => !!v || 'Name is required',
         v => (v && v.length <= 10) || 'Name must be less than 10 characters'
       ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-      ],
+      address: '',
       select: null,
       checkbox: false,
-      items: [
-        {
-          text: '영화',
-          icon: 'mdi-nature'
+      cards: [
+        { 
+          title: '스포츠', 
+          img: 'https://cdn.pixabay.com/photo/2015/01/26/22/40/child-613199_1280.jpg',
+          sub: ['등산', '캠핑','해외여행','국내여행']
         },
-        {
-          text: '스포츠',
-          icon: 'mdi-glass-wine'
+        { 
+          title: '여행', 
+          img: 'https://cdn.pixabay.com/photo/2015/07/11/23/02/plane-841441_1280.jpg',
+          sub: ['1', '2','3','4']  
         },
-        {
-          text: '등산',
-          icon: 'mdi-calendar-range'
+        { title: '공연/전시회', 
+          img: 'https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg',
+          sub: ['11', '22','33','44']  
         },
-        {
-          text: '요리',
-          icon: 'mdi-map-marker'
+        { title: '독서/인문학', 
+          img: 'https://cdn.pixabay.com/photo/2016/01/19/17/53/books-1149959_1280.jpg',
+          sub: ['12', '23','34','45']
         },
-        {
-          text: '악기',
-          icon: 'mdi-bike'
-        }
       ],
+      selected: [],
       loading: false,
       search: '',
-      selected: []
+      step: 1,
+      categoryList: [],
+      subCategoryList: []
     }
   },
   methods: {
@@ -179,14 +236,19 @@ export default {
     reset () {
       this.$refs.form.reset()
     },
-    next () {
-      this.loading = true
-
-      setTimeout(() => {
-        this.search = ''
-        this.selected = []
-        this.loading = false
-      }, 2000)
+    backstep() {
+      this.step--
+      this.categoryList = []
+      this.subCategoryList = []
+    },
+    nextstep() {
+      this.step++
+      for (var i of this.selected) {
+        this.categoryList.push(this.cards[i].title)
+        for (var j of this.cards[i].sub) {
+          this.subCategoryList.push(j)
+        }
+      }      
     }
   },
   computed: {
@@ -210,7 +272,14 @@ export default {
       }
 
       return selections
-    }
+    },
+    currentTitle () {
+        switch (this.step) {
+          case 1: return '대분류'
+          case 2: return '소분류'
+          default: return 'Account created'
+        }
+      }
   },
   watch: {
     selected () {
