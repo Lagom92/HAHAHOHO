@@ -1,7 +1,13 @@
 <template>
   <div>
     <section id='top'>
-      <h1 class="mb-3">자유게시판</h1>
+      <v-row>
+        <h1 class="mb-3">자유게시판</h1>
+        <v-spacer></v-spacer>
+        <v-btn text icon>
+          <v-icon>mdi-pencil-plus</v-icon>
+        </v-btn>
+      </v-row>
       <v-divider id='topdivider'></v-divider>
       <v-row class="font-weight-black">
         <v-col cols='8'>내용</v-col>
