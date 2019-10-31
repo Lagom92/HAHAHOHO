@@ -47,19 +47,7 @@ class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
 
-class main_hobby(generics.ListCreateAPIView):
-    '''
-    메인 페이지에서 보여주는 모임들
-    최근 만들어진 순으로 정렬
-    최대 6개
 
-    ---
-    ## 내용
-
-    '''
-
-    queryset = PostHobby.objects.all().order_by('-id')[:6]
-    serializer_class = PostHobbySerializer
 
 class postFree_list(generics.ListCreateAPIView):
     '''
@@ -77,7 +65,7 @@ class postFree_list(generics.ListCreateAPIView):
     '''
     search_fields = ['title', 'contents']
     filter_backends = (filters.SearchFilter,)
-    queryset = PostFree.objects.all()
+    queryset = PostFree.objects.all().order_by('-id')
     serializer_class = PostFreeSerializer
 
 class postFree_detail(generics.RetrieveUpdateDestroyAPIView):
@@ -109,7 +97,7 @@ class notice_list(generics.ListAPIView):
         - contents: 게시판 내용
         - created_at: 게시판 작성 시간
     '''
-    queryset = Notice.objects.all()
+    queryset = Notice.objects.all().order_by('-id')
     serializer_class = NoticeSerializer
 
 class notice_detail(generics.RetrieveAPIView):
@@ -124,7 +112,7 @@ class notice_detail(generics.RetrieveAPIView):
         - contents: 게시판 내용
         - created_at: 게시판 작성 시간
     '''
-    queryset = Notice.objects.all()
+    queryset = Notice.objects.all().order_by('-id')
     serializer_class = NoticeSerializer
 
 class faq_list(generics.ListAPIView):
@@ -157,8 +145,47 @@ class faq_detail(generics.RetrieveAPIView):
     queryset = Faq.objects.all()
     serializer_class = FaqSerializer
 
+class main_hobby(generics.ListAPIView):
+    '''
+    메인 페이지에서 보여주는 모임들
+    최근 만들어진 순으로 정렬
+    최대 6개
+
+    ---
+    ## 내용
+
+    '''
+    queryset = PostHobby.objects.all().order_by('-id')[:6]
+    serializer_class = PostHobbySerializer
+
+class main_notice(generics.ListAPIView):
+    '''
+    메인 페이지에서 보여주는 모임들
+    최근 만들어진 순으로 정렬
+    최대 6개
+
+    ---
+    ## 내용
+
+    '''
+    queryset = Notice.objects.all().order_by('-id')[:6]
+    serializer_class = NoticeSerializer
+
+class main_free(generics.ListAPIView):
+    '''
+    메인 페이지에서 보여주는 모임들
+    최근 만들어진 순으로 정렬
+    최대 6개
+
+    ---
+    ## 내용
+
+    '''
+    queryset = PostFree.objects.all().order_by('-id')[:6]
+    serializer_class = PostFreeSerializer
+
 class commentFree_list(generics.ListCreateAPIView):
-    queryset = CommentFree.objects.all()
+    queryset = CommentFree.objects.all().order_by('-id')
     serializer_class = CommentFreeSerializer
 
 # 체크! pk와 question_pk는 어디서 사용되는가???
@@ -224,8 +251,8 @@ def participantCheckListByPost(request, post_id):
 def participantCheckListByUser(request, user_id):
     participant = ParticipantCheck.objects.filter(user_id=user_id).values()
     posts = {}
-    for i, idx in enumerate(participant):
-        postId = participant[i].get('post_id')
+    for idx, i in enumerate(participant):
+        postId = participant[idx].get('post_id')
         post = PostHobby.objects.get(id=postId)
         serializer = PostHobbySerializer(post)
         posts['{}'.format(idx)] = serializer.data  

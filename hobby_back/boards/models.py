@@ -85,7 +85,6 @@ class PostHobby(models.Model):
 # 자유게시판
 class PostFree(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    subclass = models.ForeignKey(Subclass, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.TextField()

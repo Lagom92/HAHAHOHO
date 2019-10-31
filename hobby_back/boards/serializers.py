@@ -18,6 +18,8 @@ class PostHobbySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PostFreeSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.userNickName")
+
     class Meta:
         model = PostFree
         fields = '__all__'

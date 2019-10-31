@@ -1,17 +1,17 @@
 from django.contrib import admin
-from .models import User, PostOnetone, Follow
+from .models import User, PostOnetone
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id', 'userName', 'userNickName', 'userSex', 'userAge', 'userGrade', 'userLike', 'userAddress']
-    list_display_links = ['userName']
+    list_display = [
+        'id', 'userName', 'userNickName', 'userSex', 'userAge', 
+        'userGrade', 'userLike', 'userAddress', 'userFame'
+    ]
+    list_display_links = ['id', 'userName']
 
 @admin.register(PostOnetone)
 class PostOnetoneAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'contents', 'answer']
-    list_display_links = ['user']
+    list_display_links = ['id', 'user']
 
-@admin.register(Follow)
-class FollowAdmin(admin.ModelAdmin):
-    list_display = ['following', 'follower']
-    list_display_links = []
+

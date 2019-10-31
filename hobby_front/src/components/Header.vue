@@ -1,40 +1,46 @@
 <template>
-  <v-app-bar app>
-    <v-row>
-      <v-app-bar-nav-icon id="mobilemenu"></v-app-bar-nav-icon>
-
-      <v-btn text to="/">
-        <v-toolbar-title id="title">하하호호</v-toolbar-title>
-      </v-btn>
-
-      <v-toolbar-items id="webmenu">
-        <v-btn text to="/list">모임</v-btn>
-        <v-btn text to="/board">커뮤니티</v-btn>
-      </v-toolbar-items>
-      <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn text @click.stop="dialog = true">
-          로그인
-        </v-btn>
-
-        <v-dialog v-model="dialog" max-width="280">
-          <v-card>
-            <v-card-title class="headline">
-              로그인
-              <v-btn class="ml-auto" text @click="dialog = false" >
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text class="justify-center">
-              <KakaoLogin></KakaoLogin>
-              <NaverLogin></NaverLogin>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
-      </v-toolbar-items>
-    </v-row>
-  </v-app-bar>
+  <div>
+    <v-app-bar app elevate-on-scroll>
+      <v-container>
+        <v-toolbar flat>
+          <v-app-bar-nav-icon class="d-sm-none d-flex" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-spacer class="d-sm-none d-flex"></v-spacer>
+          <v-toolbar-title class="px-4" @click="$router.push('/')">하하호호</v-toolbar-title>
+          <v-toolbar-items class="d-sm-flex d-none">
+            <v-btn text @click="$router.push('/about')">소개</v-btn>
+            <v-btn text @click="$router.push('/list')">모임</v-btn>
+            <v-btn text @click="$router.push('/board')">커뮤니티</v-btn>
+          </v-toolbar-items>
+          <v-spacer></v-spacer>
+          <v-btn icon class="d-sm-none d-flex" @click.stop="dialog = true">
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+          <v-toolbar-items class="d-sm-flex d-none">
+            <v-btn text @click.stop="dialog = true">로그인</v-btn>
+            <v-dialog v-model="dialog" width="330">
+              <v-card class="text-center">
+                <v-card-title>로그인</v-card-title>
+                <v-divider class="mx-5 mb-5"></v-divider>
+                <v-card-text>
+                  <KakaoLogin class="mb-2"></KakaoLogin>
+                  <NaverLogin></NaverLogin>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+          </v-toolbar-items>
+        </v-toolbar>
+      </v-container>
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawer" fixed temporary class="d-sm-none d-flex">
+      <v-list nav dense>
+        <v-list-item-group v-model="group">
+          <v-list-item v-for="item in items" :key="item.path" :to="{ path : item.path }">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
@@ -50,35 +56,19 @@ export default {
   data () {
     return {
       dialog: false,
+      drawer: false,
+      group: null,
+      items: [
+        { title: '소개', path: 'about' },
+        { title: '모임', path: 'list' },
+        { title: '커뮤니티', path: 'board' }
+      ]
     }
+  },
+  watch: {
+    group() {
+      this.drawer = false
+    },
   },
 }
 </script>
-
-<style>
-@media screen and (min-width:600px) {
-  #mobilemenu {
-    display: none;
-  }
-  #title {
-    margin: auto;
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-}
-@media screen and (max-width:599px) {
-  #webmenu {
-    display: none;
-  }
-  #title {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    padding-top: 13px;
-  }
-}
-</style>

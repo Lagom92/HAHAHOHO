@@ -4,28 +4,34 @@
       <v-row>
         <h1 class="mb-3">자유게시판</h1>
         <v-spacer></v-spacer>
-        <v-btn text icon>
+        <v-btn 
+        text 
+        icon
+        to= "/createfreeboard"
+        >
           <v-icon>mdi-pencil-plus</v-icon>
         </v-btn>
       </v-row>
       <v-divider id='topdivider'></v-divider>
       <v-row class="font-weight-black">
-        <v-col cols='8'>내용</v-col>
+        <v-col cols='2'>번호</v-col>
+        <v-col cols='6'>내용</v-col>
         <v-col cols='2'>작성일시</v-col>
         <v-col cols='2'>작성자</v-col>
       </v-row>
     </section>
     <v-divider class='middivider'></v-divider>
     <section id='content'>
-      <div v-for="i in 10" v-bind:key="i">
+      <div v-for="post in posts" :key="post.id">
         <a href="#">
           <v-row>
-            <v-col cols='8'>자유게시판 내용</v-col>
-            <v-col cols='2'>2019-10-16</v-col>
-            <v-col cols='2'>테스트유저</v-col>
+            <v-col cols='2'>{{post.id}} </v-col>
+            <v-col cols='6'>{{post.title}}</v-col>
+            <v-col cols='2'>{{post.created_at}} </v-col>
+            <v-col cols='2'>{{post.username}}</v-col>
           </v-row>
         </a>
-        <v-divider class='middivider' v-if="i % 3 == 0"></v-divider>
+        <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>
         <v-divider v-else></v-divider>
       </div>
     </section>
@@ -34,8 +40,30 @@
 
 <script>
 export default {
-  name: 'FreeBoard'
+  name: 'FreeBoard',
+  data () {
+    return {
+      posts: [],
+    }
+  },
+  mounted () {
+    this.get_frees();
+  },
+  methods: {
+    get_frees: function () {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/free'
+      this.$http.get(apiUrl)
+        .then(res => {
+          this.posts = res.data 
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+  }  
 }
+
 </script>
 
 <style lang="stylus">

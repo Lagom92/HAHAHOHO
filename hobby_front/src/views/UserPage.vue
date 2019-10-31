@@ -71,7 +71,7 @@
                       <div>
                         <v-row>
                           <v-col cols="4" >
-                            <span>참여모임 50</span>
+                            <span>참여모임 {{bandCount}}</span>
                           </v-col>
                           <v-col cols="4">
                             <v-dialog
@@ -243,7 +243,22 @@
                     </v-btn>
                   </v-toolbar>
                   <v-card-text>
-                    <span v-html="selectedEvent.details"></span>
+                    <div class="mb-4">
+                      <v-icon class="mr-1">mdi-calendar-month</v-icon>
+                      {{selectedEvent.details.startDay}}
+                    </div>
+                    <div class="mb-4">
+                      <v-icon class="mr-1">mdi-clock-outline</v-icon>
+                      {{selectedEvent.details.startTime}}
+                    </div>
+                    <div class="mb-4">
+                      <v-icon class="mr-1">mdi-map-marker</v-icon>
+                      {{selectedEvent.details.location}}
+                    </div>
+                    <div class="mb-4">
+                      <v-icon class="mr-1">mdi-currency-krw</v-icon>
+                      {{selectedEvent.details.fee}}원
+                    </div>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -309,46 +324,18 @@ export default {
       type: 'month',
       start: null,
       end: null,
-      selectedEvent: {},
+      selectedEvent: {
+        details : {
+          startDay: '',
+          startTime: '',
+          location: '',
+          fee: ''
+        }
+      },
+      bandCount:0,
       selectedElement: null,
       selectedOpen: false,
-      events: [
-        {
-          name: '하하호호 회의',
-          details: '광천터미널 빅브로 3시',
-          start: '2019-10-01',
-          end: '2019-10-02',
-          color: '#60c5ba',
-        },
-        {
-          name: '등산',
-          details: '무등산',
-          start: '2019-10-13',
-          end: '2019-10-13',
-          color: '#f9c00c',
-        },
-        {
-          name: '비엔날레',
-          details: '비엔날레 전시관',
-          start: '2019-10-26',
-          end: '2019-10-26',
-          color: '#60c5ba',
-        },
-        {
-          name: 'Holloween Party',
-          details: '오후 6시 상무지구 파티룸',
-          start: '2019-10-31',
-          end: '2019-10-31',
-          color: '#ff7473',
-        },
-        {
-          name: 'Christmas Party',
-          details: '오후 6시 상무지구 파티룸',
-          start: '2019-12-25',
-          end: '2019-12-25',
-          color: '#ff7473',
-        },
-      ],
+      events:[],
     }
   },
   computed: {
@@ -371,7 +358,6 @@ export default {
   },
   mounted () {
     this.$refs.calendar.checkChange()
-
     let headers = {
       'Authorization' : 'JWT '+this.$store.state.user_jwt
     }
@@ -401,11 +387,41 @@ export default {
     // user 팔로워
 
     // user가  참여모임에 대한 모든 정보
+    let scope = this
+    let event = []
+    let counts = 0
     this.$http.get(this.$store.state.baseUrl+'boards/participantCheckListByUser/'+this.$store.state.user_id).then(res =>{
-      console.log(res)
+      let band = res.data
+      let timeInMs = Date.now()
+      let selectColor
+      let detail
+      for(let i in band){
+         if(timeInMs < Date.parse(band[i].endDay)){
+          selectColor = '#ff7473'
+        } else {
+          selectColor = '#60c5ba'
+        }
+        detail = {
+          startDay: band[i].startDay,
+          startTime: band[i].startTime,
+          location: band[i].location,
+          fee: band[i].fee
+        }
+        let moim = {
+          name: band[i].title,
+          details: detail,
+          start: band[i].startDay,
+          end: band[i].endDay,
+          color: selectColor,
+        }
+        event.push(moim)
+        counts = counts + 1
+        this.bandCount = counts
+      }
     }).catch(e =>{
       console.log(e)
     })
+    this.events = event
   },
   methods: {
     viewMore ({ date }) {
