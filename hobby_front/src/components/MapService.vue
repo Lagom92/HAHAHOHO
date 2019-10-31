@@ -89,18 +89,59 @@ export default {
   },
   mounted () {
     this.mapContainer = document.getElementById('map')
+    this.map = this.createMap()
     this.geocoder = new kakao.maps.services.Geocoder()
     this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
     this.ps = new kakao.maps.services.Places()
     this.mainMarker = new kakao.maps.Marker()
     this.searchLocation(this.address)
     this.createMarker(this.placeY, this.placeX)
+    if (this.searchService) {
+      this.mapEvents()
+    }
   },
   methods: {
+    // 카카오 맵 이벤트 모음 함수
+    mapEvents () {
+      // 마커 드래그가 시작하면 infowindow를 닫음
+      kakao.maps.event.addListener(this.mainMarker, 'dragstart', () => {
+        this.infowindow.close()
+      })
+      // 마커 드래그가 끝나면 해당위치의 주소를 띄움
+      kakao.maps.event.addListener(this.mainMarker, 'dragend', () => {
+        // 마커의 좌표값을 저장
+        let markerPosition = this.mainMarker.getPosition()
+        this.placeX = markerPosition.getLng()
+        this.placeY = markerPosition.getLat()
+        // 마커 좌표 값을 주소로 변경하고 주소를 마커위에 띄움
+        this.geocoder.coord2Address(
+          markerPosition.getLng(),
+          markerPosition.getLat(),
+          this.setInfo
+        )
+      })
+      // 맵을 클릭하면 마커를 이동시킴
+      kakao.maps.event.addListener(this.map, 'click', (mouseEvent) => {
+        // 맵의 중심과 마커의 위치를 클릭한 좌표로 이동
+        let latlng = mouseEvent.latLng
+        this.mainMarker.setPosition(latlng)
+        this.map.panTo(latlng)
+        // 좌표값을 저장
+        this.placeX = latlng.getLng()
+        this.placeY = latlng.getLat()
+        // 지도 중심 좌표 값을 주소로 변경하고 주소를 마커위에 띄움
+        this.geocoder.coord2Address(
+          latlng.getLng(),
+          latlng.getLat(),
+          this.setInfo
+        )
+      })
+    },
+
     // 지도 생성 함수
-    createMap (y, x) {
+    createMap () {
       let options = {
-        center: new kakao.maps.LatLng(y, x),
+        center: new kakao.maps.LatLng(33.452613, 126.570888),
         level: this.mapLevel,
         mapTypeId: kakao.maps.MapTypeId.ROADMAP
       }
@@ -132,12 +173,10 @@ export default {
         if (status === kakao.maps.services.Status.OK) {
           this.placeY = result[0].y
           this.placeX = result[0].x
-          // 지도가 생성되어 있다면 다시 생성하지 않는다
-          if (this.map) {
-            return false
-          }
-          // 생성된 지도가 없다면 지도를 만들고 지도위에 마커를 생성
-          this.map = await this.createMap(result[0].y, result[0].x)
+          // 지도 중심을 주소의 좌표로 이동
+          let moveLatLon = new kakao.maps.LatLng(this.placeY, this.placeX)
+          this.map.setCenter(moveLatLon)
+          // 마커를 주소의 좌표에 생성
           await this.createMarker(this.placeY, this.placeX)
         }
       })
@@ -148,9 +187,9 @@ export default {
       // 주소 검색에 성공하면
       if (status === kakao.maps.services.Status.OK) {
         // 도로명 주소가 있다면 도로명 주소, 없다면 번지 주소
-        if (result[0].road_address.address_name) {
+        try {
           await this.$emit('update:address', result[0].road_address.address_name)
-        } else {
+        } catch {
           await this.$emit('update:address', result[0].address.address_name)
         }
         // 마커 위에 정보 표시
