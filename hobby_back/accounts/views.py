@@ -6,8 +6,8 @@ from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests, json
-from .serializers import UserSerializer,FollowSerializer
-from .models import User, payInfo, Follow
+from .serializers import UserSerializer
+from .models import User, payInfo
 from django.contrib.auth import get_user_model
 
 # 평판정보 조회 및 새로 추가하는 기능
@@ -167,39 +167,27 @@ def kakaoPay(request):
         user.save()
         return Response(response)
 
-
-# @api_view(['GET','POST'])
-# def follow_list(request):
-#     # follow 명단 조회 기능
-#     if request.method == 'GET':
-#         queryset = Follow.objects.all()
-#         serializer = FollowSerializer(queryset, many = True)
-#         return Response(serializer.data)
+@api_view(['POST'])
+def following(request, meId, youId):
+    user = User.objects.get(id=meId)
+    you = User.objects.get(id=youId)
+    if user != you:
+        if you in user.followings.all():
+            user.followings.remove(you)
+        else:
+            user.followings.add(you)
     
-#     # follow 연결기능
-#     elif request.method == 'POST':
-#         serializer = FollowSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status = status.HTTP_201_CREATE)
-#         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    return Response("follow success") 
 
-# @api_view(['GET','PUT','DELETE'])
-# def follow_detail(request, pk):
-#     follow = get_object_or_404(Follow, pk=pk)
-#     # 특정 follow 조회 기능
-#     if request.method == 'GET':
-#         serializer = FollowSerializer(follow)
-#         return Response(serializer.data)
-#     # 특정 follow 수정 기능
-#     elif request.method == 'PUT':
-#         serializer = FollowSerializer(follow, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
-
-#     # 특정 follow 삭제 기능
-#     elif request.method == 'DELETE':
-#         follow.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+@api_view(['GET'])
+def follows(request, id):
+    user = User.objects.get(id=id)
+    follows = user.followings.all()
+    data = []
+    for follow in follows:
+        box={}
+        box['id'] = follow.id
+        box['name'] = follow.userName
+        data.append(box)
+   
+    return Response(data)
