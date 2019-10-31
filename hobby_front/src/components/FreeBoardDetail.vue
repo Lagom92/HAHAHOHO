@@ -56,7 +56,6 @@ export default {
             const apiUrl = baseUrl + 'boards/free/' + this.id 
             this.$http.get(apiUrl)
                 .then(res => {
-                    console.log(res)
                     this.post = res.data 
                 })
                 .catch(err => {
