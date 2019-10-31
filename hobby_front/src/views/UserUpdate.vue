@@ -7,6 +7,7 @@
             <h1>정보수정</h1>
           </div>
           <v-divider class="ma-3"></v-divider>
+          <v-img :src="img" height="250" width="250"></v-img>
           <v-file-input accept="image/*" label="프로필 사진"></v-file-input>
           <v-form ref="form" v-model="valid" >
             <v-text-field
@@ -92,6 +93,7 @@
                         <v-chip-group
                           column
                           multiple
+                          v-model="selected2[category]"
                         >
                           <v-chip 
                             filter 
@@ -129,7 +131,7 @@
                 </v-card>
               </v-col>
             </v-row>
-            <v-btn color="error" >
+            <v-btn color="error" @click.stop="submit()">
               저장하기
             </v-btn>
           </v-form>
@@ -186,6 +188,7 @@ export default {
         },
       ],
       selected: [],
+      selected2: {},
       search: '',
       step: 1,
       CategoryList: {}
@@ -203,25 +206,44 @@ export default {
     },
     nextstep() {
       this.step++
+      let data = {}
       for (var i of this.selected) {
         this.CategoryList[this.cards[i].title] = this.cards[i].sub
-      }      
+        data[this.cards[i].title] = []
+        }
+      this.selected2 = data
     },
-    addResult () {
+    addResult() {
       let res = this.result.address
       this.result = res
+    },
+    submit() {
+      let form = new FormData()
+      let category = []
+      for(let i of this.selected){
+        for(let j of this.selected2[this.cards[i].title]){
+          category.push(this.cards[i].sub[j])
+        }
+      }
+      form.append('userLike', category)
+      form.append('userAddress', this.result)
+      form.append('userNickName', this.name)
+      // 이미지 저장 후 요청보내기
+      // form.append('userImage', this.img)
+      console.log(form)
     }
-
   },
   mounted() {
     let form = new FormData()
-    this.$store.commit('idSave', 3)
     form.append('id', this.$store.state.user_id)
+    let image
     this.$http.post(this.$store.state.baseUrl + 'accounts/userInfo', form).then(res =>{
       console.log(res)
       this.name = res.data.userName
       this.result = res.data.userAddress
-      this.img = res.data.userImage
+      let counts = res.data.userImage.length
+      image = res.data.userImage.substr(14, counts)
+      this.img = 'https://'+image
     })
   },
   computed: {
@@ -243,7 +265,6 @@ export default {
       for (const selection of this.selected) {
         selections.push(this.items[selection])
       }
-
       return selections
     },
     currentTitle () {
