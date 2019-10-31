@@ -23,14 +23,14 @@
     <v-divider class='middivider'></v-divider>
     <section id='content'>
       <div v-for="post in posts" :key="post.id">
-        <a href="#">
+        <router-link :to="'/free/' + post.id">
           <v-row>
             <v-col cols='2'>{{post.id}} </v-col>
             <v-col cols='6'>{{post.title}}</v-col>
             <v-col cols='2'>{{post.created_at}} </v-col>
             <v-col cols='2'>{{post.username}}</v-col>
           </v-row>
-        </a>
+        </router-link>
         <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>
         <v-divider v-else></v-divider>
       </div>
@@ -47,10 +47,10 @@ export default {
     }
   },
   mounted () {
-    this.get_frees();
+    this.getFrees();
   },
   methods: {
-    get_frees: function () {
+    getFrees: function () {
       const baseUrl = this.$store.state.baseUrl
       const apiUrl = baseUrl + 'boards/free'
       this.$http.get(apiUrl)

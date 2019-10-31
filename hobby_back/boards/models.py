@@ -130,12 +130,9 @@ class CommentHobby(models.Model):
 
 # 자유게시판 댓글
 class CommentFree(models.Model):
-    # 댓글과 1:n
     postFree = models.ForeignKey(PostFree, on_delete=models.CASCADE)
-    # 유저와 1:n
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.CharField(max_length=100)
-    # 생성날짜
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

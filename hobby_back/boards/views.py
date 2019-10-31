@@ -188,6 +188,15 @@ class commentFree_list(generics.ListCreateAPIView):
     queryset = CommentFree.objects.all().order_by('-id')
     serializer_class = CommentFreeSerializer
 
+# @api_view(['GET', 'POST', 'DELETE'])
+# def comments(request, pk):
+#     if request.method == 'GET':
+#         print("comment .....")
+#         comments = PostFree.objects.get(post_id = pk)
+#         print(comments) 
+#     else:
+#         pass
+
 # 체크! pk와 question_pk는 어디서 사용되는가???
 @api_view(['GET','PUT','DELETE'])
 def commentFree_detail(request, pk, comment_pk):

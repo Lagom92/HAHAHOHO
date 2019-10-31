@@ -70,7 +70,6 @@ export default {
 
             this.$http.post(apiUrl, form)
             .then(res => {
-                console.log("글작성 성공!")
                 window.location.href = 'http://localhost:8080/board';
             })
             .catch(err => {

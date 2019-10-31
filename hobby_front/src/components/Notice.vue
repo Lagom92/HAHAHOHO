@@ -13,15 +13,14 @@
     <v-divider class='middivider'></v-divider>
     <section id='content'>
       <div v-for="post in posts" :key="post.id">
-        <p>
+        <router-link :to="'/notice/' + post.id">
           <v-row>
             <v-col cols='2'>{{post.id}}</v-col>
             <v-col cols='6'>{{post.title}}</v-col>
             <v-col cols='2'>{{post.created_at}}</v-col>
             <v-col cols='2'>{{post.name}}</v-col>
-            <v-btn :to="'/notice/' + post.id">go</v-btn>
           </v-row>
-        </p>
+        </router-link>
         <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>
         <v-divider v-else></v-divider>
       </div>

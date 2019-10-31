@@ -29,7 +29,7 @@ export default {
         return {
             post: {},
     }
-  },
+    },
     mounted () {
         this.id = this.$route.params.id
         this.getDetail();
