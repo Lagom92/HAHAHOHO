@@ -14,4 +14,6 @@ urlpatterns = [
     path('kakaoPay', views.kakaoPay),
     path('<int:id>', views.editUser),
     path('fame', views.fame_update),
+    path('following/<int:meId>/<int:youId>', views.following),
+    path('follows/<int:id>', views.follows),
 ]
