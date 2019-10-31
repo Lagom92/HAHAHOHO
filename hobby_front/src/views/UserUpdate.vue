@@ -6,54 +6,30 @@
           <div>
             <h1>정보수정</h1>
           </div>
-          <v-form
-          ref="form"
-          v-model="valid"
-          lazy-validation
-          >
-            <v-row>
-              <v-col cols="3">
-                <h3>이름</h3>
-              </v-col>
-              <v-col cols="9">
-                <v-text-field
-                v-model="name"
-                :counter="10"
-                :rules="nameRules"
-                label="Name"
-                required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="3">
-                <h3>이미지</h3>
-              </v-col>
-              <v-col cols="9">
-                <v-img :src="img"></v-img>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="3">
-                <h3>주소</h3>
-              </v-col>
-              <v-col cols="9">
-                <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="result"></v-text-field>
-                    <v-btn v-on="on">Click Me</v-btn>
-                  </template>
-                  <v-card>
-                    <vue-daum-postcode @complete="result = $event, dialog=false, addResult()" />
-                  </v-card>
-                </v-dialog>
-              </v-col>
-            </v-row>
+          <v-divider class="ma-3"></v-divider>
+          <v-file-input accept="image/*" label="프로필 사진"></v-file-input>
+          <v-form ref="form" v-model="valid" >
+            <v-text-field
+            v-model="name"
+            :counter="10"
+            :rules="nameRules"
+            label="닉네임"
+            required
+            ></v-text-field>
+            <p class="mb-0">선호활동지역</p>
+            <v-dialog v-model="dialog" width="500">
+              <template v-slot:activator="{ on }">
+                <v-text-field v-model="result"></v-text-field>
+                <v-btn v-on="on">검색</v-btn>
+              </template>
+              <v-card>
+                <vue-daum-postcode @complete="result = $event, dialog=false, addResult()" />
+              </v-card>
+            </v-dialog>
+            <p class="mb-0">선호카테고리</p>
             <v-row>
               <v-col cols="12">
-                <v-card
-                  class="mx-auto"
-                >
+                <v-card class="mx-auto" >
                   <v-card-title class="title font-weight-regular justify-space-between">
                     <span>{{ currentTitle }}</span>
                     <v-avatar
@@ -230,7 +206,12 @@ export default {
       for (var i of this.selected) {
         this.CategoryList[this.cards[i].title] = this.cards[i].sub
       }      
+    },
+    addResult () {
+      let res = this.result.address
+      this.result = res
     }
+
   },
   mounted() {
     let form = new FormData()
