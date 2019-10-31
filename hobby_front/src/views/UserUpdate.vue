@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row>
-        <v-col cols="6" offset="3">
+        <v-col cols="12" md="8" offset-md="2">
           <div>
             <h1>정보수정</h1>
           </div>
@@ -50,85 +50,111 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="3">
-                <h3>선호카테고리</h3>
-              </v-col>
-              <v-col cols="9">
-                <v-container class="py-0">
-                  <v-row
-                  align="center"
-                  justify="start"
-                  >
-                    <v-col
-                    v-for="(selection, i) in selections"
-                    :key="selection.text"
-                    class="shrink"
-                    >
-                      <v-chip
-                      :disabled="loading"
-                      close
-                      @click:close="selected.splice(i, 1)"
+              <v-col cols="12">
+                <v-card
+                  class="mx-auto"
+                >
+                  <v-card-title class="title font-weight-regular justify-space-between">
+                    <span>{{ currentTitle }}</span>
+                    <v-avatar
+                      color="primary lighten-2"
+                      class="subheading white--text"
+                      size="24"
+                      v-text="step"
+                    ></v-avatar>
+                  </v-card-title>
+
+                  <v-window v-model="step">
+                    <v-window-item :value="1">
+                      <v-card
+                        elevation="0"
+                        class="mx-auto"
                       >
-                        <v-icon
-                        left
-                        v-text="selection.icon"
-                        ></v-icon>
-                        {{ selection.text }}
-                      </v-chip>
-                    </v-col>
-                    <v-col v-if="!allSelected" cols="12">
-                      <v-text-field
-                      ref="search"
-                      v-model="search"
-                      full-width
-                      hide-details
-                      label="Search"
-                      single-line
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-                <v-divider v-if="!allSelected"></v-divider>
-                <v-list>
-                  <template v-for="(item, i) in categories">
-                    <v-list-item
-                    v-if="!selected.includes(i)"
-                    :key="i"
-                    :disabled="loading"
-                    @click="selected.push(i)"
+                        <v-container class="px-5">
+                          <v-item-group
+                            v-model="selected"
+                            multiple
+                          >
+                            <v-row>
+                              <v-col
+                                v-for="(card, i) in cards"
+                                :key="i"
+                                cols="12"
+                                md="4"
+                              >
+                                <v-card>
+                                  <v-item v-slot:default="{ active, toggle }">
+                                    <v-img
+                                      :src="card.img"
+                                      class="white--text align-center"
+                                      height="150"
+                                      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                                      @click="toggle"
+                                    >
+                                      <v-btn icon dark class="mb-10">
+                                        <v-icon>
+                                          {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
+                                        </v-icon>
+                                      </v-btn>
+                                      <v-card-title v-text="card.title" class="justify-center"></v-card-title>
+                                    </v-img>
+                                  </v-item>
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                          </v-item-group>
+                        </v-container>
+                      </v-card>
+                    </v-window-item>
+
+                    <v-window-item :value="2">
+                      <v-card-text 
+                        v-for="(sub,category) in CategoryList"
+                        :key="category">
+                        <h3 class="title mb-2">{{category}}</h3>
+
+                        <v-chip-group
+                          column
+                          multiple
+                        >
+                          <v-chip 
+                            filter 
+                            outlined
+                            v-for="s in sub"
+                            :key="s"
+                          >
+                            {{s}}
+                          </v-chip>
+                        </v-chip-group>
+                      </v-card-text>
+                    </v-window-item>
+                  </v-window>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-btn
+                      :disabled="step === 1"
+                      text
+                      @click="backstep()"
                     >
-                      <v-list-item-avatar>
-                        <v-icon
-                        :disabled="loading"
-                        v-text="item.icon"
-                        ></v-icon>
-                      </v-list-item-avatar>
-                      <v-list-item-title v-text="item.text"></v-list-item-title>
-                    </v-list-item>
-                  </template>
-                </v-list>
+                      Back
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      :disabled="step === 2"
+                      color="primary"
+                      depressed
+                      @click="nextstep()"
+                    >
+                      Next
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
               </v-col>
             </v-row>
-            <v-checkbox
-            v-model="checkbox"
-            :rules="[v => !!v || 'You must agree to continue!']"
-            label="Do you agree?"
-            required
-            ></v-checkbox>
-            <v-btn
-            :disabled="!valid"
-            color="success"
-            class="mr-4"
-            @click="validate"
-            >
-              수정
-            </v-btn>
-            <v-btn
-            color="error"
-            class="mr-4"
-            @click="reset"
-            >
-              초기화
+            <v-btn color="error" >
+              저장하기
             </v-btn>
           </v-form>
         </v-col>
@@ -155,38 +181,38 @@ export default {
         v => !!v || 'Name is required',
         v => (v && v.length <= 10) || 'Name must be less than 10 characters'
       ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+      address: '',
+      addressRules: [
+        v => !!v || 'Address is required',
       ],
-      select: null,
-      checkbox: false,
-      items: [
-        {
-          text: '영화',
-          icon: 'mdi-nature'
+      cards: [
+        { 
+          title: '스포츠', 
+          img: 'https://cdn.pixabay.com/photo/2015/01/26/22/40/child-613199_1280.jpg',
+          sub: ['등산', '캠핑','볼링','축구','배구','배드민턴','자전거','탁구']
         },
-        {
-          text: '스포츠',
-          icon: 'mdi-glass-wine'
+        { 
+          title: '여행', 
+          img: 'https://cdn.pixabay.com/photo/2015/07/11/23/02/plane-841441_1280.jpg',
+          sub: ['국내', '해외','낚시']  
         },
-        {
-          text: '등산',
-          icon: 'mdi-calendar-range'
+        { title: '공연/전시회', 
+          img: 'https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg',
+          sub: ['영화', '뮤지컬','연극','콘서트']  
         },
-        {
-          text: '요리',
-          icon: 'mdi-map-marker'
+        { title: '독서/인문학', 
+          img: 'https://cdn.pixabay.com/photo/2016/01/19/17/53/books-1149959_1280.jpg',
+          sub: ['책', '시사','글쓰기','인문학']
         },
-        {
-          text: '악기',
-          icon: 'mdi-bike'
-        }
+        { title: '음악/악기', 
+          img: 'https://cdn.pixabay.com/photo/2015/07/31/15/01/guitar-869217_1280.jpg',
+          sub: ['노래', '기타','피아노','드럼']
+        },
       ],
-      loading: false,
+      selected: [],
       search: '',
-      selected: []
+      step: 1,
+      CategoryList: {}
     }
   },
   methods: {
@@ -195,21 +221,15 @@ export default {
         this.snackbar = true
       }
     },
-    reset () {
-      this.$refs.form.reset()
+    backstep() {
+      this.step--
+      this.CategoryList = {}
     },
-    next () {
-      this.loading = true
-
-      setTimeout(() => {
-        this.search = ''
-        this.selected = []
-        this.loading = false
-      }, 2000)
-    },
-    addResult () {
-      let res = this.result.address
-      this.result = res
+    nextstep() {
+      this.step++
+      for (var i of this.selected) {
+        this.CategoryList[this.cards[i].title] = this.cards[i].sub
+      }      
     }
   },
   mounted() {
@@ -244,12 +264,13 @@ export default {
       }
 
       return selections
-    }
-  },
-  watch: {
-    selected () {
-      this.search = ''
-    }
+    },
+    currentTitle () {
+        switch (this.step) {
+          case 1: return '대분류'
+          case 2: return '소분류'
+        }
+      }
   }
 }
 </script>
