@@ -1,62 +1,76 @@
 <template>
-  <v-responsive min-height="100%">
-    <v-btn
-    id="searchBtn"
-    @click="openSearch"
-    v-if="mapWindow === '100%' && searchService"
-    fab
-    dark
-    small
-    >
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
-    <v-btn
-    id="searchBtn"
-    @click="closeSearch"
-    v-if="mapWindow === '0%' && searchService"
-    text
-    icon
-    >
-      <v-icon>mdi-close</v-icon>
-    </v-btn>
-    <v-responsive id="map" :min-height="mapWindow"></v-responsive>
-    <v-container v-if="mapWindow === '0%' && searchService">
-      <v-row>
-        <v-col>
-          <v-text-field
-          v-model="keyword"
-          :rules="searchRules"
-          :counter="15"
-          label="키워드"
-          @keydown.enter="searchPlaces"
-          ></v-text-field>
-          <v-card v-if="places">
-            <v-list two-line>
-              <template v-for="(place, index) in places">
-                <v-list-item
-                :key="place.id"
-                @click="setPlaces(place.x, place.y)"
-                >
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{place.place_name}}
-                    </v-list-item-title>
-                    <v-list-item-subtitle class="mt-2">
-                      {{place.road_address_name}}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                      (지번){{place.address_name}}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-divider :key="index"></v-divider>
-              </template>
-            </v-list>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-responsive>
+  <div id="mapWindow" :style="'height: ' + height + '; overflow: auto;'">
+    <v-responsive min-height="100%">
+      <v-btn
+      id="searchBtn"
+      @click="openSearch"
+      v-if="mapWindow === '100%' && searchService"
+      fab
+      dark
+      small
+      >
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+      <v-btn
+      id="searchBtn"
+      @click="closeSearch"
+      v-if="mapWindow === '0%' && searchService"
+      text
+      icon
+      >
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-responsive id="map" :min-height="mapWindow"></v-responsive>
+      <v-container id="search" v-if="mapWindow === '0%' && searchService">
+        <v-row>
+          <v-col>
+            <v-text-field
+            v-model="keyword"
+            :rules="searchRules"
+            :counter="15"
+            label="키워드"
+            @keydown.enter="searchPlaces"
+            ></v-text-field>
+            <v-card v-if="places">
+              <v-list two-line>
+                <template v-for="(place, index) in places">
+                  <v-list-item
+                  :key="place.id"
+                  @click="setPlaces(place.x, place.y)"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{place.place_name}}
+                      </v-list-item-title>
+                      <v-list-item-subtitle class="mt-2">
+                        {{place.road_address_name}}
+                      </v-list-item-subtitle>
+                      <v-list-item-subtitle>
+                        (지번){{place.address_name}}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-divider :key="index"></v-divider>
+                </template>
+                <v-row class="justify-center">
+                  <div v-for="i in (1, pagination.last)" :key="i">
+                    <v-btn
+                    small
+                    text
+                    @click="pagination.gotoPage(i), scrollToTop()"
+                    :color="(i==pagination.current ? 'light-blue' : '')"
+                    >
+                      {{i}}
+                    </v-btn>
+                  </div>
+                </v-row>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-responsive>
+  </div>
 </template>
 
 <script>
@@ -85,7 +99,8 @@ export default {
   props: {
     searchService: { type: Boolean, default: false }, // 장소 검색 기능 사용유무
     address: { type: String, default: '광주광역시 광산구 하남산단6번로 133' }, // 입력된 주소
-    mapLevel: { type: Number, default: 4 } // 지도의 확대 레벨
+    mapLevel: { type: Number, default: 4 }, // 지도의 확대 레벨
+    height: { type: String, default: '300px' } // 지도 높이
   },
   mounted () {
     this.mapContainer = document.getElementById('map')
@@ -209,6 +224,7 @@ export default {
         // 정상적으로 검색이 완료되면, 실행
         this.places = data
         this.pagination = pagination
+        console.log(pagination)
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert('검색 결과가 존재하지 않습니다.')
         return false
@@ -246,6 +262,12 @@ export default {
       this.mapWindow = '0%'
       this.mainMarker.setMap(null)
       this.infowindow.close()
+    },
+
+    // div map의 스크롤을 최상단으로 위치시키는 함수
+    scrollToTop () {
+      let objMap = document.getElementById('mapWindow')
+      objMap.scrollTop = 0
     }
   }
 }
