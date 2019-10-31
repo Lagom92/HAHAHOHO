@@ -21,9 +21,9 @@
               xs12 
               sm6 
               md4>
-              제목: {{post.title}}
-              <!-- 이동 버튼 -->
-              <v-btn :to="'/list/detail/' + post.id">go!</v-btn>
+              <router-link :to="'/list/detail/' + post.id">
+                제목: {{post.title}}
+              </router-link>
             </v-card-text>
         </v-card>
       </div>
@@ -47,10 +47,10 @@
               xs12 
               sm6 
               md4>
-              제목: {{notice.title}} <br/>
-              내용: {{notice.contents}}
-              <!-- 이동 버튼 -->
-              <v-btn :to="'/notice/' + notice.id">go!</v-btn>
+              <router-link :to="'/notice/' + notice.id">
+                제목: {{notice.title}} <br/>
+                내용: {{notice.contents}}
+              </router-link>
             </v-card-text>
           </v-card>
         </v-col>
@@ -73,7 +73,9 @@
               xs12 
               sm6 
               md4>
-              글 제목: {{free.title}}
+              <router-link :to="'/free/' + free.id">
+                제목: {{free.title}}
+              </router-link>
             </v-card-text>
           </v-card>
         </v-col>

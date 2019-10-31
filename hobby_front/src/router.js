@@ -11,6 +11,7 @@ import CreateMeeting from './views/CreateMeeting.vue'
 import About from './views/About.vue'
 import CreateFreeboard from './views/CreateFreeboard.vue'
 import NoticeDetail from './components/NoticeDetail.vue'
+import FreeBoardDetail from './components/FreeBoardDetail.vue'
 
 Vue.use(Router)
 
@@ -51,7 +52,12 @@ export default new Router({
     {
       path: '/notice/:id',
       name: 'notice',
-      component: NoticeDetail // 임시로 페이지 확인을 위해 만들어놓은 라우터, 나중에 수정해야함
+      component: NoticeDetail 
+    },
+    {
+      path: '/free/:id',
+      name: 'free',
+      component: FreeBoardDetail 
     },
     {
       path: '/login',
