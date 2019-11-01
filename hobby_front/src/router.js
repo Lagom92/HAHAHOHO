@@ -13,6 +13,7 @@ import CreateFreeboard from './views/CreateFreeboard.vue'
 import UpdateFreeboard from './views/UpdateFreeboard.vue'
 import NoticeDetail from './components/NoticeDetail.vue'
 import FreeBoardDetail from './components/FreeBoardDetail.vue'
+import Search from './views/SearchPage.vue'
 
 Vue.use(Router)
 
@@ -84,6 +85,11 @@ export default new Router({
       path: '/free/:id/update',
       name: 'updatefreeboard',
       component: UpdateFreeboard
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     }
   ],
   scrollBehavior (to, from, savedPosition) {

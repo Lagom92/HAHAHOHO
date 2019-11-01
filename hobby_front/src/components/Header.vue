@@ -16,7 +16,8 @@
             <v-icon>mdi-account</v-icon>
           </v-btn>
           <v-toolbar-items class="d-sm-flex d-none">
-            <v-btn text @click.stop="dialog = true">로그인</v-btn>
+            <v-btn v-if="state" text @click.stop="dialog = true">로그인</v-btn>
+            <v-btn v-else text @click.stop="logout()">로그아웃</v-btn>
             <v-dialog v-model="dialog" width="330">
               <v-card class="text-center">
                 <v-card-title>로그인</v-card-title>
@@ -58,6 +59,7 @@ export default {
       dialog: false,
       drawer: false,
       group: null,
+      state: true,
       items: [
         { title: '소개', path: 'about' },
         { title: '모임', path: 'list' },
@@ -70,5 +72,24 @@ export default {
       this.drawer = false
     },
   },
+  mounted() {
+    if(this.$store.state.user_jwt){
+      this.state = false
+    }
+  },
+  methods: {
+    logout() {
+      // Kakao.cleanup()
+      // Kakao.init('b9b23d9b337a41dca3e1632a4677e0af')
+      // Kakao.Auth.logout(function (){
+      this.$store.commit('jwtSave', '')
+      this.$store.commit('idSave', '')
+      this.$store.commit('nameSave', '')
+      location.reload()
+      location.href('http://localhost:8080/')
+      this.state = true
+      // })
+    }
+  }
 }
 </script>

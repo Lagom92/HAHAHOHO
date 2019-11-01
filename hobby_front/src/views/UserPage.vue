@@ -27,6 +27,7 @@
                       outlined
                       x-small
                       dark
+                      @click="$router.push('/userupdate')"
                       >
                         <v-icon>mdi-account-edit</v-icon>
                       </v-btn>
