@@ -3,16 +3,15 @@
     <TopBanner></TopBanner>
     <v-container>
       <div>
-        <v-card class="pa-3">
+        <v-card class="pa-3" elevation="0" color="#fafafa">
           <v-card-title class="justify-center">
             모임 목록
-            <v-btn text icon to="/list">
+            <v-btn text icon to="/list" class="ml-3">
               <v-icon color="#74b4a0">
                 mdi-plus-circle
               </v-icon>
             </v-btn>
           </v-card-title>
-          <!-- <v-divider class="mx-4 my-3" inset></v-divider> -->
           <!-- 모임 관련 내용 (WEB) -->
           <v-slide-group
             class="my-4 d-none d-sm-flex"
@@ -39,9 +38,9 @@
               </v-card>
             </v-slide-item>
           </v-slide-group>
-          <!-- (MOBILE) -->
+          <!-- 모임 관련 내용 (MOBILE) -->
           <v-carousel
-            class="d-md-none"
+            class="my-4 d-sm-none"
             :show-arrows="false"
             hide-delimiter-background
             delimiter-icon="mdi-minus"
@@ -72,70 +71,68 @@
       </div>
       <v-row>
         <v-col cols="12" md="6">
-          <v-card class="pa-3" height="400px">
+          <v-card class="pa-5" height="400px" elevation="0" color="#fafafa">
             <v-card-title class="justify-center">
               공지사항
+              <v-spacer></v-spacer>
               <v-btn text icon to="/board">
                 <v-icon color="#74b4a0">
                   mdi-plus-circle
                 </v-icon>
               </v-btn>
             </v-card-title>
-            <!-- <v-divider class="mx-4 my-3" inset></v-divider> -->
+            <v-divider class="titleDiv"></v-divider>
             <!-- 공지사항 관련 내용 -->
-            <div>
-              <div
-                v-for="notice in this.notices"
-                :key="notice.id"
+            <div
+              v-for="notice in this.notices"
+              :key="notice.id"
+            >
+              <v-btn
+                text
+                block
+                height="auto"
+                :to="'/notice/' + notice.id"
               >
-                <v-btn
-                  text
-                  block
-                  height="auto"
-                  :to="'/notice/' + notice.id"
-                >
-                  <v-row class="my-2" justify="center">
-                    <v-icon cols="1" small color="#EE7785">mdi-water</v-icon>
-                    <v-col cols="7" class="rightBorder">{{notice.title}}</v-col>
-                    <v-col cols="3" class="rightBorder text-center">{{notice.created_at}}</v-col>
-                  </v-row>
-                </v-btn>
-                <v-divider></v-divider>
-              </div>
+                <v-row class="my-2" justify="center">
+                  <v-icon cols="1" small color="#EE7785">mdi-water</v-icon>
+                  <v-col cols="7" class="text-truncate">{{notice.title}}</v-col>
+                  <v-col cols="3" class="text-center">{{notice.created_at}}</v-col>
+                </v-row>
+              </v-btn>
+              <v-divider></v-divider>
             </div>
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card class="pa-3" height="400px">
+          <v-card class="pa-5" height="400px" elevation="0" color="#fafafa">
             <v-card-title class="justify-center">
               자유게시판
+              <v-spacer></v-spacer>
               <v-btn text icon to="/board">
                 <v-icon color="#74b4a0">
                   mdi-plus-circle
                 </v-icon>
               </v-btn>
             </v-card-title>
-            <!-- <v-divider class="mx-4 my-3" inset></v-divider> -->
+            <v-divider class="titleDiv"></v-divider>
             <!-- 자유 게시판 관련 내용 -->
-            <div>
-              <div
-                v-for="free in this.frees"
-                :key="free.id"
+            <div
+              v-for="free in this.frees"
+              :key="free.id"
+            >
+              <v-btn
+                text
+                block
+                height="auto"
+                :to="'/free/' + free.id"
               >
-                <v-btn
-                  text
-                  block
-                  height="auto"
-                  :to="'/free/' + free.id"
-                >
-                  <v-row class="my-2" justify="center">
-                    <v-icon cols="2" small color="#EE7785">mdi-water</v-icon>
-                    <v-col cols="7" class="rightBorder">{{free.title}}</v-col>
-                    <v-col cols="3" class="rightBorder text-center">{{free.created_at}}</v-col>
-                  </v-row>
-                </v-btn>
-                <v-divider></v-divider>
-              </div>
+                <v-row class="my-2" justify="center">
+                  <v-icon cols="2" small color="#EE7785">mdi-water</v-icon>
+                  <v-col cols="7" class="text-truncate">{{free.title}}</v-col>
+                  <v-col cols="3" class="text-center">{{free.created_at}}</v-col>
+                </v-row>
+              </v-btn>
+              <v-divider></v-divider>
             </div>
           </v-card>
         </v-col>
@@ -148,7 +145,8 @@
         </v-card-title>
         <v-card-text class="text-center">
           안녕하세요. 즐거운 취미생활을 즐겨보아요~~ 저희가 더 궁금하시다면?
-          <v-btn text>하하호호 자세히보기
+          <v-btn text to="/about">
+            하하호호 자세히보기
             <v-icon color="#F3B749">mdi-arrow-right-bold</v-icon>
           </v-btn>
         </v-card-text>
@@ -171,7 +169,6 @@ export default {
       posts: [],
       notices: [],
       frees: [],
-      limits: 3
 
     }
   },
@@ -241,4 +238,10 @@ export default {
 #cardcontent
   position relative
   top 20%
+
+.text-truncate
+  width 200px
+
+.titleDiv
+  border-top-width 3px
 </style>
