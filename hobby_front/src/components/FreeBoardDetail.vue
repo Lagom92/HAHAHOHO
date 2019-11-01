@@ -18,10 +18,21 @@
             </div>
             <v-divider class="minDiv mb-5"></v-divider>
             <div class="d-flex justify-end">
-                <v-btn dark class="mr-3" color="light-blue">
+                <router-link :to="'/free/' + post.id + '/update'">
+                    <v-btn
+                    dark
+                    class="mr-3" 
+                    color="light-blue" 
+                    >
                     수정
-                </v-btn>
-                <v-btn dark class="mr-3" color="pink" @click="deleteDetail()">
+                    </v-btn>
+                </router-link>
+                <v-btn 
+                    dark 
+                    class="mr-3" 
+                    color="pink" 
+                    @click="deleteDetail()"
+                    >
                     삭제
                 </v-btn>
                 <v-btn dark to= "/board">
@@ -67,16 +78,11 @@ export default {
             const apiUrl = baseUrl + 'boards/free/' + this.id
             this.$http.delete(apiUrl)
                 .then(res => {
-                    this.post = res.data
-                    // 수정 필!
-                    window.location.href = 'http://localhost:8080/board';
+                    this.$router.go(-1)
                 })
                 .catch(err => {
                     console.log(err)
                 })
-        },
-        editDetail: function () {
-            pass
         }
     }
 }
