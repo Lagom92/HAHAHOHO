@@ -47,9 +47,12 @@ export default {
     FreeBoard,
     FAQ
   },
+  props: {
+    propsPage: { type: Number, default: 0}
+  },
   data () {
     return {
-      currentpage: 0
+      currentpage: this.propsPage 
     }
   }
 }

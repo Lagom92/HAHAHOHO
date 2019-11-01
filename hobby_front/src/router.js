@@ -10,6 +10,7 @@ import NaverLoginCallBack from './views/NaverLoginCallBack.vue'
 import CreateMeeting from './views/CreateMeeting.vue'
 import About from './views/About.vue'
 import CreateFreeboard from './views/CreateFreeboard.vue'
+import UpdateFreeboard from './views/UpdateFreeboard.vue'
 import NoticeDetail from './components/NoticeDetail.vue'
 import FreeBoardDetail from './components/FreeBoardDetail.vue'
 import Search from './views/SearchPage.vue'
@@ -79,6 +80,11 @@ export default new Router({
       path: '/createfreeboard',
       name: 'createfreeboard',
       component: CreateFreeboard
+    },
+    {
+      path: '/free/:id/update',
+      name: 'updatefreeboard',
+      component: UpdateFreeboard
     },
     {
       path: '/search',

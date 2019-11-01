@@ -8,9 +8,9 @@
                 <v-container>
                     <p>작성자: {{user}}</p>
                     <v-form>
-                        <v-textarea label="댓글 작성"></v-textarea>
+                        <input v-model="text" label="댓글 작성" placeholder="댓글을 남겨주세요">
                         <div class="d-flex justify-end">
-                            <v-btn dark color="light-blue">작성</v-btn>
+                            <v-btn dark color="light-blue" @click="createComment">작성</v-btn>
                         </div>
                     </v-form>
                 </v-container>
@@ -18,13 +18,16 @@
         </div>
         <div>
             <v-card>
-                <v-container v-for="post in this.posts" :key="post.id">
+                <v-container v-for="(post, idx) in this.posts" :key="post.id">
                     <div>
                         <v-row class="mx-0">
                             <p class="borderP">작성자: {{post.username}}</p>
                             <p>{{post.created_at}}</p>
                         </v-row>
                         <p>{{post.contents}}</p>
+                        <div class="d-flex justify-end">
+                            <v-btn dark color="red" @click="deleteComment(post.id, idx)">삭제</v-btn>
+                        </div>
                     </div>
                 </v-container>
             </v-card>
@@ -38,27 +41,58 @@ export default {
     data () {
         return {
             user: '',
-            posts: []
+            posts: [],
+            text: ''
         }
 
     },
     mounted () {
         this.user = this.$store.state.user_name
         this.id = this.$route.params.id
-        this.getComment()
+        this.getComments()
     },
     methods: {
-        getComment: function () {
+        getComments () {
             const baseUrl = this.$store.state.baseUrl
-            const apiUrl = baseUrl + 'boards/free/' + this.id + '/comment'
+            const apiUrl = baseUrl + 'boards/free/' + this.id + '/comments'
             this.$http.get(apiUrl)
                 .then(res => {
-                    console.log(res)
                     this.posts = res.data 
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        createComment () {
+            const baseUrl = this.$store.state.baseUrl
+            let form = new FormData()
+
+            form.append('username', this.user)
+            form.append('user', this.$store.state.user_id)
+            form.append('postFree', this.id)
+            form.append('contents', this.text)
+
+            const apiUrl = baseUrl + 'boards/free/' + this.id + '/comment'
+            this.$http.post(apiUrl, form)
+                .then(res => {
+                    this.posts.unshift(res.data)
+                    this.text = ''
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        deleteComment (id, idx) {
+            const baseUrl = this.$store.state.baseUrl
+            const apiUrl = baseUrl + 'boards/comment/' + id
+            this.$http.delete(apiUrl)
+                .then(res => {
+                    this.posts.splice(idx, 1)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
         }
     }
 
