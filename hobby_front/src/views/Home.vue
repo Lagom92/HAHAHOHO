@@ -3,80 +3,140 @@
     <TopBanner></TopBanner>
     <v-container>
       <div>
-        <v-card height="400px">
-          <v-card-title class="justify-center" color="#F3B749">
+        <v-card class="pa-3">
+          <v-card-title class="justify-center">
             모임 목록
             <v-btn text icon to="/list">
-              <v-icon color="#F3B749">
+              <v-icon color="#74b4a0">
                 mdi-plus-circle
               </v-icon>
             </v-btn>
           </v-card-title>
-          <v-divider class="mx-4" inset></v-divider>
-            <!-- 모임 관련 내용 -->
-            <v-card-text 
-              v-for="post in this.posts" 
-              :key="post.id" 
-              class="text--primary"
-              xs12 
-              sm6 
-              md4>
-              <router-link :to="'/list/detail/' + post.id">
-                제목: {{post.title}}
-              </router-link>
-            </v-card-text>
+          <!-- <v-divider class="mx-4 my-3" inset></v-divider> -->
+          <!-- 모임 관련 내용 (WEB) -->
+          <v-slide-group
+            class="my-4 d-none d-sm-flex"
+            show-arrows
+          >
+            <v-slide-item
+              v-for="post in this.posts"
+              :key="post.id"
+            >
+              <v-card
+                class="ma-2"
+                height="280"
+                width="280"
+                :to="'/list/detail/' + post.id"
+              >
+                <v-img
+                  :src="post.photo"
+                  class="white--text align-end mb-5"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="280px"
+                >
+                  <v-card-title v-text="post.title"></v-card-title>
+                </v-img>
+              </v-card>
+            </v-slide-item>
+          </v-slide-group>
+          <!-- (MOBILE) -->
+          <v-carousel
+            class="d-md-none"
+            :show-arrows="false"
+            hide-delimiter-background
+            delimiter-icon="mdi-minus"
+            height="310"
+          >
+            <v-carousel-item
+              v-for="post in this.posts"
+              :key="post.id"
+            >
+              <v-card
+                class="mx-auto"
+                height="300"
+                width="300"
+                :to="'/list/detail/' + post.id"
+              >
+                <v-img
+                  :src="post.photo"
+                  class="white--text align-top"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="300px"
+                >
+                  <v-card-title v-text="post.title"></v-card-title>
+                </v-img>
+              </v-card>
+            </v-carousel-item>
+          </v-carousel>
         </v-card>
       </div>
       <v-row>
         <v-col cols="12" md="6">
-          <v-card height="400px">
-            <v-card-title class="justify-center" color="#F3B749">
+          <v-card class="pa-3" height="400px">
+            <v-card-title class="justify-center">
               공지사항
               <v-btn text icon to="/board">
-                <v-icon color="#F3B749">
+                <v-icon color="#74b4a0">
                   mdi-plus-circle
                 </v-icon>
               </v-btn>
             </v-card-title>
-            <v-divider class="mx-4" inset></v-divider>
+            <!-- <v-divider class="mx-4 my-3" inset></v-divider> -->
             <!-- 공지사항 관련 내용 -->
-            <v-card-text 
-              v-for="notice in this.notices" 
-              :key="notice.id" 
-              class="text--primary"
-              xs12 
-              sm6 
-              md4>
-              <router-link :to="'/notice/' + notice.id">
-                제목: {{notice.title}} <br/>
-                내용: {{notice.contents}}
-              </router-link>
-            </v-card-text>
+            <div>
+              <div
+                v-for="notice in this.notices"
+                :key="notice.id"
+              >
+                <v-btn
+                  text
+                  block
+                  height="auto"
+                  :to="'/notice/' + notice.id"
+                >
+                  <v-row class="my-2" justify="center">
+                    <v-icon cols="1" small color="#EE7785">mdi-water</v-icon>
+                    <v-col cols="7" class="rightBorder">{{notice.title}}</v-col>
+                    <v-col cols="3" class="rightBorder text-center">{{notice.created_at}}</v-col>
+                  </v-row>
+                </v-btn>
+                <v-divider></v-divider>
+              </div>
+            </div>
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card height="400px">
-            <v-card-title class="justify-center" color="#F3B749">
+          <v-card class="pa-3" height="400px">
+            <v-card-title class="justify-center">
               자유게시판
               <v-btn text icon to="/board">
-                <v-icon color="#F3B749">
+                <v-icon color="#74b4a0">
                   mdi-plus-circle
                 </v-icon>
               </v-btn>
             </v-card-title>
-            <v-divider class="mx-4" inset></v-divider>
+            <!-- <v-divider class="mx-4 my-3" inset></v-divider> -->
             <!-- 자유 게시판 관련 내용 -->
-            <v-card-text 
-              v-for="free in this.frees" 
-              :key="free.id" 
-              class="text--primary"
-              xs12 
-              sm6 
-              md4>
-              <router-link :to="'/free/' + free.id">
-                제목: {{free.title}}
-              </router-link>
-            </v-card-text>
+            <div>
+              <div
+                v-for="free in this.frees"
+                :key="free.id"
+              >
+                <v-btn
+                  text
+                  block
+                  height="auto"
+                  :to="'/free/' + free.id"
+                >
+                  <v-row class="my-2" justify="center">
+                    <v-icon cols="2" small color="#EE7785">mdi-water</v-icon>
+                    <v-col cols="7" class="rightBorder">{{free.title}}</v-col>
+                    <v-col cols="3" class="rightBorder text-center">{{free.created_at}}</v-col>
+                  </v-row>
+                </v-btn>
+                <v-divider></v-divider>
+              </div>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -110,7 +170,9 @@ export default {
       jwt: '',
       posts: [],
       notices: [],
-      frees: []
+      frees: [],
+      limits: 3
+
     }
   },
   mounted () {
@@ -142,6 +204,9 @@ export default {
       const apiUrl = baseUrl + 'boards/main/notice'
       this.$http.get(apiUrl)
         .then(res => {
+          for (let i of res.data){
+            i.created_at = String(i.created_at).substring(0,10)
+          }
           this.notices = res.data 
         })
         .catch(err => {
@@ -153,6 +218,9 @@ export default {
       const apiUrl = baseUrl + 'boards/main/free'
       this.$http.get(apiUrl)
         .then(res => {
+          for (let i of res.data){
+            i.created_at = String(i.created_at).substring(0,10)
+          }
           this.frees = res.data 
         })
         .catch(err => {
