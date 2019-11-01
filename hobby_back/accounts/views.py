@@ -75,13 +75,12 @@ def userSave(request):
 @api_view(['POST'])
 def editUser(request, id):
     user = User.objects.get(id=id)
-
-    # 유저 프로필 수정
-    ## 이미지
-    ## 주소
-    ## 선호 카테고리
-    ## 닉네임
-    pass
+    user.userAddress = request.data.get('userAddress')
+    user.userNickName = request.data.get('userNickName')
+    user.userLike = request.data.get('userLike')
+    user.save()
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
  
 @api_view(['GET'])
 def Naver_Login(request):
@@ -185,12 +184,39 @@ def following(request, meId, youId):
 @api_view(['GET'])
 def follows(request, id):
     user = User.objects.get(id=id)
-    follows = user.followings.all()
+    follows = user.followings.all().order_by('id')
     data = []
     for follow in follows:
         box={}
-        box['id'] = follow.id
-        box['name'] = follow.userName
+        # box['id'] = follow.id
+        box['name'] = follow.userNickName
+        if follow.userImage == 'undefined':
+            box['img'] = None
+        else:
+            box['img'] = str(follow.userImage)
         data.append(box)
-   
+    return Response(data)
+
+@api_view(['GET'])
+def followers(requets, id):
+    me = User.objects.get(id=id)
+    data = []
+    print(me.userName)
+    user = User.objects.all().order_by('id')
+    for i in user:
+        if me.userName != i.userName:
+            box = {}
+            flag = 0
+            follower = i.followings.all()
+            for j in follower:
+                if j.userName == me.userName:
+                    flag = 1
+                    box['name'] = i.userName
+                    if i.userName == 'undefined':
+                        box['img'] = None
+                    else:
+                        box['img'] = str(i.userImage)
+                    break
+            if flag:
+                data.append(box)
     return Response(data)

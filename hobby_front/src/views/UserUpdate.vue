@@ -167,25 +167,30 @@ export default {
         { 
           title: '스포츠', 
           img: 'https://cdn.pixabay.com/photo/2015/01/26/22/40/child-613199_1280.jpg',
-          sub: ['등산', '캠핑','볼링','축구','배구','배드민턴','자전거','탁구']
+          sub: ['축구', '볼링','자전거','낚시','야구','농구','당구','탁구', '클라이밍', '헬스', '요가/필라테스', '스케이트', '보드', '골프', '배드민턴', '댄스', '기타']
         },
         { 
           title: '여행', 
           img: 'https://cdn.pixabay.com/photo/2015/07/11/23/02/plane-841441_1280.jpg',
-          sub: ['국내', '해외','낚시']  
+          sub: ['캠핑', '글램핑','국내여행', '해외여행', '드라이브', '라이딩', '출사', '천체관측', '기타']  
         },
-        { title: '공연/전시회', 
+        { title: '문화/공연/축제', 
           img: 'https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg',
-          sub: ['영화', '뮤지컬','연극','콘서트']  
+          sub: ['영화 관람', '뮤지컬 관람','전시회 관람','연극 관람', '축제', '스포츠 관람', '코스프레', '버스킹', '기타']  
         },
-        { title: '독서/인문학', 
+        { title: '창작', 
           img: 'https://cdn.pixabay.com/photo/2016/01/19/17/53/books-1149959_1280.jpg',
-          sub: ['책', '시사','글쓰기','인문학']
+          sub: ['캘리그라피', '플라워아트','뜨개질','캔들/디퓨저/석고', '비누/화장품', '가죽공예', '소품공예', '프라모델', '그림그리기', '연주', '작곡', '글쓰기', '프로그래밍', '기타']
         },
-        { title: '음악/악기', 
+        { title: '사교/인맥', 
           img: 'https://cdn.pixabay.com/photo/2015/07/31/15/01/guitar-869217_1280.jpg',
-          sub: ['노래', '기타','피아노','드럼']
+          sub: ['커피', '독서','술','맛집', '반려동물', '육아', '보드게임', '온라인 게임', '콘솔게임', '타로', '봉사활동', '증권투자', '기타']
         },
+        {
+          title: '기타',
+          img: '',
+          sub: ['기타']
+        }
       ],
       selected: [],
       selected2: {},
@@ -230,7 +235,9 @@ export default {
       form.append('userNickName', this.name)
       // 이미지 저장 후 요청보내기
       // form.append('userImage', this.img)
-      console.log(form)
+      this.$http.post(this.$store.state.baseUrl + 'accounts/user/'+this.$store.state.user_id, form).then(res =>{
+        this.$router.push('/user')
+      })
     }
   },
   mounted() {

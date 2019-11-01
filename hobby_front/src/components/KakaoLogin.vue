@@ -19,7 +19,6 @@ export default {
   },
   mounted () {
     let scope = this
-    Kakao.init('b9b23d9b337a41dca3e1632a4677e0af')
     Kakao.Auth.createLoginButton({
       container: '#kakao-login-btn',
       success: function (authObj) {
@@ -62,11 +61,12 @@ export default {
       userForm.append('userAge', res.kakao_account.age_range)
       userForm.append('userImage', res.kakao_account.profile.profile_image_url)
       this.$store.commit('nameSave', res.kakao_account.profile.nickname)
+
       await axios.post(baseUrl + 'accounts/userSave', userForm).then(res => {
         console.log(res.data)
       })
-      axios.post(baseUrl + 'accounts/userInfo', {
-        // headers: { 'Authorization': 'JWT' + this.jwt },
+      await axios.post(baseUrl + 'accounts/userInfo', {
+        // headers: { 'Authorization': 'JWT ' + this.jwt },
         id: this.id
       }).then(res => {
         this.user_id = res.data.id
