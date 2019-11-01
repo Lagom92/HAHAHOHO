@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <v-card elevation="0" color="#00ff0000">
       <!-- <v-text-field
       label="Search"
