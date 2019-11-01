@@ -81,7 +81,7 @@
                             max-width="300px"
                             >
                               <template v-slot:activator="{ on }">
-                                <span v-on="on">팔로워 100</span>
+                                <span v-on="on">팔로워 {{followerCounting}}</span>
                               </template>
                               <!-- 팔로워 목록 모달 -->
                               <v-card>
@@ -90,14 +90,14 @@
                                 <v-card-text style="height: 300px;">
                                   <v-list>
                                     <v-list-item
-                                    v-for="item in items"
-                                    :key="item.title"
+                                    v-for="item in followerGroup"
+                                    :key="item.name"
                                     >
                                       <v-list-item-avatar>
-                                        <v-img :src="item.avatar"></v-img>
+                                        <v-img :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.title">
+                                        <v-list-item-title v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -123,23 +123,23 @@
                             max-width="300px"
                             >
                               <template v-slot:activator="{ on }">
-                                <span v-on="on">팔로우 5</span>
+                                <span v-on="on">팔로잉 {{followCounting}}</span>
                               </template>
                               <!-- 팔로우 목록 모달 -->
                               <v-card>
-                                <v-card-title>팔로우</v-card-title>
+                                <v-card-title>팔로잉</v-card-title>
                                 <v-divider></v-divider>
                                 <v-card-text style="height: 300px;">
                                   <v-list>
                                     <v-list-item
-                                    v-for="item in items"
+                                    v-for="item in followGroup"
                                     :key="item.title"
                                     >
                                       <v-list-item-avatar>
-                                        <v-img :src="item.avatar"></v-img>
+                                        <v-img :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.title">
+                                        <v-list-item-title v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -296,30 +296,15 @@ export default {
       },
       band:'',
       tags: [
-        '스포츠',
-        '독서',
-        '여행'
+        '카테고리를 선정해주세요'
       ],
+      followCounting: 0,
+      followerCounting: 0,
+      followGroup:[],
+      followerGroup:[],
       followdialog: false,
       followerdialog: false,
-      items: [
-        {
-          title: 'Jason Oner',
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
-        },
-        {
-          title: 'Travis Howard',
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
-        },
-        {
-          title: 'Ali Connors',
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
-        },
-        {
-          title: 'Cindy Baker',
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg'
-        }
-      ],
+      items: [],
       today: new Date().toISOString(),
       focus: new Date().toISOString(),
       type: 'month',
@@ -372,21 +357,40 @@ export default {
       this.userInfo.userAge = res.data.userAge
       this.userInfo.userGrade = res.data.userGrade
       this.userInfo.userId = res.data.userId
-      this.userInfo.userLike = res.data.userLike
       this.userInfo.userName = res.data.userName
       this.userInfo.userNickName = res.data.userNickName
       this.userInfo.userPoint = res.data.userPoint
       this.userInfo.userSex = res.data.userSex
       let image = res.data.userImage
       let counts = image.length
+      var strArray = res.data.userLike.split(',')
+      this.tags = strArray
       // 카카오만
       image = image.substr(14, counts)
       this.userInfo.userImage = 'https://'+image
     }).catch(e =>{
       console.log(e)
     })
-    // user 팔로워
-
+    // user 팔로잉(내가 하는거)
+    this.$http.get(this.$store.state.baseUrl + 'accounts/follows/' + this.$store.state.user_id).then(res =>{
+      this.followCounting = res.data.length
+      for(let i of res.data){
+        if(i.img == null){
+          i.img = require('../assets/logo.png')
+        }
+      }
+      this.followGroup = res.data    
+    })
+    // user 팔로워(나를 하는거)
+    this.$http.get(this.$store.state.baseUrl + 'accounts/followers/' + this.$store.state.user_id).then(res =>{
+      this.followerCounting = res.data.length
+      for(let i of res.data){
+        if(i.img == 'undefined'){
+          i.img = require('../assets/logo.png')
+        }
+      }
+      this.followerGroup = res.data 
+    })
     // user가  참여모임에 대한 모든 정보
     let scope = this
     let event = []

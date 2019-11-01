@@ -79,16 +79,16 @@ export default {
   },
   methods: {
     logout() {
-      // Kakao.cleanup()
-      // Kakao.init('b9b23d9b337a41dca3e1632a4677e0af')
-      // Kakao.Auth.logout(function (){
-      this.$store.commit('jwtSave', '')
-      this.$store.commit('idSave', '')
-      this.$store.commit('nameSave', '')
-      location.reload()
-      location.href('http://localhost:8080/')
-      this.state = true
-      // })
+      let scope = this
+      Kakao.Auth.logout(function (){
+        scope.$store.commit('jwtSave', '')
+        scope.$store.commit('idSave', '')
+        scope.$store.commit('nameSave', '')
+        Kakao.cleanup()
+        location.reload()
+        location.href('http://localhost:8080/')
+        scope.state = true
+      })
     }
   }
 }
