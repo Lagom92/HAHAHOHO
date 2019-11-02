@@ -57,7 +57,6 @@ export default {
             form.append('user', this.$store.state.user_id)
             form.append('username', this.$store.state.user_name)
             form.append('post', 2) // 2 : 자유 게시판 Default
-
             const apiUrl = baseUrl + 'boards/free'
 
             // axios.post(baseUrl + 'boards/free', form, {

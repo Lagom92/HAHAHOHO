@@ -8,7 +8,7 @@
           </div>
           <v-divider></v-divider>
 
-          <v-file-input accept="image/*" label="모임 커버 사진"></v-file-input>
+          <v-file-input accept="image/*" label="모임 커버 사진" v-model="img"></v-file-input>
 
           <v-form ref="form" v-model="valid">
             <v-text-field
@@ -56,7 +56,61 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-
+            <!-- 모집 마감 날짜, 시간 -->
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-menu
+                v-model="endingDate"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                    v-model="endDate"
+                    label="모집 마감"
+                    readonly
+                    v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                  v-model="endDate"
+                  @input="endingDate = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-menu
+                ref="menu"
+                v-model="endingTime"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="endTime"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                    v-model="endTime"
+                    label="모집 마감 시간"
+                    readonly
+                    v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                  v-if="endingTime"
+                  v-model="endTime"
+                  full-width
+                  @click:minute="$refs.menu.save(endTime)"
+                  ></v-time-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+            <!-- 만나는 날짜, 시간 -->
             <v-row>
               <v-col cols="12" md="6">
                 <v-menu
@@ -69,14 +123,14 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                    v-model="date"
+                    v-model="meetDate"
                     label="만나는 날짜"
                     readonly
                     v-on="on"
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                  v-model="date"
+                  v-model="meetDate"
                   @input="meetingDate = false"
                   ></v-date-picker>
                 </v-menu>
@@ -87,7 +141,7 @@
                 v-model="meetingTime"
                 :close-on-content-click="false"
                 :nudge-right="40"
-                :return-value.sync="time"
+                :return-value.sync="meetTime"
                 transition="scale-transition"
                 offset-y
                 max-width="290px"
@@ -95,7 +149,7 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                    v-model="time"
+                    v-model="meetTime"
                     label="만나는 시간"
                     readonly
                     v-on="on"
@@ -103,15 +157,20 @@
                   </template>
                   <v-time-picker
                   v-if="meetingTime"
-                  v-model="time"
+                  v-model="meetTime"
                   full-width
-                  @click:minute="$refs.menu.save(time)"
+                  @click:minute="$refs.menu.save(meetTime)"
                   ></v-time-picker>
                 </v-menu>
               </v-col>
             </v-row>
             <div class="mb-5" id="mapsize">
-              <MapService :searchService="true"></MapService>
+              <!-- 지도 -->
+              <MapService 
+              :searchService="true"
+              :address.sync="location"
+              :height="'200px'"
+              ></MapService>
             </div>
             <v-row>
               <v-col cols="12" md="3">
@@ -192,12 +251,20 @@ export default {
   data () {
     return {
       title: '',
-      content: '',
+      contents: '',
       ageRange: [20, 40],
       gender: null,
       lineUp: '',
-      date: new Date().toISOString().substr(0, 10),
-      time: null,
+
+      // date: new Date().toISOString().substr(0, 10),
+      // time: null,
+
+      endDate: new Date().toISOString().substr(0, 10),  // 모집 마감
+      endTime: null,
+
+      meetDate: new Date().toISOString().substr(0, 10), // 만나는 날짜
+      meetTime: null,
+
       groups: '',
       valid: true,
       items: [
@@ -215,11 +282,18 @@ export default {
       },
       sections: '',
       selectSubClass: '',
-      meetingDate: false,
+
+      endingDate: false,  // 마감 날짜
+      endingTime: false,
+
+      meetingDate: false, // 만나는 날짜
       meetingTime: false,
+
       agemin: 10,
       agemax: 100,
-      e6: 1
+      e6: 1,
+      location: '광주 광역시',
+      img: null
     }
   },
   methods: {
@@ -234,30 +308,53 @@ export default {
       const baseUrl = this.$store.state.baseUrl
       let form = new FormData()
 
-      form.append('title', this.title)
-      form.append('contents', this.content)
-      form.append('startDate', this.data + 'T' + this.time + ':00Z')
-      form.append('gender', this.gender) // back 수정
-      form.append('age', this.ageRange) // back 수정
-      form.append('member', this.lineUp)
-      form.append('location', null)
-      form.append('fee', null)
-      form.append('post', 1) // 1 : 모임 게시판
-      form.append('group', this.groups)
+      form.append('username', this.$store.state.user_name)
       form.append('user', this.$store.state.user_id)
+      form.append('userimage', this.$store.state.user_image) //!!
+      form.append('post', 1)  // 모임게시판 default 1
+      form.append('postname', '모임 게시판')
+      form.append('subclass', 1)
+      form.append('subclassname', this.selectSubClass[0]) // !
+      form.append('title', this.title)
+      form.append('contents', this.contents)
+      form.append('photo', this.img)
+      form.append('gender', this.gender)
+      form.append('minAge', this.ageRange[0])
+      form.append('maxAge', this.ageRange[1])
+      form.append('member', this.lineUp)
+      form.append('location', this.location)
 
-      axios.post(baseUrl + 'boards/hobby/', form, {
-        headers: {
-          'Authorization': 'Bearer ' + this.$store.state.user_jwt
-        }
+      form.append('startDay', this.meetDate)
+      form.append('startTime', this.meetTime)
+
+      // 수정 필!!
+      // form.append('endDay', this.endDate)
+      // form.append('endTime', this.endTime)
+      form.append('endDay', this.meetDate)
+      form.append('endTime', this.meetTime)
+      // console.log(this.meetDate)
+      // console.log(this.meetTime)
+      // console.log(this.endDate)
+      console.log(this.endTime)
+ 
+      const apiUrl = baseUrl + 'boards/hobby'
+      this.$http.post(apiUrl, form)
+      .then(res => {
+        this.$router.go(-1)
       })
-    }
+      .catch(err => {
+        console.log(err)
+      })
+      // axios.post(apiUrl, form, {
+      //   headers: {
+      //     'Authorization': 'Bearer ' + this.$store.state.user_jwt
+      //   }
+      // })
+    },
   }
 }
 </script>
 
 <style lang="stylus">
-#mapsize
-  height 200px
-  overflow auto
+
 </style>
