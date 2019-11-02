@@ -392,30 +392,28 @@ export default {
       this.followerGroup = res.data 
     })
     // user가  참여모임에 대한 모든 정보
-    let scope = this
     let event = []
     let counts = 0
     this.$http.get(this.$store.state.baseUrl+'boards/participantCheckListByUser/'+this.$store.state.user_id).then(res =>{
       let band = res.data
       let timeInMs = Date.now()
       let selectColor
-      let detail
       for(let i in band){
          if(timeInMs < Date.parse(band[i].endDay)){
           selectColor = '#ff7473'
         } else {
           selectColor = '#60c5ba'
         }
-        detail = {
-          startDay: band[i].startDay,
+        var detail = {
+          startDay: band[i].created_at,
           startTime: band[i].startTime,
           location: band[i].location,
           fee: band[i].fee
         }
-        let moim = {
+        var moim = {
           name: band[i].title,
           details: detail,
-          start: band[i].startDay,
+          start: band[i].created_at,
           end: band[i].endDay,
           color: selectColor,
         }
@@ -426,11 +424,32 @@ export default {
     }).catch(e =>{
       console.log(e)
     })
-    // #fc00c
     // 유저 찜 목록 추가
     this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{
-      console.log(res)
+      for(let i of res.data.post_id){
+        this.$http.get(this.$store.state.baseUrl + "boards/hobby/" + i).then(r =>{
+          let detail = {
+          startDay: r.data.created_at,
+          startTime: r.data.startTime,
+          location: r.data.location,
+          fee: r.data.fee
+          }
+          let moim = {
+            name: r.data.title,
+            details: detail,
+            start: r.data.created_at,
+            end: r.data.endDay,
+            color: '#f9c00c'    
+          }
+          event.push(moim)
+        }).catch(e =>{
+          console.log(e)
+        })
+      }
+    }).catch(error =>{
+      console.log(error)
     })
+    console.log(event)
     this.events = event
     console.log(this.events)
   },
