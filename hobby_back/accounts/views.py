@@ -9,6 +9,7 @@ import requests, json
 from .serializers import UserSerializer
 from .models import User, payInfo
 from django.contrib.auth import get_user_model
+from boards.models import PostHobby
 
 # 평판정보 조회 및 새로 추가하는 기능
 # 한명이 한개의 평판을 줄때 그것을을 1로 산정해서 추가해줌, defalt=0
@@ -220,3 +221,27 @@ def followers(requets, id):
             if flag:
                 data.append(box)
     return Response(data)
+
+# @api_view(['POST'])
+# def Cart(request, user_id, post_id):
+#     user = User.objects.get(id=user_id)
+#     cart = user.userCart
+#     if post_id in cart:
+#         del cart[cart.index(post_id)]
+#         user.userCart = sorted(cart)
+#         user.save()
+#         return Response("false")
+#     else:
+#         cart.append(post_id)
+#         user.userCart = sorted(cart)
+#         user.save()
+#         return Response("true")
+
+# @api_view(['POST'])
+# def CartList(request, user_id):
+#     print(request.data)
+#     print("-------")
+#     user = User.objects.get(id=user_id)
+#     post_id = request.data.get('post_id')
+#     post = PostHobby.objects.get(id=post_id)
+#     print(post)

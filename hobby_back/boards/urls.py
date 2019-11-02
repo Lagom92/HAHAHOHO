@@ -21,6 +21,8 @@ urlpatterns = [
     path('participantCheck/<int:post_id>/<int:user_id>', views.participantCheck),
     path('participantCheckListByUser/<int:user_id>', views.participantCheckListByUser),
     path('participantCheckListByPost/<int:post_id>', views.participantCheckListByPost),
+    path('cartList/<int:user_id>', views.CartList),
+    path('cart/<int:user_id>', views.addCart),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

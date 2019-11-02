@@ -17,4 +17,6 @@ urlpatterns = [
     path('following/<int:meId>/<int:youId>', views.following),
     path('follows/<int:id>', views.follows),
     path('followers/<int:id>', views.followers),
+    # path('cart/<int:user_id>/<int:post_id>', views.Cart),
+    # path('cartList/<int:user_id>', views.CartList),
 ]

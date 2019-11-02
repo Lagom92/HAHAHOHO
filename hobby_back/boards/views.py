@@ -280,3 +280,40 @@ def participantCheckListByUser(request, user_id):
         serializer = PostHobbySerializer(post)
         posts['{}'.format(idx)] = serializer.data  
     return Response(posts)
+
+@api_view(['POST'])
+def addCart(request, user_id):
+    user = User.objects.get(id=user_id)
+    post_id = request.data.get('post_id')
+    post = PostHobby.objects.get(id=post_id)
+    cart = post.cart.all()
+    if user in cart:
+        post.cart.remove(user)
+        return Response("undefined")
+    else:
+        post.cart.add(user)
+        return Response(0)
+
+@api_view(['GET'])
+def CartList(request, user_id):
+    # print(request.data)
+    # print("-------")
+    user = User.objects.get(id=user_id)
+    post = PostHobby.cart.all()
+    print(post)
+    # for i in post:
+    #     cart = i.cart.all()
+    #     print(cart)
+    #     if user in cart:
+    #         print(cart)
+
+    # cart = post.cart.all()
+    # print(cart)
+    # # print(cart)
+    # box = {}
+    # for i in cart:
+    #     if user.userName == i.userName:
+    #         box['user_id'] = user_id
+    #         break
+    # return Response(box)
+    pass

@@ -15,7 +15,7 @@ class User(models.Model):
     userGrade = models.IntegerField(default=1)
     userAddress = models.CharField(max_length=200, blank=True)
     userPoint = models.IntegerField(default=5000)
-    userLike = models.CharField(max_length=1000)
+    userLike = models.CharField(max_length=1000, blank=True)
     userFame = [0,0,0,0]
     followings = models.ManyToManyField('self', related_name="followers", symmetrical=False, blank=True)
 

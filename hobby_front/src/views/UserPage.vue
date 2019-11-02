@@ -426,7 +426,13 @@ export default {
     }).catch(e =>{
       console.log(e)
     })
+    // #fc00c
+    // 유저 찜 목록 추가
+    this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{
+      console.log(res)
+    })
     this.events = event
+    console.log(this.events)
   },
   methods: {
     viewMore ({ date }) {
