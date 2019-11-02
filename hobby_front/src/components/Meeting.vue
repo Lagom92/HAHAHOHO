@@ -68,22 +68,21 @@ export default {
     data: {}
   },
   mounted() {
-    console.log(this.data.id)
-    let form = new FormData()
-    form.append('post_id', this.data.id)
-    this.$http.post(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id, form).then(res =>{
-      if(res.data['user_id'] == this.$store.state.user_id){
-        this.selected[0] = 0
+    this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{
+      console.log(res.data)
+      console.log(this.selected)
+      for(let i of res.data.post_id){
+        if(i == this.data.id){
+          this.selected[0] = 1
+        }
       }
     })
   },
   watch: {
     selected: function(){
-      console.log(this.data.id)
       let form = new FormData()
       form.append('post_id', this.data.id)
       this.$http.post(this.$store.state.baseUrl + "boards/cart/" + this.$store.state.user_id, form).then(res =>{
-        console.log(res.data)
       })
     }
   }

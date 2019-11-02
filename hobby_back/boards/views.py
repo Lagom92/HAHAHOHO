@@ -244,6 +244,9 @@ def participantCheck(request, post_id, user_id):
         except:
             user = User.objects.get(id=user_id)
             post = PostHobby.objects.get(id=post_id)
+            cart = post.cart.filter(id=user_id)
+            if user in cart:
+                post.cart.remove(user)
             participant = ParticipantCheck.objects.create(
                 post=post, user=user
             )
@@ -297,23 +300,12 @@ def addCart(request, user_id):
 @api_view(['GET'])
 def CartList(request, user_id):
     # print(request.data)
-    # print("-------")
     user = User.objects.get(id=user_id)
-    post = PostHobby.cart.all()
-    print(post)
-    # for i in post:
-    #     cart = i.cart.all()
-    #     print(cart)
-    #     if user in cart:
-    #         print(cart)
-
-    # cart = post.cart.all()
-    # print(cart)
-    # # print(cart)
-    # box = {}
-    # for i in cart:
-    #     if user.userName == i.userName:
-    #         box['user_id'] = user_id
-    #         break
-    # return Response(box)
-    pass
+    post = PostHobby.objects.all()
+    post_group = {'post_id':[]}
+    for i in post:
+        cart = i.cart.all()
+        for j in cart:
+            if(user == j):
+                post_group['post_id'].append(i.id) 
+    return Response(post_group)
