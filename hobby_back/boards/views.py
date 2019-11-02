@@ -3,9 +3,9 @@ from rest_framework import generics, filters, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
-from .models import PostHobby, PostFree, Faq, Notice, CommentFree, ParticipantCheck, User
+from .models import PostHobby, PostFree, Faq, Notice, CommentFree, ParticipantCheck, User, CommentHobby
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer
-from .serializers import FaqSerializer, CommentFreeSerializer, ParticipantCheckSerializer
+from .serializers import FaqSerializer, CommentFreeSerializer, ParticipantCheckSerializer, CommentHobbySerializer
 
 class postHobby_list(generics.ListCreateAPIView):
     '''
@@ -25,7 +25,7 @@ class postHobby_list(generics.ListCreateAPIView):
     '''
     search_fields = ['title', 'contents', 'location']
     filter_backends = (filters.SearchFilter,)
-    queryset = PostHobby.objects.all()
+    queryset = PostHobby.objects.all().order_by('-id')
     serializer_class = PostHobbySerializer
     
 class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
@@ -127,7 +127,7 @@ class faq_list(generics.ListAPIView):
         - contents: 게시판 내용
         - created_at: 게시판 작성 시간
     '''
-    queryset = Faq.objects.all()
+    queryset = Faq.objects.all().order_by('-id')
     serializer_class = FaqSerializer
 
 class faq_detail(generics.RetrieveAPIView):
@@ -168,7 +168,7 @@ class main_notice(generics.ListAPIView):
     ## 내용
 
     '''
-    queryset = Notice.objects.all().order_by('-id')[:6]
+    queryset = Notice.objects.all().order_by('-id')[:5]
     serializer_class = NoticeSerializer
 
 class main_free(generics.ListAPIView):
@@ -181,7 +181,7 @@ class main_free(generics.ListAPIView):
     ## 내용
 
     '''
-    queryset = PostFree.objects.all().order_by('-id')[:6]
+    queryset = PostFree.objects.all().order_by('-id')[:5]
     serializer_class = PostFreeSerializer
 
 class commentFree_list(generics.CreateAPIView):
@@ -210,9 +210,10 @@ def comments(request, pk):
     for query in queryset:
         box = {}
         box['id'] = query.id
+        box['user'] = query.user.id
         box['name'] = query.user.userName
         box['contents'] = query.contents
-        box['created_at'] = query.created_at.strftime('%Y-%m-%d %H:%M')
+        box['created_at'] = query.created_at
         data.append(box)
     return Response(data)
 
@@ -309,3 +310,55 @@ def CartList(request, user_id):
             if(user == j):
                 post_group['post_id'].append(i.id) 
     return Response(post_group)
+
+# 모임 게시판 댓글
+class hobbyComment(generics.CreateAPIView):
+    '''
+    모임 게시판의 댓글 생성 기능
+
+    ---
+    ## 내용
+
+    '''
+    queryset = CommentHobby.objects.all()
+    serializer_class = CommentHobbySerializer
+
+@api_view(['GET'])
+def hobbyComments(request, pk):
+    '''
+    모임 게시판의 댓글 list 기능
+
+    ---
+    ## 내용
+
+    '''
+    queryset = CommentHobby.objects.all().order_by('-id')
+    queryset = queryset.filter(postHobby_id = pk)
+    data = []
+    for query in queryset:
+        box = {}
+        box['id'] = query.id
+        box['user'] = query.user.id
+        box['name'] = query.user.userName
+        box['contents'] = query.contents
+        box['created_at'] = query.created_at
+        data.append(box)
+    return Response(data)
+
+@api_view(['GET', 'DELETE'])
+def hobbyComment_detail(request, pk):
+    '''
+    모임 게시판의 댓글 detail, delete 기능
+
+    ---
+    ## 내용
+
+    '''
+    commenthobby = get_object_or_404(CommentHobby, pk=pk)
+    if request.method == 'GET':
+        serializer = CommentHobbySerializer(commenthobby)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        commenthobby.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
