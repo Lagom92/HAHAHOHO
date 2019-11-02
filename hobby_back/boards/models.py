@@ -18,7 +18,7 @@ class Post(models.Model):
         (faq, 'FAQ')
     )
     name = models.CharField(max_length=50, choices=what_board, default=hobby)
-    
+
     def __str__(self):
         return self.name
 
@@ -62,7 +62,8 @@ class PostHobby(models.Model):
     member = models.IntegerField() 
     location = models.CharField(max_length=500) 
     fee = models.IntegerField(default=10000)
-    photo = models.ImageField(blank=True, null=True, upload_to="hobby/%Y/%m/%d")   
+    photo = models.ImageField(blank=True, null=True, upload_to="hobby/%Y/%m/%d")
+    cart = models.ManyToManyField(User, related_name="carting", symmetrical=False, blank=True)
     # delete 오버라이딩
     def delete(self, *args, **kwargs):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
@@ -130,12 +131,9 @@ class CommentHobby(models.Model):
 
 # 자유게시판 댓글
 class CommentFree(models.Model):
-    # 댓글과 1:n
     postFree = models.ForeignKey(PostFree, on_delete=models.CASCADE)
-    # 유저와 1:n
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.CharField(max_length=100)
-    # 생성날짜
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -145,3 +143,7 @@ class CommentFree(models.Model):
 class ParticipantCheck(models.Model):
     post = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+# class Cart(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     post = models.ForeignKey(PostHobby, on_delete=models.CASCADE)

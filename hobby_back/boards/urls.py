@@ -16,11 +16,13 @@ urlpatterns = [
     path('main/notice', views.main_notice.as_view()),
     path('main/free', views.main_free.as_view()),
     path('free/<int:pk>/comment', views.commentFree_list.as_view()),
-    path('free/<int:pk>/comment/<int:comment_pk>', views.commentFree_detail),
+    path('free/<int:pk>/comments', views.comments),
+    path('comment/<int:pk>', views.commentFree_detail),
     path('participantCheck/<int:post_id>/<int:user_id>', views.participantCheck),
     path('participantCheckListByUser/<int:user_id>', views.participantCheckListByUser),
     path('participantCheckListByPost/<int:post_id>', views.participantCheckListByPost),
-
+    path('cartList/<int:user_id>', views.CartList),
+    path('cart/<int:user_id>', views.addCart),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -4,7 +4,7 @@
             <v-row>
                 <v-col cols="12" md="6" offset-md="3">
                     <div>
-                        <h1>자유게시판 글쓰기</h1>
+                        <h1>자유게시판 수정</h1>
                     </div>
                     <v-divider></v-divider>
                     <v-form ref="form" v-model="valid">
@@ -26,9 +26,9 @@
               <div class="ml-auto">
                 <v-btn 
                 text color="primary"
-                @click="createFree"
+                @click="updateFree"
                 >
-                  등록하기
+                수정하기
                 </v-btn>
               </div>
             </v-row>
@@ -38,7 +38,7 @@
 
 <script>
 export default {
-    name: 'CreateFreeboard',
+    name: 'UpdateFreeboard',
     data () {
         return {
         title: '',
@@ -46,19 +46,35 @@ export default {
         valid: true,
         }
     },
-    
+    mounted () {
+        this.id = this.$route.params.id
+        this.getDetail();
+    },
     methods: {
-        createFree: function () {
+        getDetail: function () {
+            const baseUrl = this.$store.state.baseUrl
+            console.log(this.id)
+            const apiUrl = baseUrl + 'boards/free/' + this.id 
+            this.$http.get(apiUrl)
+                .then(res => {
+                    this.title = res.data.title
+                    this.contents = res.data.contents
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        updateFree: function () {
             const baseUrl = this.$store.state.baseUrl
             let form = new FormData()
 
             form.append('title', this.title)
             form.append('contents', this.contents)
-            // form.append('user', this.$store.state.user_id)
-            // form.append('username', this.$store.state.user_name)
+            form.append('user', this.$store.state.user_id)
+            form.append('username', this.$store.state.user_name)
             form.append('post', 2) // 2 : 자유 게시판 Default
 
-            const apiUrl = baseUrl + 'boards/free'
+            const apiUrl = baseUrl + 'boards/free/' + this.id
 
             // axios.post(baseUrl + 'boards/free', form, {
             //     headers: {
@@ -66,19 +82,18 @@ export default {
             //     }
             // })
 
-            this.$http.post(apiUrl, form)
+            this.$http.put(apiUrl, form)
             .then(res => {
                 // window.location.href = 'http://localhost:8080/board';
                 // this.$EventBus.$emit('boardPage', 1)
-                this.$router.push({path: 'board', porops: {poropsPage: 1}})
-                // this.$router.go(-1)
+                // this.$router.push({path: 'board', porops: {poropsPage: 1}})
+                this.$router.go(-1)
             })
             .catch(err => {
                 console.log("자유게시판 글작성에 실패하였습니다.")
                 console.log(err)
             })
         },
-        
     }
 }
 </script>

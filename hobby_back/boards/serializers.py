@@ -34,8 +34,9 @@ class FaqSerializer(serializers.ModelSerializer):
         model = Faq
         fields = '__all__'
 
-        
 class CommentFreeSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.userNickName")
+
     class Meta:
         model = CommentFree
         fields = '__all__'

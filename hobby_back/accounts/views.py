@@ -9,6 +9,7 @@ import requests, json
 from .serializers import UserSerializer
 from .models import User, payInfo
 from django.contrib.auth import get_user_model
+from boards.models import PostHobby
 
 # 평판정보 조회 및 새로 추가하는 기능
 # 한명이 한개의 평판을 줄때 그것을을 1로 산정해서 추가해줌, defalt=0
@@ -75,13 +76,12 @@ def userSave(request):
 @api_view(['POST'])
 def editUser(request, id):
     user = User.objects.get(id=id)
-
-    # 유저 프로필 수정
-    ## 이미지
-    ## 주소
-    ## 선호 카테고리
-    ## 닉네임
-    pass
+    user.userAddress = request.data.get('userAddress')
+    user.userNickName = request.data.get('userNickName')
+    user.userLike = request.data.get('userLike')
+    user.save()
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
  
 @api_view(['GET'])
 def Naver_Login(request):
@@ -185,12 +185,63 @@ def following(request, meId, youId):
 @api_view(['GET'])
 def follows(request, id):
     user = User.objects.get(id=id)
-    follows = user.followings.all()
+    follows = user.followings.all().order_by('id')
     data = []
     for follow in follows:
         box={}
-        box['id'] = follow.id
-        box['name'] = follow.userName
+        # box['id'] = follow.id
+        box['name'] = follow.userNickName
+        if follow.userImage == 'undefined':
+            box['img'] = None
+        else:
+            box['img'] = str(follow.userImage)
         data.append(box)
-   
     return Response(data)
+
+@api_view(['GET'])
+def followers(requets, id):
+    me = User.objects.get(id=id)
+    data = []
+    print(me.userName)
+    user = User.objects.all().order_by('id')
+    for i in user:
+        if me.userName != i.userName:
+            box = {}
+            flag = 0
+            follower = i.followings.all()
+            for j in follower:
+                if j.userName == me.userName:
+                    flag = 1
+                    box['name'] = i.userName
+                    if i.userName == 'undefined':
+                        box['img'] = None
+                    else:
+                        box['img'] = str(i.userImage)
+                    break
+            if flag:
+                data.append(box)
+    return Response(data)
+
+# @api_view(['POST'])
+# def Cart(request, user_id, post_id):
+#     user = User.objects.get(id=user_id)
+#     cart = user.userCart
+#     if post_id in cart:
+#         del cart[cart.index(post_id)]
+#         user.userCart = sorted(cart)
+#         user.save()
+#         return Response("false")
+#     else:
+#         cart.append(post_id)
+#         user.userCart = sorted(cart)
+#         user.save()
+#         return Response("true")
+
+# @api_view(['POST'])
+# def CartList(request, user_id):
+#     print(request.data)
+#     print("-------")
+#     user = User.objects.get(id=user_id)
+#     post_id = request.data.get('post_id')
+#     post = PostHobby.objects.get(id=post_id)
+#     print(post)

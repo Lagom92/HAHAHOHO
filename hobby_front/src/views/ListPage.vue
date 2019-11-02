@@ -2,14 +2,12 @@
   <div>
     <TopBanner></TopBanner>
     <v-container>
-      <v-row>
-        <h1 class="mx-auto">모임 목록</h1>
-      </v-row>
-      <v-row>
-        <v-btn class="ml-auto pr-10 pb-10" text to="/list/createmeeting">
+      <h1 class="text-center">모임 목록</h1>
+      <div class="d-flex justify-end mx-3">
+        <v-btn fab dark icon to="/list/createmeeting" color="#74b4a0"> 
           <v-icon large>mdi-pencil-plus</v-icon>
         </v-btn>
-      </v-row>
+      </div>
       <v-layout>
         <v-flex>
           <MeetingList></MeetingList>

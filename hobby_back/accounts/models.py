@@ -14,21 +14,10 @@ class User(models.Model):
     userImage = models.ImageField(blank=True)
     userGrade = models.IntegerField(default=1)
     userAddress = models.CharField(max_length=200, blank=True)
-    userPoint = models.IntegerField(default=0)
-    userLike = ArrayField(
-        ArrayField(
-            models.CharField(max_length=50, blank=True, default=''),
-            size=8,
-            blank=True,
-            default=list,
-            null=True
-        ),
-        size=2,
-        blank=True,
-        null=True
-    )
+    userPoint = models.IntegerField(default=5000)
+    userLike = models.CharField(max_length=1000, blank=True)
     userFame = [0,0,0,0]
-    followings = models.ManyToManyField('self', related_name="followers", blank=True)
+    followings = models.ManyToManyField('self', related_name="followers", symmetrical=False, blank=True)
 
     def __str__(self):
         return self.userName

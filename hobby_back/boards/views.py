@@ -184,32 +184,55 @@ class main_free(generics.ListAPIView):
     queryset = PostFree.objects.all().order_by('-id')[:6]
     serializer_class = PostFreeSerializer
 
-class commentFree_list(generics.ListCreateAPIView):
-    queryset = CommentFree.objects.all().order_by('-id')
+class commentFree_list(generics.CreateAPIView):
+    '''
+    자유게시판의 댓글 생성 기능
+
+    ---
+    ## 내용
+
+    '''
+    queryset = CommentFree.objects.all()
     serializer_class = CommentFreeSerializer
 
-# 체크! pk와 question_pk는 어디서 사용되는가???
-@api_view(['GET','PUT','DELETE'])
-def commentFree_detail(request, pk, comment_pk):
-    commentfree = get_object_or_404(CommentFree, pk=question_id)
-    # 특정 댓글 조회하기
+@api_view(['GET'])
+def comments(request, pk):
+    '''
+    자유게시판의 댓글 list 기능
+
+    ---
+    ## 내용
+
+    '''
+    queryset = CommentFree.objects.all().order_by('-id')
+    queryset = queryset.filter(postFree_id = pk)
+    data = []
+    for query in queryset:
+        box = {}
+        box['id'] = query.id
+        box['name'] = query.user.userName
+        box['contents'] = query.contents
+        box['created_at'] = query.created_at.strftime('%Y-%m-%d %H:%M')
+        data.append(box)
+    return Response(data)
+
+@api_view(['GET', 'DELETE'])
+def commentFree_detail(request, pk):
+    '''
+    자유게시판의 댓글 detail, delete 기능
+
+    ---
+    ## 내용
+
+    '''
+    commentfree = get_object_or_404(CommentFree, pk=pk)
     if request.method == 'GET':
         serializer = CommentFreeSerializer(commentfree)
         return Response(serializer.data)
 
-    # 특정 댓글 수정
-    elif request.method == 'PUT':
-        serializer = CommentFreeSerializer(commentfree, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
-    # 특정 댓글 삭제
     elif request.method == 'DELETE':
         commentfree.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 @api_view(['POST',  'DELETE'])
 def participantCheck(request, post_id, user_id):
@@ -257,3 +280,40 @@ def participantCheckListByUser(request, user_id):
         serializer = PostHobbySerializer(post)
         posts['{}'.format(idx)] = serializer.data  
     return Response(posts)
+
+@api_view(['POST'])
+def addCart(request, user_id):
+    user = User.objects.get(id=user_id)
+    post_id = request.data.get('post_id')
+    post = PostHobby.objects.get(id=post_id)
+    cart = post.cart.all()
+    if user in cart:
+        post.cart.remove(user)
+        return Response("undefined")
+    else:
+        post.cart.add(user)
+        return Response(0)
+
+@api_view(['GET'])
+def CartList(request, user_id):
+    # print(request.data)
+    # print("-------")
+    user = User.objects.get(id=user_id)
+    post = PostHobby.cart.all()
+    print(post)
+    # for i in post:
+    #     cart = i.cart.all()
+    #     print(cart)
+    #     if user in cart:
+    #         print(cart)
+
+    # cart = post.cart.all()
+    # print(cart)
+    # # print(cart)
+    # box = {}
+    # for i in cart:
+    #     if user.userName == i.userName:
+    #         box['user_id'] = user_id
+    #         break
+    # return Response(box)
+    pass

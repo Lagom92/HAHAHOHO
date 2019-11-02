@@ -6,11 +6,11 @@
         <div class="mb-1">
             <v-card>
                 <v-container>
-                    <p>작성자</p>
+                    <p>작성자: {{user}}</p>
                     <v-form>
-                        <v-textarea label="댓글 작성"></v-textarea>
+                        <input v-model="text" label="댓글 작성" placeholder="댓글을 남겨주세요">
                         <div class="d-flex justify-end">
-                            <v-btn dark color="light-blue">작성</v-btn>
+                            <v-btn dark color="light-blue" @click="createComment">작성</v-btn>
                         </div>
                     </v-form>
                 </v-container>
@@ -18,39 +18,15 @@
         </div>
         <div>
             <v-card>
-                <v-container>
+                <v-container v-for="(post, idx) in this.posts" :key="post.id">
                     <div>
                         <v-row class="mx-0">
-                            <p class="borderP">작성자</p>
-                            <p>2019-10-31</p>
+                            <p class="borderP">작성자: {{post.username}}</p>
+                            <p>{{post.created_at}}</p>
                         </v-row>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    </div>
-                </v-container>
-            </v-card>
-            <v-card>
-                <v-container>
-                    <div>
-                        <v-row class="mx-0">
-                            <p class="borderP">작성자</p>
-                            <p>2019-10-31</p>
-                        </v-row>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    </div>
-                </v-container>
-            </v-card>
-            <v-card>
-                <v-container>
-                    <div>
-                        <v-row class="mx-0">
-                            <p class="borderP">작성자</p>
-                            <p>2019-10-31</p>
-                        </v-row>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <v-divider class="mb-3"></v-divider>
+                        <p>{{post.contents}}</p>
                         <div class="d-flex justify-end">
-                            <v-btn dark color="light-blue" class="mr-3">수정</v-btn>
-                            <v-btn dark color="pink">삭제</v-btn>
+                            <v-btn dark color="red" @click="deleteComment(post.id, idx)">삭제</v-btn>
                         </div>
                     </div>
                 </v-container>
@@ -61,7 +37,65 @@
 
 <script>
 export default {
-    name: 'Comment'
+    name: 'Comment',
+    data () {
+        return {
+            user: '',
+            posts: [],
+            text: ''
+        }
+
+    },
+    mounted () {
+        this.user = this.$store.state.user_name
+        this.id = this.$route.params.id
+        this.getComments()
+    },
+    methods: {
+        getComments () {
+            const baseUrl = this.$store.state.baseUrl
+            const apiUrl = baseUrl + 'boards/free/' + this.id + '/comments'
+            this.$http.get(apiUrl)
+                .then(res => {
+                    this.posts = res.data 
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        createComment () {
+            const baseUrl = this.$store.state.baseUrl
+            let form = new FormData()
+
+            form.append('username', this.user)
+            form.append('user', this.$store.state.user_id)
+            form.append('postFree', this.id)
+            form.append('contents', this.text)
+
+            const apiUrl = baseUrl + 'boards/free/' + this.id + '/comment'
+            this.$http.post(apiUrl, form)
+                .then(res => {
+                    this.posts.unshift(res.data)
+                    this.text = ''
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        deleteComment (id, idx) {
+            const baseUrl = this.$store.state.baseUrl
+            const apiUrl = baseUrl + 'boards/comment/' + id
+            this.$http.delete(apiUrl)
+                .then(res => {
+                    this.posts.splice(idx, 1)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+        }
+    }
+
 }
 </script>
 
