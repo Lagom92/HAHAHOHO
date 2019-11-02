@@ -79,7 +79,7 @@
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-account</v-icon>
-                최대 {{data.member}}명 / {{data.age[0]}}세 ~ {{data.age[1]}}세까지
+                최대 {{data.member}}명 / {{data.minAge}}세 ~ {{data.maxAge}}세까지
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-gender-male-female</v-icon>
