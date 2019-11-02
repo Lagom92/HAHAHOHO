@@ -40,8 +40,14 @@
           </v-menu>
         </v-col>
         <!-- 유저의 상태에 따라 변경되야함 -->
-        <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" >
+        <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
+          <!-- 모임 참여하기 함수 추가 -->
           <v-btn block dark color="#F3B749">참여하기</v-btn>
+        </v-col>
+        <v-col  v-if="data.user === userId">
+          <!-- 게시판 글 수정하기, 삭제하기 함수 추가 -->
+          <v-btn block dark color="#F3B749">글 수정하기</v-btn>
+          <v-btn block dark color="#F3B749">글 삭제하기</v-btn>
         </v-col>
         <div class="mb-4 mr-4">
           모집 마감: 
@@ -144,10 +150,12 @@ export default {
     return {
       data: {age: [0,0]},
       id: '',
+      userId: '',
     }
   },
   mounted () {
     this.id = this.$route.params.id
+    this.userId = this.$store.state.user_id
     this.get_detail();
 },
   methods: {
