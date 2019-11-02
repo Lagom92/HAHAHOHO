@@ -10,7 +10,8 @@ export default new Vuex.Store({
     user_jwt: '',
     user_name: '',
     // baseUrl: "http://54.180.148.99:8000/"
-    baseUrl: 'http://localhost:8000/'
+    baseUrl: 'http://localhost:8000/',
+    search_word: ''
   },
   plugins: [createPersistedState()],
   mutations: {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     nameSave (state, name){
       state.user_name = name
+    },
+    wordSave (state, word) {
+      state.search_word = word
     }
   },
   actions: {
