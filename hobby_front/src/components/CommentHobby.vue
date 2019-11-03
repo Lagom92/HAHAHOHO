@@ -56,7 +56,7 @@ export default {
     methods: {
         getComments () {
             const baseUrl = this.$store.state.baseUrl
-            const apiUrl = baseUrl + 'boards/free/' + this.id + '/comments'
+            const apiUrl = baseUrl + 'boards/hobby/' + this.id + '/comments'
             this.$http.get(apiUrl)
                 .then(res => {
                     for (let i of res.data) {
@@ -74,10 +74,10 @@ export default {
 
             form.append('name', this.user)
             form.append('user', this.$store.state.user_id)
-            form.append('postFree', this.id)
+            form.append('postHobby', this.id)
             form.append('contents', this.text)
 
-            const apiUrl = baseUrl + 'boards/free/' + this.id + '/comment'
+            const apiUrl = baseUrl + 'boards/hobby/' + this.id + '/comment'
             this.$http.post(apiUrl, form)
                 .then(res => {
                     res.data.created_at = String(res.data.created_at).substring(0,10)+'  '+String(res.data.created_at).substring(11,16)
@@ -90,7 +90,7 @@ export default {
         },
         deleteComment (id, idx) {
             const baseUrl = this.$store.state.baseUrl
-            const apiUrl = baseUrl + 'boards/comment/' + id
+            const apiUrl = baseUrl + 'boards/hobbyComment/' + id
             this.$http.delete(apiUrl)
                 .then(res => {
                     this.posts.splice(idx, 1)

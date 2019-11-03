@@ -69,8 +69,6 @@ export default {
   },
   mounted() {
     this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{
-      console.log(res.data)
-      console.log(this.selected)
       for(let i of res.data.post_id){
         if(i == this.data.id){
           this.selected[0] = 1

@@ -108,12 +108,9 @@ class Faq(models.Model):
 
 # 취미게시판 댓글
 class CommentHobby(models.Model):
-    # 댓글과 1:n
     postHobby = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
-    # 유저와 1:n
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.CharField(max_length=100)
-    # 생성날짜
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
