@@ -12,12 +12,11 @@
               >
                 <v-list-item three-line>
                   <v-list-item-content>
-                    <v-img
-                    :src="userInfo.userImage"
-                    max-height="100px"
-                    max-width="100px"
-                    class="mx-auto"
-                    ></v-img>
+                    <v-avatar size="150">
+                      <img
+                        :src="userInfo.userImage"
+                      >
+                    </v-avatar>
                     <v-list-item-title class="headline mb-1 text-center">
                       {{userInfo.userNickName}}
                       <v-btn
@@ -88,8 +87,8 @@
                                 <v-card-title>팔로워</v-card-title>
                                 <v-divider></v-divider>
                                 <v-card-text style="height: 300px;">
-                                  <v-list>
-                                    <v-list-item
+                                  <v-list v-if="followerCounting">
+                                    <v-list-item 
                                     v-for="item in followerGroup"
                                     :key="item.name"
                                     >
@@ -101,6 +100,11 @@
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
+                                  </v-list>
+                                  <v-list v-else>
+                                    <v-list-item-content>
+                                        <h3>팔로워가 없습니다 !</h3>
+                                      </v-list-item-content>
                                   </v-list>
                                 </v-card-text>
                                 <v-divider></v-divider>
@@ -130,7 +134,7 @@
                                 <v-card-title>팔로잉</v-card-title>
                                 <v-divider></v-divider>
                                 <v-card-text style="height: 300px;">
-                                  <v-list>
+                                  <v-list v-if="followCounting">
                                     <v-list-item
                                     v-for="item in followGroup"
                                     :key="item.title"
@@ -143,6 +147,9 @@
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
+                                  </v-list>
+                                  <v-list v-else>
+                                    <h3>팔로잉한 사람이 없습니다 !</h3>
                                   </v-list>
                                 </v-card-text>
                                 <v-divider></v-divider>
@@ -330,7 +337,7 @@ export default {
       if (!start || !end) {
         return ''
       }
-
+      
       const startMonth = this.monthFormatter(start)
       const startYear = start.year
 
@@ -368,6 +375,8 @@ export default {
       // 카카오만
       image = image.substr(14, counts)
       this.userInfo.userImage = 'https://'+image
+      /// 이미지 수정 후
+      // this.userInfo.userImage = 'http://localhost:8000'+res.data.userImage
     }).catch(e =>{
       console.log(e)
     })
@@ -405,7 +414,7 @@ export default {
           selectColor = '#60c5ba'
         }
         var detail = {
-          startDay: band[i].created_at,
+          startDay: this.formatDate(band[i].created_at),
           startTime: band[i].startTime,
           location: band[i].location,
           fee: band[i].fee
@@ -413,7 +422,7 @@ export default {
         var moim = {
           name: band[i].title,
           details: detail,
-          start: band[i].created_at,
+          start: this.formatDate(band[i].created_at),
           end: band[i].endDay,
           color: selectColor,
         }
@@ -429,7 +438,7 @@ export default {
       for(let i of res.data.post_id){
         this.$http.get(this.$store.state.baseUrl + "boards/hobby/" + i).then(r =>{
           let detail = {
-          startDay: r.data.created_at,
+          startDay: this.formatDate(r.data.created_at),
           startTime: r.data.startTime,
           location: r.data.location,
           fee: r.data.fee
@@ -437,7 +446,7 @@ export default {
           let moim = {
             name: r.data.title,
             details: detail,
-            start: r.data.created_at,
+            start: this.formatDate(r.data.created_at),
             end: r.data.endDay,
             color: '#f9c00c'    
           }
@@ -489,6 +498,19 @@ export default {
       this.start = start
       this.end = end
     },
+    formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+
+      return [year, month, day].join('-');
+    }
   }
 }
 </script>

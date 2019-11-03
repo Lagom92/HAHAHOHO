@@ -138,6 +138,7 @@ export default {
       this.$http.get(api_url)
       .then(request => {
         this.data = request.data
+        console.log(this.data.photo)
       })
       .catch(err => {
         console.log(err)
