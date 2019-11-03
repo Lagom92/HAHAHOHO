@@ -12,7 +12,7 @@
               >
                 <v-list-item three-line>
                   <v-list-item-content>
-                    <v-avatar size="150">
+                    <v-avatar size="120">
                       <img
                         :src="userInfo.userImage"
                       >
@@ -56,11 +56,11 @@
                 <v-list-item three-line>
                   <v-list-item-content>
                     <v-img
-                    src="../assets/logo.png"
+                    :src="grade"
                     max-height="100px"
                     max-width="100px"
                     class="mx-auto"
-                    ></v-img>(등급아이콘자리)
+                    ></v-img>
                     <v-list-item-title class="headline mb-1 text-center">
                       <v-row justify="center">
                         <span class="my-auto mr-3">포인트 {{userInfo.userPoint}}P</span>
@@ -288,6 +288,7 @@ export default {
   },
   data () {
     return {
+      grade:'',
       userInfo:{
         'id': 0,
         'userAddress': "",
@@ -372,6 +373,7 @@ export default {
       let counts = image.length
       var strArray = res.data.userLike.split(',')
       this.tags = strArray
+      this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
       // 카카오만
       image = image.substr(14, counts)
       this.userInfo.userImage = 'https://'+image

@@ -164,7 +164,7 @@
       </v-card-title>
       <v-card-text class="text-center">
         <div class="title font-weight-thin">카카오 플러스 친구를 해보세요~</div>
-        <v-btn dark large color="#EE7785">
+        <v-btn dark large color="#EE7785" @click="kakao()">
           플러스친구 추가하기
           <v-icon>mdi-arrow-right-bold</v-icon>
         </v-btn>
@@ -222,7 +222,7 @@ export default {
           for (let i of res.data){
             i.created_at = String(i.created_at).substring(0,10)
           }
-          this.notices = res.data 
+          this.notices = res.data
         })
         .catch(err => {
           console.log(err)
@@ -241,6 +241,9 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    kakao(){
+      window.open("https://pf.kakao.com/_xbAXcT#none", "width=400, height=300, left=100, top=50")
     }
   }
 }
