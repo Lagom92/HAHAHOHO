@@ -21,11 +21,9 @@ urlpatterns = [
     path('hobby/<int:pk>/comment', views.hobbyComment.as_view()),
     path('hobby/<int:pk>/comments', views.hobbyComments),
     path('hobbyComment/<int:pk>', views.hobbyComment_detail),
-
     path('participantCheck/<int:post_id>/<int:user_id>', views.participantCheck),
     path('participantCheckListByUser/<int:user_id>', views.participantCheckListByUser),
     path('participantCheckListByPost/<int:post_id>', views.participantCheckListByPost),
-    
     path('cartList/<int:user_id>', views.CartList),
     path('cart/<int:user_id>', views.addCart),
 ]

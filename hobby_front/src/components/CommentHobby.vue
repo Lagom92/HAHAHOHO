@@ -8,9 +8,9 @@
                 <v-container v-if="user !== ''">
                     <p>작성자: {{user}}</p>
                     <v-form>
-                        <input v-model="text" label="댓글 작성" placeholder="댓글을 남겨주세요">
+                        <input v-model="word" label="댓글 작성" placeholder="댓글을 남겨주세요">
                         <div class="d-flex justify-end">
-                            <v-btn dark color="light-blue" @click="createComment">작성</v-btn>
+                            <v-btn dark color="light-blue" @click="createComment()">작성</v-btn>
                         </div>
                     </v-form>
                 </v-container>
@@ -37,12 +37,12 @@
 
 <script>
 export default {
-    name: 'Comment',
+    name: 'CommentHobby',
     data () {
         return {
             user: '',
             posts: [],
-            text: '',
+            word: '',
             userId: ''
         }
 
@@ -75,14 +75,14 @@ export default {
             form.append('name', this.user)
             form.append('user', this.$store.state.user_id)
             form.append('postHobby', this.id)
-            form.append('contents', this.text)
+            form.append('contents', this.word)
 
             const apiUrl = baseUrl + 'boards/hobby/' + this.id + '/comment'
             this.$http.post(apiUrl, form)
                 .then(res => {
                     res.data.created_at = String(res.data.created_at).substring(0,10)+'  '+String(res.data.created_at).substring(11,16)
                     this.posts.unshift(res.data)
-                    this.text = ''
+                    this.word = ''
                 })
                 .catch(err => {
                     console.log(err)
@@ -110,4 +110,5 @@ export default {
     border-right 1px solid rgba(0, 0, 0, 0.12)
     padding-right 10px
     margin-right 10px
+
 </style>

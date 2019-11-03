@@ -10,7 +10,7 @@
                     <v-form>
                         <input v-model="text" label="댓글 작성" placeholder="댓글을 남겨주세요">
                         <div class="d-flex justify-end">
-                            <v-btn dark color="light-blue" @click="createComment">작성</v-btn>
+                            <v-btn dark color="light-blue" @click="createComment()">작성</v-btn>
                         </div>
                     </v-form>
                 </v-container>
@@ -110,4 +110,5 @@ export default {
     border-right 1px solid rgba(0, 0, 0, 0.12)
     padding-right 10px
     margin-right 10px
+
 </style>

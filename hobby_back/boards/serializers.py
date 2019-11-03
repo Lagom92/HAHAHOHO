@@ -8,7 +8,6 @@ class ParticipantCheckSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class PostHobbySerializer(serializers.ModelSerializer):
-    # participant = ParticipantCheckSerializer(many=True, read_only=True)
     username = serializers.CharField(source="user.userNickName")
     userimage = serializers.CharField(source="user.userImage")
     postname = serializers.CharField(source="post.name")

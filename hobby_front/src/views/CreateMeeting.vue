@@ -7,19 +7,24 @@
             <h1>모임 생성</h1>
           </div>
           <v-divider></v-divider>
-
-          <v-file-input accept="image/*" label="모임 커버 사진" v-model="img"></v-file-input>
-
+          <v-file-input 
+          accept="image/*" 
+          label="모임 커버 사진" 
+          v-model="img"
+          :rules="imageRules"
+          ></v-file-input>
           <v-form ref="form" v-model="valid">
             <v-text-field
             v-model="title"
-            :counter="10"
+            :counter="20"
+            :rules="titleRules"
             label="글 제목"
             ></v-text-field>
 
             <v-textarea
             outlined
             v-model="contents"
+            :rules="contentsRules"
             label="글 내용"
             ></v-textarea>
 
@@ -51,12 +56,15 @@
               <v-col cols="12" md="6">
                 <v-text-field
                 v-model="lineUp"
+                min=2
+                max=100
                 label="최소 인원"
+                :rules="lineUpRules"
                 type="number"
                 ></v-text-field>
               </v-col>
             </v-row>
-            <!-- 모집 마감 날짜, 시간 -->
+            <!-- 모집 마감 날짜 -->
             <v-row>
               <v-col cols="12" md="6">
                 <v-menu
@@ -70,7 +78,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                     v-model="endDate"
-                    label="모집 마감"
+                    label="모집 마감 날짜"
                     readonly
                     v-on="on"
                     ></v-text-field>
@@ -79,34 +87,6 @@
                   v-model="endDate"
                   @input="endingDate = false"
                   ></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-menu
-                ref="menu"
-                v-model="endingTime"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                :return-value.sync="endTime"
-                transition="scale-transition"
-                offset-y
-                max-width="290px"
-                min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                    v-model="endTime"
-                    label="모집 마감 시간"
-                    readonly
-                    v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-time-picker
-                  v-if="endingTime"
-                  v-model="endTime"
-                  full-width
-                  @click:minute="$refs.menu.save(endTime)"
-                  ></v-time-picker>
                 </v-menu>
               </v-col>
             </v-row>
@@ -151,6 +131,7 @@
                     <v-text-field
                     v-model="meetTime"
                     label="만나는 시간"
+                    :rules="timeRules"
                     readonly
                     v-on="on"
                     ></v-text-field>
@@ -223,10 +204,6 @@
             </v-row>
             <v-row>
               <div class="ml-auto">
-                <v-btn text color="primary">
-                  임시저장
-                </v-btn>
-
                 <v-btn @click="onUpload()" text color="primary">
                   등록하기
                 </v-btn>
@@ -253,18 +230,12 @@ export default {
       title: '',
       contents: '',
       ageRange: [20, 40],
-      gender: null,
+      gender: '상관없음',
       lineUp: '',
-
-      // date: new Date().toISOString().substr(0, 10),
-      // time: null,
-
       endDate: new Date().toISOString().substr(0, 10),  // 모집 마감
       endTime: null,
-
       meetDate: new Date().toISOString().substr(0, 10), // 만나는 날짜
       meetTime: null,
-
       groups: '',
       valid: true,
       items: [
@@ -282,18 +253,30 @@ export default {
       },
       sections: '',
       selectSubClass: '',
-
       endingDate: false,  // 마감 날짜
       endingTime: false,
-
       meetingDate: false, // 만나는 날짜
       meetingTime: false,
-
       agemin: 10,
       agemax: 100,
       e6: 1,
       location: '광주 광역시',
-      img: null
+      img: null,
+      titleRules: [
+        v => !!v || 'Title is required'
+      ],
+      contentsRules: [
+        v => !!v || 'Contents is required'
+      ],
+      lineUpRules: [
+        v => !!v || 'Min count is required'
+      ],
+      timeRules: [
+        v => !!v || 'Time is required'
+      ],
+      imageRules: [
+        v => !!v || 'Image is required'
+      ],
     }
   },
   methods: {
@@ -303,6 +286,15 @@ export default {
     },
     selectSubClassification (value) {
       this.groups = value
+    },
+    joinGroup: function (postId) {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/participantCheck/' + postId + '/' + this.$store.state.user_id
+      this.$http.post(apiUrl)
+      .then(res => {})
+      .catch(err => {
+        console.log(err)
+      })
     },
     onUpload () {
       const baseUrl = this.$store.state.baseUrl
@@ -327,19 +319,14 @@ export default {
       form.append('startDay', this.meetDate)
       form.append('startTime', this.meetTime)
 
-      // 수정 필!!
-      // form.append('endDay', this.endDate)
-      // form.append('endTime', this.endTime)
-      form.append('endDay', this.meetDate)
-      form.append('endTime', this.meetTime)
-      // console.log(this.meetDate)
-      // console.log(this.meetTime)
-      // console.log(this.endDate)
-      console.log(this.endTime)
+      form.append('endDay', this.endDate)
+      form.append('endTime', this.meetTime) // !
  
       const apiUrl = baseUrl + 'boards/hobby'
       this.$http.post(apiUrl, form)
       .then(res => {
+        this.joinGroup(res.data.id)
+        
         this.$router.go(-1)
       })
       .catch(err => {
