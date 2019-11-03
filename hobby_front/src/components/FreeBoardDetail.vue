@@ -18,15 +18,15 @@
             </div>
             <v-divider class="minDiv mb-5"></v-divider>
             <div class="d-flex justify-end">
-                <router-link :to="'/free/' + post.id + '/update'">
-                    <v-btn
+                <v-btn
                     dark
                     class="mr-3" 
                     color="light-blue" 
                     >
+                    <router-link :to="'/free/' + post.id + '/update'">
                     수정
+                    </router-link>
                     </v-btn>
-                </router-link>
                 <v-btn 
                     dark 
                     class="mr-3" 

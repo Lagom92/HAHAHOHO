@@ -46,7 +46,11 @@
         </v-col>
         <v-col  v-if="data.user === userId">
           <!-- 게시판 글 수정하기, 삭제하기 함수 추가 -->
-          <v-btn block dark color="#F3B749">글 수정하기</v-btn>
+          <v-btn block dark color="#F3B749">
+            <router-link :to="'/list/detail/' + data.id + '/update'"> 
+              글 수정하기
+            </router-link>
+          </v-btn>
           <v-btn block dark color="#F3B749">글 삭제하기</v-btn>
         </v-col>
         <div class="mb-4 mr-4">
@@ -156,10 +160,10 @@ export default {
   mounted () {
     this.id = this.$route.params.id
     this.userId = this.$store.state.user_id
-    this.get_detail();
+    this.getDetail();
 },
   methods: {
-    get_detail: function () {
+    getDetail: function () {
       const baseUrl = this.$store.state.baseUrl
       const apiUrl = baseUrl + 'boards/hobby/' + this.id
       this.$http.get(apiUrl)
@@ -183,6 +187,10 @@ export default {
       .catch(err => {
         console.log(err)
       })
+    },
+    // 모임 게시판 삭제
+    deleteDetail: function () {
+      pass
     }
   }
 
