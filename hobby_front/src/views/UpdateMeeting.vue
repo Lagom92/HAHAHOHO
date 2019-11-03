@@ -13,7 +13,7 @@
           <v-form ref="form" v-model="valid">
             <v-text-field
             v-model="title"
-            :counter="10"
+            :counter="20"
             label="글 제목"
             ></v-text-field>
 

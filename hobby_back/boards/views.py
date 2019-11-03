@@ -246,12 +246,20 @@ def participantCheck(request, post_id, user_id):
             user = User.objects.get(id=user_id)
             post = PostHobby.objects.get(id=post_id)
             cart = post.cart.filter(id=user_id)
+            img = user.userImage
+            nickName = user.userNickName
             if user in cart:
                 post.cart.remove(user)
             participant = ParticipantCheck.objects.create(
                 post=post, user=user
             )
-            return Response("success : post={}, user={}".format(post_id, user_id))
+            datas = {
+                'user_id': user_id,
+                'user_name': nickName,
+                'user_image': str(img)
+            }
+            # return Response("{}".format(datas))
+            return Response(datas)
     elif request.method == 'DELETE':
         # delete요청이면 해당 모임에 대해 취소 신청을 했기 때문에 해당 유저 삭제
         participant = ParticipantCheck.objects.get(post=post_id, user=user_id)
@@ -262,6 +270,7 @@ def participantCheck(request, post_id, user_id):
 
 @api_view(['GET'])
 def participantCheckListByPost(request, post_id):
+    # 포스트 이름으로 참여자 목록 찾기
     participant = ParticipantCheck.objects.filter(post_id=post_id).values()
     user_groups = {
         'user_group' : []
@@ -270,12 +279,14 @@ def participantCheckListByPost(request, post_id):
         user = User.objects.get(id=i.get('user_id'))
         user_groups['user_group'].append({
             'user_id':i.get('user_id'),
-            'user_name':user.userName
+            'user_name':user.userName,
+            'user_image':str(user.userImage)
             })
     return Response(user_groups)
 
 @api_view(['GET'])
 def participantCheckListByUser(request, user_id):
+    # 유저로 참가한 포스트 찾기
     participant = ParticipantCheck.objects.filter(user_id=user_id).values()
     posts = {}
     for idx, i in enumerate(participant):

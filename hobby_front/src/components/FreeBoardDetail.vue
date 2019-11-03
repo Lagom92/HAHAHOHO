@@ -14,7 +14,7 @@
         <div>
             <div>
                 <p>글 내용</p>
-                <p>{{post.contents}}</p>
+                <pre>{{post.contents}}</pre>
             </div>
             <v-divider class="minDiv mb-5"></v-divider>
             <div class="d-flex justify-end">

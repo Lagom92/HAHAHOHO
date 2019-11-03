@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import PostHobby, PostFree, Notice, Faq, CommentFree, ParticipantCheck, CommentHobby
 
 class ParticipantCheckSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = ParticipantCheck
         fields = '__all__'
