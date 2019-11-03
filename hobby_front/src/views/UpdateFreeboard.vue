@@ -53,7 +53,6 @@ export default {
     methods: {
         getDetail: function () {
             const baseUrl = this.$store.state.baseUrl
-            console.log(this.id)
             const apiUrl = baseUrl + 'boards/free/' + this.id 
             this.$http.get(apiUrl)
                 .then(res => {

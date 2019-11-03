@@ -19,18 +19,6 @@ class SubclassAdmin(admin.ModelAdmin):
     list_display = ['id', 'category', 'name']
     list_display_links = ['id', 'name']
 
-# class ImgInline(admin.StackedInline):
-#     model = HobbyImage
-#     readonly_fields = ['photo_image']
-
-#     def photo_image(self, obj):
-#         return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-#             url = obj.photo.url,
-#             width=obj.photo.width,
-#             height=obj.photo.height,
-#             )
-#         )
-
 @admin.register(PostHobby)
 class HobbyAdmin(admin.ModelAdmin):
     list_display = ['id', 'post', 'subclass', 'title', 'user', 'created_at', 'photo']
@@ -55,21 +43,6 @@ class FaqAdmin(admin.ModelAdmin):
     list_display = ['id', 'post', 'title', 'contents', 'created_at']
     list_display_links = ['id', 'title']
     search_fields = ['title']
-
-# @admin.register(HobbyImage)
-# class ImageAdmin(admin.ModelAdmin):
-#     list_display = ['id', 'posthobby']
-#     list_display_links = ['id', 'posthobby']
-#     readonly_fields = ['photo_image']
-#     search_fields = ['posthobby']
-
-#     def photo_image(self, obj):
-#         return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-#             url = obj.photo.url,
-#             width=obj.photo.width,
-#             height=obj.photo.height,
-#             )
-#         )
 
 @admin.register(CommentHobby)
 class CommentHobbyAdmin(admin.ModelAdmin):

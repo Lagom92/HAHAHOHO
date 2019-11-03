@@ -8,9 +8,7 @@
           <h5 class="mb-2">작성 날짜: {{data.created_at}}</h5>
           <p>모집 마감: 
             <v-icon class="mr-1">mdi-calendar-month</v-icon>
-              {{data.startDay}}
-            <v-icon class="mr-1">mdi-clock-outline</v-icon>
-              {{data.startTime}}
+              {{data.endDay}}
           </p>
         </v-col>
         <v-col cols="12" md="2">
@@ -178,17 +176,15 @@ export default {
       const apiUrl = baseUrl + 'boards/hobby/' + this.id
       this.$http.get(apiUrl)
       .then(res => {
-        let created_at = res.data.created_at
         let startTime = res.data.startTime
-        let endTime = res.data.endTime 
         let startDay = res.data.startDay
         let endDay = res.data.endDay
+        let created_at = res.data.created_at
 
         res.data.startTime = startTime.substring(0,2)+'시 '+startTime.substring(3,5)+'분'  
-        res.data.endTime = endTime.substring(0,2)+'시 '+endTime.substring(3,5)+'분'
-        res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
         res.data.startDay = startDay.substring(0,4)+'년 '+ startDay.substring(5,7)+'월 '+startDay.substring(8,10)+'일'
         res.data.endDay = endDay.substring(0,4)+'년 '+ endDay.substring(5,7)+'월 '+endDay.substring(8,10)+'일'
+        res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
 
         res.data.fee = res.data.fee.toLocaleString()
 
