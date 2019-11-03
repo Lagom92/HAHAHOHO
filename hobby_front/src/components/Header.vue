@@ -12,12 +12,20 @@
             <v-btn text @click="$router.push('/board')">커뮤니티</v-btn>
           </v-toolbar-items>
           <v-spacer></v-spacer>
-          <v-btn icon class="d-sm-none d-flex" @click.stop="dialog = true">
+          <v-btn v-if="state" icon class="d-sm-none d-flex" @click.stop="dialog = true">
             <v-icon>mdi-account</v-icon>
           </v-btn>
-          <v-toolbar-items class="d-sm-flex d-none">
+          <v-btn v-else icon class="d-sm-none d-flex" @click="$router.push('/user')">
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+          <v-toolbar-items class="d-sm-flex d-none align-center">
             <v-btn v-if="state" text @click.stop="dialog = true">로그인</v-btn>
-            <v-btn v-else text @click.stop="logout()">로그아웃</v-btn>
+            <v-row v-else>
+              <div class="my-auto">
+                <p class="mb-0 mr-5">{{username}}님 환영합니다</p>
+              </div>
+              <v-btn text @click.stop="logout()">로그아웃</v-btn>
+            </v-row>
             <v-dialog v-model="dialog" width="330">
               <v-card class="text-center">
                 <v-card-title>로그인</v-card-title>
@@ -33,13 +41,39 @@
       </v-container>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" fixed temporary class="d-sm-none d-flex">
+      <v-list-item v-if="state">
+        <v-list-item-content>
+          <v-btn dark color="#3e9278" @click.stop="dialog = true">로그인</v-btn>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-else>
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            {{username}}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
       <v-list nav dense>
         <v-list-item-group v-model="group">
           <v-list-item v-for="item in items" :key="item.path" :to="{ path : item.path }">
+            <v-list-item-icon>
+              <v-icon color="#EE7785">mdi-water</v-icon>
+            </v-list-item-icon>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
+
+      <template v-if="state==false" v-slot:append>
+        <div class="pa-2">
+          <v-btn block dark @click.stop="logout()" color="#3e9278">로그아웃</v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
   </div>
 </template>
@@ -60,6 +94,7 @@ export default {
       drawer: false,
       group: null,
       state: true,
+      username: '',
       items: [
         { title: '소개', path: 'about' },
         { title: '모임', path: 'list' },
@@ -75,6 +110,7 @@ export default {
   mounted() {
     if(this.$store.state.user_jwt){
       this.state = false
+      this.username = this.$store.state.user_name
     }
   },
   methods: {

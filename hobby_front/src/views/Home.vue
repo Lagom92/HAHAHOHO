@@ -71,7 +71,7 @@
       </div>
       <v-row>
         <v-col cols="12" md="6">
-          <v-card class="pa-5" height="400px" elevation="0" color="#fafafa">
+          <v-card class="pa-5" elevation="0" color="#fafafa">
             <v-card-title class="justify-center">
               공지사항
               <v-spacer></v-spacer>
@@ -95,8 +95,8 @@
               >
                 <v-row class="my-2" justify="center">
                   <v-icon cols="1" small color="#EE7785">mdi-water</v-icon>
-                  <v-col cols="7" class="text-truncate">{{notice.title}}</v-col>
-                  <v-col cols="3" class="text-center">{{notice.created_at}}</v-col>
+                  <v-col cols="7" class="subtitle-1 text-truncate">{{notice.title}}</v-col>
+                  <v-col cols="3" class="subtitle-1 text-center">{{notice.created_at}}</v-col>
                 </v-row>
               </v-btn>
               <v-divider></v-divider>
@@ -104,7 +104,7 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card class="pa-5" height="400px" elevation="0" color="#fafafa">
+          <v-card class="pa-5" elevation="0" color="#fafafa">
             <v-card-title class="justify-center">
               자유게시판
               <v-spacer></v-spacer>
@@ -128,8 +128,8 @@
               >
                 <v-row class="my-2" justify="center">
                   <v-icon cols="2" small color="#EE7785">mdi-water</v-icon>
-                  <v-col cols="7" class="text-truncate">{{free.title}}</v-col>
-                  <v-col cols="3" class="text-center">{{free.created_at}}</v-col>
+                  <v-col cols="7" class="subtitle-1 text-truncate">{{free.title}}</v-col>
+                  <v-col cols="3" class="subtitle-1 text-center">{{free.created_at}}</v-col>
                 </v-row>
               </v-btn>
               <v-divider></v-divider>
@@ -139,18 +139,36 @@
       </v-row>
     </v-container>
     <v-card class="intro">
-      <div id="cardcontent">
-        <v-card-title class="headline justify-center">
-          하하호호 하비하비 호비호비
+      <v-img
+        src="https://cdn.pixabay.com/photo/2019/10/23/16/36/black-4572125_960_720.jpg"
+        class="white--text align-center"
+        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+        height="100%"
+      >
+        <v-card-title class="display-1 justify-center">
+          하하호호에 처음 오셨나요?
         </v-card-title>
         <v-card-text class="text-center">
-          안녕하세요. 즐거운 취미생활을 즐겨보아요~~ 저희가 더 궁금하시다면?
-          <v-btn text to="/about">
-            하하호호 자세히보기
-            <v-icon color="#F3B749">mdi-arrow-right-bold</v-icon>
+          <div class="title font-weight-thin">하하호호는 건전한 취미생활, 밝은 에너지, 신뢰있는 관계를 통해 서비스를 운영하고 있습니다.</div>
+          <div class="title font-weight-thin">저희 사이트에 대한 소개를 읽어봐주세요^^</div>
+          <v-btn dark large to="/about" color="#EE7785">
+            하하호호 알아보기
+            <v-icon class="ma-1">mdi-arrow-right-bold</v-icon>
           </v-btn>
         </v-card-text>
-      </div>
+      </v-img>
+    </v-card>
+    <v-card class="intro">
+      <v-card-title class="display-1 justify-center">
+        하하호호의 소식을 빠르게 알고 싶나요?
+      </v-card-title>
+      <v-card-text class="text-center">
+        <div class="title font-weight-thin">카카오 플러스 친구를 해보세요~</div>
+        <v-btn dark large color="#EE7785">
+          플러스친구 추가하기
+          <v-icon>mdi-arrow-right-bold</v-icon>
+        </v-btn>
+      </v-card-text>
     </v-card>
   </div>
 </template>
@@ -231,13 +249,8 @@ export default {
 <style lang="stylus">
 .intro
   position relative
-  height 30vh
+  height 40vh
   background-color #f2f2f2
-  margin-bottom 50px
-
-#cardcontent
-  position relative
-  top 20%
 
 .text-truncate
   width 200px
