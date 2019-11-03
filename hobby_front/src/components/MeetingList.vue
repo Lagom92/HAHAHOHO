@@ -1,5 +1,15 @@
 <template>
   <div>
+    <v-row justify="center">
+      <v-btn-toggle v-model="text" tile color="#EE7785" group>
+        <v-btn value="new" @click="sortNew()">
+          최신순
+        </v-btn>
+        <v-btn value="end" @click="sortEnd()">
+          마감임박순
+        </v-btn>
+      </v-btn-toggle>
+    </v-row>
     <v-layout wrap>
       <v-flex v-for="post in this.posts" :key="post.id" xs12 sm6 md4>
         <Meeting
@@ -20,6 +30,7 @@ export default {
   data () {
     return {
       posts: [],
+      text: ''
     }
   },
   components: {
@@ -40,6 +51,17 @@ export default {
           console.log(err)
         })
     },
+    sortNew() {
+      // var sortingField = 'created_at'
+      this.posts.sort(function(a, b) {
+        return a.created_at < b.created_at ? -1 : a.created_at < b.created_at ? 1 : 0
+      })
+    },
+    sortEnd() {
+      this.posts.sort(function(a, b) {
+        return a.endDay < b.endDay ? -1 : a.endDay < b.endDay ? 1 : 0
+      })
+    }
   }  
 }
 </script>
