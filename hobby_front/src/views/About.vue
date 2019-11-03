@@ -1,15 +1,14 @@
 <template>
     <div>
-        <v-tabs v-model="tabs" centered>
-            <v-tab>소개</v-tab>
-            <v-tab>에티켓</v-tab>
-            <v-tab>운영방침</v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="tabs">
-            <v-tab-item>
-                <!-- 소개 -->
-                <full-page ref="fullpage" :options="options" id="fullpage">
-                <v-parallax src="https://cdn.pixabay.com/photo/2016/04/08/19/51/watercolor-1316867_960_720.jpg" height="900" class="pa-10 section">
+        <full-page ref="fullpage" :options="options" id="fullpage">
+        <!-- <Intro class="section"/> -->
+        <!-- 에티켓 -->
+        <!-- <Etiquette class="section"/> -->
+        <!-- 운영방침 -->
+        <!-- <Rule class="section"/> -->
+        <div class="section">
+            <div class="slide">
+                <v-parallax src="https://cdn.pixabay.com/photo/2016/04/08/19/51/watercolor-1316867_960_720.jpg" height="900" class="pa-10">
                     <v-row align="center" justify="center">
                         <v-col class="text-center" cols="12">
                             <h1 class="display-2 font-weight-bold mb-4">하하호호에서 즐기는 취미생활</h1>
@@ -18,7 +17,9 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-                <v-parallax src="https://cdn.pixabay.com/photo/2019/04/10/11/56/watercolour-4116932_960_720.png" height="900" class="pa-10 section">
+            </div>
+            <div class="slide">
+                <v-parallax src="https://cdn.pixabay.com/photo/2019/04/10/11/56/watercolour-4116932_960_720.png" height="900" class="pa-10">
                     <v-row align="center" justify="center">
                         <v-col cols="12" md="4">
                             <v-card  color="#00ff0000" elevation="0">
@@ -50,7 +51,9 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-                <v-parallax src="https://cdn.pixabay.com/photo/2016/04/09/10/26/watercolor-1317812_960_720.jpg"  height="900" class="pa-10 section">
+            </div>
+            <div class="slide">
+                <v-parallax src="https://cdn.pixabay.com/photo/2016/04/09/10/26/watercolor-1317812_960_720.jpg"  height="900" class="pa-10">
                     <v-row align="center" justify="center">
                         <v-col class="text-center" cols="12">
                             <h1 class="display-2 font-weight-bold mb-4">하하호호 100% 즐기기</h1>
@@ -79,10 +82,10 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-                </full-page>
-            </v-tab-item>
-            <!-- 에티켓 -->
-            <v-tab-item>
+            </div>
+        </div>
+        <div class="section">
+            <div class="slide">
                 <v-parallax src="https://www.colorbook.io/imagecreator.php?hex=ee7789&width=1920&height=1080&text=%201920x1080" class="pa-10">
                     <v-row align="center" justify="center">
                         <v-col class="text-center" cols="12">
@@ -92,6 +95,8 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
+            </div>
+            <div class="slide">
                 <v-parallax src="https://cdn.pixabay.com/photo/2019/04/10/11/56/watercolour-4116932_960_720.png" height="900" class="pa-10">
                     <v-row align="center" justify="center">
                         <v-col cols="12" md="4">
@@ -129,10 +134,11 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-            </v-tab-item>
-            <!-- 운영방침 -->
-            <v-tab-item>
-                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" height="900" class="pa-10 section">
+            </div>
+        </div>
+        <div class="section">
+            <div class="slide">
+                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" height="900" class="pa-10 slide">
                     <v-row align="center" justify="center">
                         <v-col class="text-center" cols="12">
                             <h1 class="display-2 font-weight-bold mb-4">하하호호 운영방침</h1>
@@ -140,8 +146,10 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-                <!-- 운영방침 (회원관리) -->
-                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" class="pa-10">
+            </div>
+            <!-- 운영방침 (회원관리) -->
+            <div class="slide">
+                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" class="pa-10 slide">
                     <h1>회원관리</h1>
                     <v-row align="center" justify="center">
                         <v-col cols="12" md="4">
@@ -183,8 +191,10 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-                <!-- 운영방침 (모임) -->
-                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" class="pa-10">
+            </div>
+            <!-- 운영방침 (모임) -->
+            <div class="slide">
+                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" class="slide pa-10">
                     <h1>모임</h1>
                     <v-row align="center" justify="center">
                         <v-col cols="12" md="4">
@@ -224,8 +234,10 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-                <!-- 운영방침 (포인트제도) -->
-                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" class="pa-10">
+            </div>
+            <!-- 운영방침 (포인트제도) -->
+            <div class="slide">
+                <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" class="section pa-10">
                     <h1>포인트제도</h1>
                     <v-row align="center" justify="center">
                         <v-col cols="12" md="4">
@@ -268,17 +280,26 @@
                         </v-col>
                     </v-row>
                 </v-parallax>
-            </v-tab-item>
-        </v-tabs-items>
+            </div>
+        </div>
+        </full-page>
     </div>
 </template>
 
 <script>
+// import Intro from '../components/Intro.vue'
+// import Etiquette from '../components/Etiquette.vue'
+// import Rule from '../components/Rule.vue'
+
 export default {
     name: 'About',
+    // components:{
+    //     Intro,
+    //     Etiquette,
+    //     Rule
+    // },
     data() {
         return {
-            tabs: null,
             items: [
                 {
                     src: 'https://cdn.pixabay.com/photo/2016/12/11/18/10/apartment-1899964_960_720.jpg',
@@ -294,8 +315,10 @@ export default {
                 },
             ],
             options: {
-                licenseKey: ''
-            }
+                navigation: true,
+                slidesNavigation: true,
+                licenseKey: 'YOUR_KEY_HERE'
+            },
         }
     }
 }

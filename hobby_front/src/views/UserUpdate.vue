@@ -8,7 +8,7 @@
           </div>
           <v-divider class="ma-3"></v-divider>
           <v-img :src="img" height="250" width="250"></v-img>
-          <v-file-input accept="image/*" label="프로필 사진"></v-file-input>
+          <h3>유저 프로필 이미지 수정은 카카오톡 이미지를 수정 후 재로그인 해주세요</h3>
           <v-form ref="form" v-model="valid" >
             <v-text-field
             v-model="name"
@@ -34,7 +34,7 @@
                   <v-card-title class="title font-weight-regular justify-space-between">
                     <span>{{ currentTitle }}</span>
                     <v-avatar
-                      color="primary lighten-2"
+                      color="#ee7785"
                       class="subheading white--text"
                       size="24"
                       v-text="step"
@@ -121,8 +121,8 @@
                     <v-spacer></v-spacer>
                     <v-btn
                       :disabled="step === 2"
-                      color="primary"
                       depressed
+                      text
                       @click="nextstep()"
                     >
                       Next
@@ -131,7 +131,7 @@
                 </v-card>
               </v-col>
             </v-row>
-            <v-btn color="error" @click.stop="submit()">
+            <v-btn color="#74b4a0" dark @click.stop="submit()">
               저장하기
             </v-btn>
           </v-form>
@@ -233,8 +233,6 @@ export default {
       form.append('userLike', category)
       form.append('userAddress', this.result)
       form.append('userNickName', this.name)
-      // 이미지 저장 후 요청보내기
-      // form.append('userImage', this.img)
       this.$http.post(this.$store.state.baseUrl + 'accounts/user/'+this.$store.state.user_id, form).then(res =>{
         this.$router.push('/user')
       })
@@ -245,11 +243,10 @@ export default {
     form.append('id', this.$store.state.user_id)
     let image
     this.$http.post(this.$store.state.baseUrl + 'accounts/userInfo', form).then(res =>{
-      console.log(res)
       this.name = res.data.userName
       this.result = res.data.userAddress
       let counts = res.data.userImage.length
-      image = res.data.userImage.substr(14, counts)
+      image = res.data.userImage.substr(15, counts)
       this.img = 'https://'+image
     })
   },

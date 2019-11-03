@@ -66,6 +66,8 @@ def userSave(request):
     userImage = request.data.get('userImage')
     try: 
         userSet = User.objects.get(userId=userId)
+        userSet.userImage = userImage
+        userSet.save()
     except:
         User.objects.create(
             userName=userName, userNickName=userName, userSex=userSex, userAge=userAge, userImage=userImage, userId=userId
@@ -76,9 +78,12 @@ def userSave(request):
 @api_view(['POST'])
 def editUser(request, id):
     user = User.objects.get(id=id)
-    user.userAddress = request.data.get('userAddress')
+    if request.data.get('userAddress'):
+        user.userAddress = request.data.get('userAddress')
+        user.userGrade += 1
     user.userNickName = request.data.get('userNickName')
-    user.userLike = request.data.get('userLike')
+    if request.data.get('userLike'):
+        user.userLike = request.data.get('userLike')
     user.save()
     serializer = UserSerializer(user)
     return Response(serializer.data)
