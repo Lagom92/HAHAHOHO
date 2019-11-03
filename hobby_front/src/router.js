@@ -15,6 +15,7 @@ import NoticeDetail from './components/NoticeDetail.vue'
 import FreeBoardDetail from './components/FreeBoardDetail.vue'
 import Search from './views/SearchPage.vue'
 import UpdateMeeting from './views/UpdateMeeting.vue'
+import YourPage from './views/YourPage.vue'
 
 Vue.use(Router)
 
@@ -96,6 +97,11 @@ export default new Router({
       path: '/search',
       name: 'search',
       component: Search
+    },
+    {
+      path: '/yourpage',
+      name: 'yourpage',
+      component: YourPage
     }
   ],
   scrollBehavior (to, from, savedPosition) {
