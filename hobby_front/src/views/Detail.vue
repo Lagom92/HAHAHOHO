@@ -35,7 +35,7 @@
                   </v-list-item-content>
                   <v-list-item-action>
                     <v-btn icon >
-                      <v-icon>mdi-chevron-right</v-icon>
+                      <v-icon @click="yourPage()">mdi-chevron-right</v-icon>
                     </v-btn>
                   </v-list-item-action>
                 </v-list-item>
@@ -171,6 +171,13 @@ export default {
 
 },
   methods: {
+    yourPage(){
+      if(this.id == this.$store.state.user_id){
+        this.$router.push({name: 'user'})
+      } else{
+        this.$router.push({name: 'yourpage', params:{id:this.id}})
+      }
+    },
     getDetail: function () {
       const baseUrl = this.$store.state.baseUrl
       const apiUrl = baseUrl + 'boards/hobby/' + this.id

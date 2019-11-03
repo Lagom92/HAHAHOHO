@@ -14,11 +14,11 @@
                   <v-list-item-content>
                     <v-avatar size="150">
                       <img
-                        src="../assets/logo.png"
+                        :src="userInfo.userImage"
                       >
                     </v-avatar>
                     <v-list-item-title class="headline mb-1 text-center">
-                      상대유저이름
+                      {{userInfo.userName}}
                       <v-btn
                       class="ma-2"
                       color="#9AB878"
@@ -31,11 +31,13 @@
                     <v-list-item-subtitle class="text-center">
                       <div>
                         <v-chip
+                        v-for="i in tags"
+                        :key="i"
                         class="ma-1"
                         color="#F3B749"
                         text-color="white"
                         >
-                          선호카테고리 보여주기
+                          {{i}}
                         </v-chip>
                       </div>
                     </v-list-item-subtitle>
@@ -51,11 +53,11 @@
                 <v-list-item three-line>
                   <v-list-item-content>
                     <v-img
-                    src="../assets/logo.png"
+                    :src="grade"
                     max-height="100px"
                     max-width="100px"
                     class="mx-auto"
-                    ></v-img>(등급아이콘)
+                    ></v-img>
                     <v-list-item-subtitle class="text-center">
                       <div>
                         <v-row>
@@ -168,20 +170,20 @@
       <div>
         <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
             <v-timeline-item
-            v-for="(item, i) in items"
+            v-for="(meet, i) in meets"
             :key="i"
             color="#EE7785"
             >
             <template v-slot:opposite>
                 <span
-                :class="`headline font-weight-bold ${item.color}--text`"
-                v-text="item.day"
+                :class="`headline font-weight-bold ${meet.color}--text`"
+                v-text="meet.day"
                 ></span>
             </template>
             <v-card class="elevation-2">
-                <v-card-title class="headline">제목</v-card-title>
+                <v-card-title class="headline">{{meet.title}}</v-card-title>
                 <v-card-text>
-                    <p>상세내용</p>
+                    <p>{{meet.content}}</p>
                 </v-card-text>
             </v-card>
             </v-timeline-item>
@@ -201,28 +203,103 @@ export default {
   },
   data () {
     return {
-      items: [
-        {
-          day: '2019.01.01',
-          color: 'indigo',
-          icon: 'mdi-star',
-        },
-        {
-          day: '2019.01.01',
-          color: 'indigo',
-          icon: 'mdi-book-variant',
-        },
-        {
-          day: '2019.01.01',
-          color: 'success',
-          icon: 'mdi-airballoon',
-        },
-        {
-          day: '2019.01.01',
-          color: 'indigo',
-          icon: 'mdi-buffer',
-        },
+      grade:'',
+      followCounting: 0,
+      followerCounting: 0,
+      followGroup:[],
+      followerGroup:[],
+      followdialog: false,
+      followerdialog: false,
+      bandCount:0,
+      userInfo:{
+        'id': 0,
+        'userAddress': "",
+        'userAge': "",
+        'userGrade': 0,
+        'userId': "",
+        'userImage': "",
+        'userLike': "",
+        'userName': "",
+        'userNickName': "",
+        'userPoint': 0,
+        'userSex': "",
+      },
+      tags:[
+        "카테고리를 선택하지 않았습니다."
       ],
+      meets: [
+      ],
+    }
+  },
+  mounted(){
+    this.getUserInfo(this.$route.params.id)
+  },
+  methods: {
+    formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+
+      return [year, month, day].join('-');
+    },
+    getUserInfo(id){
+      let form = new FormData()
+      form.append('id', id)
+      this.$http.post(this.$store.state.baseUrl + "accounts/userInfo", form).then(res =>{
+        this.userInfo = res.data
+        var strArray = res.data.userLike.split(',')
+        this.tags = strArray
+        let image = res.data.userImage
+        let counts = image.length
+        image = image.substr(14, counts)
+        this.userInfo.userImage = 'https://'+image
+        this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
+      })
+      this.$http.get(this.$store.state.baseUrl + 'accounts/follows/' + id).then(res =>{
+        this.followCounting = res.data.length
+        for(let i of res.data){
+          if(i.img == null){
+            i.img = require('../assets/logo.png')
+          }
+        }
+        this.followGroup = res.data    
+      })
+      this.$http.get(this.$store.state.baseUrl + 'accounts/followers/' + id).then(res =>{
+        this.followerCounting = res.data.length
+        for(let i of res.data){
+          if(i.img == 'undefined'){
+            i.img = require('../assets/logo.png')
+          }
+        }
+        this.followerGroup = res.data 
+      })
+      let event = []
+      let counts = 0
+      this.$http.get(this.$store.state.baseUrl+'boards/participantCheckListByUser/' + id).then(res =>{
+        let band = res.data
+        let timeInMs = Date.now()
+        for(let i in band){
+          counts = counts + 1
+          if(timeInMs > band[i].endDay){}
+            console.log(band[i].endDay)
+            let moim = {
+              day: this.formatDate(band[i].created_at),
+              color: 'indigo',
+              icon: 'mdi-star',
+              title: band[i].title,
+              content: band[i].contents
+            }
+            event.push(moim)
+          this.bandCount = counts
+        }
+      })
+      this.meets = event
     }
   }
 }
