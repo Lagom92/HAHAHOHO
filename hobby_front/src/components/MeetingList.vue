@@ -30,10 +30,11 @@ export default {
   },
   methods: {
     get_hobby: function () {
-      const api_url = "http://localhost:8000/boards/hobby"
-      this.$http.get(api_url)
-        .then(request => {
-          this.posts = request.data 
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/hobby'
+      this.$http.get(apiUrl)
+        .then(res => {
+          this.posts = res.data 
         })
         .catch(err => {
           console.log(err)

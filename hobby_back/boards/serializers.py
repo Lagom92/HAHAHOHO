@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import PostHobby, PostFree, Notice, Faq, CommentFree, ParticipantCheck
+from .models import PostHobby, PostFree, Notice, Faq, CommentFree, ParticipantCheck, CommentHobby
 
 class ParticipantCheckSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = ParticipantCheck
         fields = '__all__'
@@ -35,8 +36,15 @@ class FaqSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CommentFreeSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source="user.userNickName")
+    name = serializers.CharField(source="user.userNickName")
 
     class Meta:
         model = CommentFree
+        fields = '__all__'
+
+class CommentHobbySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source="user.userNickName")
+
+    class Meta:
+        model = CommentHobby
         fields = '__all__'

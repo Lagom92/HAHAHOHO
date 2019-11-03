@@ -5,6 +5,13 @@
         <v-col cols="12" md="5">
           <v-chip small color="#9AB878" dark>{{data.subclassname}}</v-chip>
           <h1>{{data.title}}</h1>
+          <h5 class="mb-2">작성 날짜: {{data.created_at}}</h5>
+          <p>모집 마감: 
+            <v-icon class="mr-1">mdi-calendar-month</v-icon>
+              {{data.startDay}}
+            <v-icon class="mr-1">mdi-clock-outline</v-icon>
+              {{data.startTime}}
+          </p>
         </v-col>
         <v-col cols="12" md="2">
           <v-menu
@@ -13,7 +20,7 @@
             <template v-slot:activator="{ on }">
               <v-chip pill v-on="on" class="mt-8">
                 <v-avatar left>
-                  <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                  <v-img :src="data.userimage"></v-img>
                 </v-avatar>
                 {{data.username}}
               </v-chip>
@@ -22,7 +29,7 @@
               <v-list dark>
                 <v-list-item>
                   <v-list-item-avatar>
-                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                    <v-img :src="data.userimage"></v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-list-item-title>{{data.username}}</v-list-item-title>
@@ -38,9 +45,26 @@
             </v-card>
           </v-menu>
         </v-col>
-        <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" >
-          <v-btn block dark color="#F3B749">참여하기</v-btn>
+        <!-- 유저의 상태에 따라 변경되야함 -->
+        <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
+          <!-- 모임 참여하기 함수 추가 -->
+          <v-btn block dark color="#F3B749" @click="joinGroup()">참여하기</v-btn>
         </v-col>
+        <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
+          <!-- 모임 참여 취소하기 -->
+            <v-btn block dark color="red" @click="unjoinGroup()">참여 취소하기</v-btn>
+        </v-col>
+        <v-col  v-if="data.user === userId">
+          <v-btn block dark color="#F3B749">
+            <router-link 
+            :to="'/list/detail/' + data.id + '/update'"
+            > 
+            글 수정하기
+            </router-link>
+          </v-btn>
+          <v-btn block dark color="#F3B749" @click="deleteDetail()">글 삭제하기</v-btn>
+        </v-col>
+        
       </v-row>
       <v-row>
         <v-col cols="12" md="7">
@@ -53,9 +77,7 @@
               모임 소개
             </v-card-title>
             <v-card-text class="text--primary">
-              <div>
-                {{data.contents}}
-              </div>
+              <pre>{{data.contents}}</pre>
             </v-card-text>
           </v-card>
         </v-col>
@@ -65,21 +87,22 @@
               모임 정보
             </v-card-title>
             <v-card-text class="text--primary">
+              
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-calendar-month</v-icon>
-                {{data.startDay}}
+                날짜: {{data.startDay}}
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-clock-outline</v-icon>
-                {{data.startTime}}
+                시각: {{data.startTime}}
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-map-marker</v-icon>
-                {{data.location}}
+                장소: {{data.location}}
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-account</v-icon>
-                최대 {{data.member}}명 / {{data.minAge}}세 ~ {{data.maxAge}}세까지
+                인원: 최대 {{data.member}}명 / {{data.minAge}}세 ~ {{data.maxAge}}세까지
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-gender-male-female</v-icon>
@@ -87,65 +110,146 @@
               </div>
               <div class="mb-4">
                 <v-icon class="mr-1">mdi-currency-krw</v-icon>
-                {{data.fee}}원
+                예상 비용: {{data.fee}}원
               </div>
             </v-card-text>
           </v-card>
           <div class="mb-12" id="mapview">
-            <MapService></MapService>
+            <!-- 지도 -->
+            <!-- <MapService :address="location"></MapService>   -->
+            <MapService></MapService>  
           </div>
           <v-card class="excard">
             <div id="member">
+              <!-- 모임 멤버 관련 정보 -->
               <v-card-title class="mb-3">
-                모임 멤버 (1 / 10)
+                모임 멤버 ({{cnt}} / {{data.member}})
               </v-card-title>
-              <v-chip pill class="ma-3">
-                <v-avatar left>
-                  <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                </v-avatar>
-                {{data.username}}
-              </v-chip>
+              <div v-for="join in joins" :key="join.id"> 
+                <v-chip pill class="ma-3">
+                  <v-avatar left>
+                    <v-img :src="join.user_image"></v-img>
+                  </v-avatar>
+                  {{join.user_name}}
+                </v-chip>
+              </div>
+
             </div>
           </v-card>
         </v-col>
       </v-row>
+      <!-- 댓글 -->
+      <CommentHobby class="mt-10"></CommentHobby>
     </v-container>
   </div>
 </template>
 
 <script>
 import MapService from '../components/MapService'
+import CommentHobby from '../components/CommentHobby'
 
 export default {
   name: 'Detail',
   components: {
-    MapService
+    MapService,
+    CommentHobby
+
   },
   data () {
     return {
       data: {age: [0,0]},
-      id: ''
+      id: '',
+      userId: '',
+      joins: [],
+      cnt: 0,
+      flag: false
     }
   },
   mounted () {
     this.id = this.$route.params.id
-    this.get_detail();
+    this.userId = this.$store.state.user_id
+    this.getDetail()
+    this.getJoinMember()
+
 },
   methods: {
-    get_detail: function () {
-      const api = "http://localhost:8000/boards/hobby"
-      const api_url = api + '/' + this.id
-      this.$http.get(api_url)
-      .then(request => {
-        this.data = request.data
-        console.log(this.data.photo)
+    getDetail: function () {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/hobby/' + this.id
+      this.$http.get(apiUrl)
+      .then(res => {
+        let created_at = res.data.created_at
+        let startTime = res.data.startTime
+        let endTime = res.data.endTime 
+        let startDay = res.data.startDay
+        let endDay = res.data.endDay
+
+        res.data.startTime = startTime.substring(0,2)+'시 '+startTime.substring(3,5)+'분'  
+        res.data.endTime = endTime.substring(0,2)+'시 '+endTime.substring(3,5)+'분'
+        res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
+        res.data.startDay = startDay.substring(0,4)+'년 '+ startDay.substring(5,7)+'월 '+startDay.substring(8,10)+'일'
+        res.data.endDay = endDay.substring(0,4)+'년 '+ endDay.substring(5,7)+'월 '+endDay.substring(8,10)+'일'
+
+        res.data.fee = res.data.fee.toLocaleString()
+
+        this.data = res.data        
       })
       .catch(err => {
         console.log(err)
       })
-    }
-  }
+    },
+    deleteDetail: function () {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/hobby/' + this.id
+      this.$http.delete(apiUrl)
+        .then(res => {
+            this.$router.go(-1)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+      },
+      joinGroup: function () {
+        const baseUrl = this.$store.state.baseUrl
+        const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
+        this.$http.post(apiUrl)
+        .then(res => {
+          this.cnt += 1
+          this.joins.unshift(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
 
+      },
+      unjoinGroup: function (idx) {
+        const baseUrl = this.$store.state.baseUrl
+        const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
+        this.$http.delete(apiUrl)
+        .then(res => {
+          this.$router.go(-1)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+      },
+      getJoinMember: function () {
+        const baseUrl = this.$store.state.baseUrl
+        const apiUrl = baseUrl + 'boards/participantCheckListByPost/' + this.id
+        this.$http.get(apiUrl)
+          .then(res => {
+            this.cnt = res.data.user_group.length
+            this.joins = res.data.user_group
+          })
+          .catch(err => {
+              console.log(err)
+          })
+        
+
+
+      }
+  }
 }
 </script>
 

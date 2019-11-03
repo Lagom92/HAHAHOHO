@@ -14,6 +14,7 @@ import UpdateFreeboard from './views/UpdateFreeboard.vue'
 import NoticeDetail from './components/NoticeDetail.vue'
 import FreeBoardDetail from './components/FreeBoardDetail.vue'
 import Search from './views/SearchPage.vue'
+import UpdateMeeting from './views/UpdateMeeting.vue'
 
 Vue.use(Router)
 
@@ -70,6 +71,11 @@ export default new Router({
       path: '/list/createmeeting',
       name: 'createmeeting',
       component: CreateMeeting
+    },
+    {
+      path: '/list/detail/:id/update',
+      name: 'updatemeeting',
+      component: UpdateMeeting
     },
     {
       path: '/about',
