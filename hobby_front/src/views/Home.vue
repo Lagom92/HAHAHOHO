@@ -151,24 +151,30 @@
         <v-card-text class="text-center">
           <div class="title font-weight-thin">하하호호는 건전한 취미생활, 밝은 에너지, 신뢰있는 관계를 통해 서비스를 운영하고 있습니다.</div>
           <div class="title font-weight-thin">저희 사이트에 대한 소개를 읽어봐주세요^^</div>
-          <v-btn dark large to="/about" color="#EE7785" class="nanumFont">
+          <button id="pbtn" class="nanumFont my-5" @click="$router.push('/about')">
             하하호호 알아보기
-            <v-icon class="ma-1">mdi-arrow-right-bold</v-icon>
-          </v-btn>
+            <v-icon class="ml-1">mdi-arrow-right-bold</v-icon>
+          </button>
         </v-card-text>
       </v-img>
     </v-card>
     <v-card class="intro">
-      <v-card-title class="display-1 justify-center">
-        하하호호의 소식을 빠르게 알고 싶나요?
-      </v-card-title>
-      <v-card-text class="text-center">
-        <div class="title font-weight-thin">카카오 플러스 친구를 해보세요~</div>
-        <v-btn dark large color="#EE7785" @click="kakao()" class="nanumFont">
-          플러스친구 추가하기
-          <v-icon class="ma-1">mdi-arrow-right-bold</v-icon>
-        </v-btn>
-      </v-card-text>
+      <v-img
+        src="https://t1.kakaocdn.net/friends/prod/brand/201803_type1_2880.jpg"
+        class="align-center"
+        height="100%"
+      >
+        <v-card-title class="display-1 justify-center">
+          하하호호의 소식을 빠르게 알고 싶나요?
+        </v-card-title>
+        <v-card-text class="text-center">
+          <div class="title font-weight-thin">카카오 플러스 친구를 해보세요~</div>
+          <button id="pbtn" class="nanumFont my-5" @click="kakao()">
+            플러스친구 추가하기
+            <v-icon class="ml-1">mdi-arrow-right-bold</v-icon>
+          </button>
+        </v-card-text>
+      </v-img>
     </v-card>
   </div>
 </template>
@@ -252,7 +258,7 @@ export default {
 <style lang="stylus">
 .intro
   position relative
-  height 40vh
+  height 50vh
   background-color #f2f2f2
 
 .text-truncate
@@ -267,11 +273,54 @@ export default {
   font-size 35px
 
 #meetingSize
- font-weight bold
+  font-weight bold
 
 #noticeSize
- font-weight bold
+  font-weight bold
 
 #freeSize
- font-weight bold
+  font-weight bold
+
+#pbtn
+  background #1AAB8A
+  color #fff
+  border none
+  position relative
+  height 45px
+  font-size 1.6em
+  padding 0 1.5em
+  cursor pointer
+  transition 800ms ease all
+  outline none
+
+#pbtn:hover
+  background #fff
+  color #1AAB8A
+
+#pbtn:before, #pbtn:after
+  content ''
+  position absolute
+  top 0
+  right 0
+  height 3px
+  width 0
+  background #1AAB8A
+  transition 400ms ease all
+
+#pbtn:after
+  right inherit
+  top inherit
+  left 0
+  bottom 0
+
+#pbtn:hover:before, #pbtn:hover:after
+  width 100%
+  transition 800ms ease all
+
+#pbtn > i 
+  color #fff
+
+#pbtn:hover > i
+  color #1AAB8A
+
 </style>
