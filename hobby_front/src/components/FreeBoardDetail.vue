@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <v-container>
+        <v-flex class="pa-7"> 
+
+        
         <div>
             <h1 class="my-3">{{post.title}}</h1>
             <v-row class="px-3">
@@ -13,35 +16,36 @@
         <v-divider class="minDiv mb-5"></v-divider>
         <div>
             <div>
-                <p>글 내용</p>
-                <pre>{{post.contents}}</pre>
+                <p>{{post.contents}}</p>
             </div>
             <v-divider class="minDiv mb-5"></v-divider>
             <div class="d-flex justify-end">
                 <v-btn
                     dark
                     class="mr-3" 
-                    color="light-blue" 
+                    color="light-blue"
+                    v-if="user === post.user"
+                    @click="$router.push({ name: 'updatefreeboard', params: { id: post.id }})"
                     >
-                    <router-link :to="'/free/' + post.id + '/update'">
                     수정
-                    </router-link>
                     </v-btn>
                 <v-btn 
                     dark 
                     class="mr-3" 
                     color="pink" 
                     @click="deleteDetail()"
+                    v-if="user === post.user"
                     >
                     삭제
                 </v-btn>
-                <v-btn dark to= "/board">
+                <v-btn dark to= "/board" color="#74B4A0">
                     목록으로
                 </v-btn>
             </div>
         </div>
         <Comment class="mt-10"></Comment>
-    </div>
+        </v-flex>
+    </v-container>
 </template>
 
 <script>
@@ -55,6 +59,7 @@ export default {
     data () {
         return {
             post: {},
+            user: this.$store.state.user_id
     }
     },
     mounted () {
@@ -67,6 +72,9 @@ export default {
             const apiUrl = baseUrl + 'boards/free/' + this.id 
             this.$http.get(apiUrl)
                 .then(res => {
+                    let created_at = res.data.created_at
+                    res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
+
                     this.post = res.data 
                 })
                 .catch(err => {

@@ -2,7 +2,7 @@
     <div>
         <v-container>
             <v-row>
-                <v-col cols="12" md="6" offset-md="3">
+                <v-col cols="12" md="8" offset-md="2">
                     <div>
                         <h1 class="gamjaFont">자유게시판 글쓰기</h1>
                     </div>
@@ -20,16 +20,13 @@
                         label="글 내용"
                         ></v-textarea>
                     </v-form>
-                </v-col>
-                <v-col cols="12" md="6" offset-md="3">
-                    <div>
-                        <v-btn
-                        text color="primary"
-                        @click="createFree"
-                        >
-                        등록하기
-                        </v-btn>
-                    </div>
+                    <v-row>
+                        <div class="ml-auto pa-2">
+                            <v-btn @click="createFree()" dark color="#74b4a0">
+                                등록하기
+                            </v-btn>
+                        </div>
+                    </v-row>
                 </v-col>
             </v-row>
         </v-container>

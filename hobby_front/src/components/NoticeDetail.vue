@@ -1,25 +1,26 @@
 <template>
-    <div>
-        <div>
-            <h1>{{post.title}}</h1>
-            <v-row class="px-3">
-                <p color="grey lighten-1">{{post.created_at}}</p>
-                <v-spacer></v-spacer>
-                <span>조회수: 0</span>
-            </v-row>
-        </div>
-        <v-divider class="minDiv mb-5"></v-divider>
-        <div>
+    <v-container> 
+        <v-flex class="pa-7">
             <div>
-                <p>글 내용</p>
-                <p>{{post.contents}}</p>
+                <h1>{{post.title}}</h1>
+                <v-row class="px-3">
+                    <p color="grey lighten-1">{{post.created_at}}</p>
+                    <v-spacer></v-spacer>
+                    <span>조회수: 0</span>
+                </v-row>
             </div>
             <v-divider class="minDiv mb-5"></v-divider>
-            <div class="d-flex justify-end">
-                <v-btn dark :to="'/board'">목록으로</v-btn>
+            <div>
+                <div>
+                    <p>{{post.contents}}</p>
+                </div>
+                <v-divider class="minDiv mb-5"></v-divider>
+                <div class="d-flex justify-end">
+                    <v-btn dark :to="'/board'" color="#74B4A0">목록으로</v-btn>
+                </div>
             </div>
-        </div>
-    </div>
+        </v-flex>
+    </v-container>
 </template>
 
 <script>
@@ -40,6 +41,9 @@ export default {
         const apiUrl = baseUrl + 'boards/notice/' + this.id 
         this.$http.get(apiUrl)
             .then(res => {
+                let created_at = res.data.created_at
+                res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
+
                 this.post = res.data 
             })
             .catch(err => {
