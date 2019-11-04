@@ -275,19 +275,24 @@
         </v-row>
       </div>
     </v-container>
+    <!-- Point 내역 -->
     <Bill></Bill>
+    <KakaoBill></KakaoBill>
   </div>
 </template>
 
 <script>
 import Payment from '@/components/Payment'
 import Bill from '@/components/Bill'
+import KakaoBill from '@/components/KakaoBill'
+
 
 export default {
   name: 'UserPage',
   components: {
     Payment,
-    Bill
+    Bill,
+    KakaoBill
   },
   data () {
     return {
