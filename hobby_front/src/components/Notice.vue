@@ -13,14 +13,17 @@
     <v-divider class='middivider'></v-divider>
     <section id='content'>
       <div v-for="post in paginatedData" :key="post.id">
-        <router-link :to="'/notice/' + post.id">
-          <v-row>
-            <v-col cols='2'>{{post.id}}</v-col>
-            <v-col cols='6'>{{post.title}}</v-col>
-            <v-col cols='2'>{{post.created_at}}</v-col>
-            <v-col cols='2'>{{post.name}}</v-col>
-          </v-row>
-        </router-link>
+        <v-btn
+          text
+          block
+          height="auto"
+          :to="'/notice/' + post.id"
+        > 
+          <v-col cols='2'>{{post.id}}</v-col>
+          <v-col cols='6'>{{post.title}}</v-col>
+          <v-col cols='2'>{{post.created_at}}</v-col>
+          <v-col cols='2'>{{post.name}}</v-col>
+        </v-btn>
         <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>
         <v-divider v-else></v-divider>
       </div>
@@ -61,6 +64,9 @@ export default {
       this.$http.get(apiUrl)
         .then(res => {
           this.posts = res.data
+          for (let i of res.data){
+            i.created_at = String(i.created_at).substring(0,10)
+          }
 
           let listLength = this.posts.length,
               listSize = this.pageSize,
@@ -82,4 +88,7 @@ export default {
 
 .middivider
   border-top-width 2px
+
+#cursorHand
+  cursor pointer
 </style>
