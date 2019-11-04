@@ -19,7 +19,7 @@
       </v-flex>
     </v-layout>
     <div class="text-center my-5">
-        <v-pagination v-model="pageNum" :length="this.size"></v-pagination>
+        <v-pagination v-model="pageNum" :length="this.size" color="#74B4A0"></v-pagination>
     </div>
   </div>
 </template>
