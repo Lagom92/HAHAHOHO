@@ -1,7 +1,7 @@
 <template>
 <div class="text-center">
   <div class="search-box">
-      <input v-model="word" type="text" @keyup.enter="search()" placeholder=" " /><span></span>
+      <input id="searchInput" v-model="word" type="text" @keyup.enter="search()" placeholder=" " /><span></span>
   </div>
 </div>
 </template>
@@ -36,27 +36,27 @@ export default {
 </script>
 
 <style>
-.search-box{
+.search-box {
   display: inline-block;
   position: relative;
   border-radius: 50px;
-  border: 5px solid #f1bbba;
+  border: 5px solid #EE7785;
 }
 .search-box span {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: -13px;
+  bottom: -15px;
   right: -15px;
   transition: bottom 300ms ease-out 300ms, right 300ms ease-out 300ms;
 }
 .search-box span:before, .search-box span:after {
   content: '';
-  height: 25px;
-  border-left: solid 5px #f1bbba;
+  height: 20px;
+  border-left: solid 5px #EE7785;
   position: absolute;
   transform: rotate(-45deg);
 }
@@ -67,34 +67,34 @@ export default {
   right: -10px;
   transition: top 300ms ease-out, right 300ms ease-out, opacity 300ms ease-out;
 }
-input {
+#searchInput {
   font-size: 20px;
   font-weight: bold;
-  width: 54px;
-  height: 54px;
-  padding: 5px 40px 5px 10px;
+  width: 32px;
+  height: 32px;
+  padding: 5px 10px 5px 20px;
   border: none;
   box-sizing: border-box;
   border-radius: 50px;
-  background: #1a1a1a;
+  background: #f2f2f2;
   transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 0.5) 600ms;
-  color: #f1bbba;
+  color: #EE7785;
 }
-.search-box input:focus {
+.search-box #searchInput:focus {
   outline: none;
 }
-.search-box input:focus, .search-box input:not(:placeholder-shown) {
+.search-box #searchInput:focus, .search-box #searchInput:not(:placeholder-shown) {
   width: 300px;
   transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 1.5);
 }
-.search-box input:focus + span, .search-box input:not(:placeholder-shown) + span {
-  bottom: 13px;
+.search-box #searchInput:focus + span, .search-box #searchInput:not(:placeholder-shown) + span {
+  bottom: 6px;
   right: 10px;
   transition: bottom 300ms ease-out 800ms, right 300ms ease-out 800ms;
 }
-.search-box input:focus + span:after, .search-box input:not(:placeholder-shown) + span:after {
+.search-box #searchInput:focus + span:after, .search-box #searchInput:not(:placeholder-shown) + span:after {
   top: 0;
-  right: 10px;
+  right: 8px;
   opacity: 1;
   transition: top 300ms ease-out 1100ms, right 300ms ease-out 1100ms, opacity 300ms ease 1100ms;
 }

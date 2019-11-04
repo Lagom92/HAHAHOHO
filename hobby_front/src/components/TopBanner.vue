@@ -1,7 +1,7 @@
 <template>
   <div class="topBanner pa-5">
     <v-container>
-      <v-row align="center" justify="centers" class="mb-7">
+      <v-row align="center" class="mb-7">
         <v-col cols="12" md="8" class="d-flex justify-center">
           <v-img id="hahahoho" src="../assets/hahahoho.png" max-width="55%"></v-img>
         </v-col>
