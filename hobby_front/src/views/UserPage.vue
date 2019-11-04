@@ -275,16 +275,19 @@
         </v-row>
       </div>
     </v-container>
+    <Bill></Bill>
   </div>
 </template>
 
 <script>
 import Payment from '@/components/Payment'
+import Bill from '@/components/Bill'
 
 export default {
   name: 'UserPage',
   components: {
-    Payment
+    Payment,
+    Bill
   },
   data () {
     return {
