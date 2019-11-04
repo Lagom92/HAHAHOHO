@@ -24,7 +24,7 @@
             <v-btn v-if="state" text @click.stop="dialog = true" class="nanumFont">로그인</v-btn>
             <v-row v-else>
               <div class="my-auto">
-                <p class="mb-0 mr-5"><router-link to="user">{{username}}</router-link>님 환영합니다</p>
+                <p id="userrouter" class="mb-0 mr-5" @click="$router.push('/user')">{{username}}님 환영합니다</p>
               </div>
               <v-btn text @click.stop="logout()" class="nanumFont">로그아웃</v-btn>
             </v-row>
@@ -137,5 +137,28 @@ export default {
   font-family 'Nanum Gothic', sans-serif
 
 #hahahoho
- color #EE7785
+  color #EE7785
+  cursor pointer
+
+#userrouter
+  cursor pointer
+  font-weight bold
+  position relative
+
+#userrouter:hover
+  background #fff
+
+#userrouter:before, #userrouter:after
+  content ''
+  position absolute
+  bottom 0
+  left 0
+  height 1px
+  width 0
+  background #000
+  transition 400ms ease all
+
+#userrouter:hover:before, #userrouter:hover:after
+  width 100%
+  transition 800ms ease all
 </style>
