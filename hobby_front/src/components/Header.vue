@@ -5,11 +5,13 @@
         <v-toolbar flat>
           <v-app-bar-nav-icon class="d-sm-none d-flex" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           <v-spacer class="d-sm-none d-flex"></v-spacer>
-          <v-toolbar-title class="px-4" @click="$router.push('/')">하하호호</v-toolbar-title>
+          <v-toolbar-title class="gamjaFont px-4" @click="$router.push('/')" id="hahahoho">
+            하하호호
+          </v-toolbar-title>
           <v-toolbar-items class="d-sm-flex d-none">
-            <v-btn text @click="$router.push('/about')">소개</v-btn>
-            <v-btn text @click="$router.push('/list')">모임</v-btn>
-            <v-btn text @click="$router.push('/board')">커뮤니티</v-btn>
+            <v-btn text @click="$router.push('/about')" class="nanumFont">소개</v-btn>
+            <v-btn text @click="$router.push('/list')" class="nanumFont">모임</v-btn>
+            <v-btn text @click="$router.push('/board')" class="nanumFont">커뮤니티</v-btn>
           </v-toolbar-items>
           <v-spacer></v-spacer>
           <v-btn v-if="state" icon class="d-sm-none d-flex" @click.stop="dialog = true">
@@ -19,16 +21,16 @@
             <v-icon>mdi-account</v-icon>
           </v-btn>
           <v-toolbar-items class="d-sm-flex d-none align-center">
-            <v-btn v-if="state" text @click.stop="dialog = true">로그인</v-btn>
+            <v-btn v-if="state" text @click.stop="dialog = true" class="nanumFont">로그인</v-btn>
             <v-row v-else>
               <div class="my-auto">
                 <p class="mb-0 mr-5">{{username}}님 환영합니다</p>
               </div>
-              <v-btn text @click.stop="logout()">로그아웃</v-btn>
+              <v-btn text @click.stop="logout()" class="nanumFont">로그아웃</v-btn>
             </v-row>
             <v-dialog v-model="dialog" width="330">
               <v-card class="text-center">
-                <v-card-title>로그인</v-card-title>
+                <v-card-title class="nanumFont">로그인</v-card-title>
                 <v-divider class="mx-5 mb-5"></v-divider>
                 <v-card-text>
                   <KakaoLogin class="mb-2"></KakaoLogin>
@@ -43,7 +45,7 @@
     <v-navigation-drawer v-model="drawer" fixed temporary class="d-sm-none d-flex">
       <v-list-item v-if="state">
         <v-list-item-content>
-          <v-btn dark color="#3e9278" @click.stop="dialog = true">로그인</v-btn>
+          <v-btn dark color="#3e9278" @click.stop="dialog = true" class="nanumFont">로그인</v-btn>
         </v-list-item-content>
       </v-list-item>
       <v-list-item v-else>
@@ -51,7 +53,7 @@
           <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title class="title">
+          <v-list-item-title class="title nanumFont">
             {{username}}
           </v-list-item-title>
         </v-list-item-content>
@@ -71,7 +73,7 @@
 
       <template v-if="state==false" v-slot:append>
         <div class="pa-2">
-          <v-btn block dark @click.stop="logout()" color="#3e9278">로그아웃</v-btn>
+          <v-btn block dark @click.stop="logout()" color="#3e9278" class="nanumFont">로그아웃</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -129,3 +131,11 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus">
+.nanumFont
+  font-family 'Nanum Gothic', sans-serif
+
+#hahahoho
+ color #EE7785
+</style>
