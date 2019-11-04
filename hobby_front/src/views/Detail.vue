@@ -160,7 +160,7 @@ export default {
       userId: '',
       joins: [],
       cnt: 0,
-      flag: false
+      flag: false,
     }
   },
   mounted () {
@@ -168,7 +168,6 @@ export default {
     this.userId = this.$store.state.user_id
     this.getDetail()
     this.getJoinMember()
-
 },
   methods: {
     yourPage(){
@@ -202,6 +201,8 @@ export default {
       })
     },
     deleteDetail: function () {
+      this.refundGroup()
+
       const baseUrl = this.$store.state.baseUrl
       const apiUrl = baseUrl + 'boards/hobby/' + this.id
       this.$http.delete(apiUrl)
@@ -217,6 +218,8 @@ export default {
         const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
         this.$http.post(apiUrl)
         .then(res => {
+          this.pay()
+
           this.cnt += 1
           this.joins.unshift(res.data)
         })
@@ -230,6 +233,8 @@ export default {
         const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
         this.$http.delete(apiUrl)
         .then(res => {
+          this.refund()
+
           this.$router.go(-1)
         })
         .catch(err => {
@@ -244,13 +249,48 @@ export default {
           .then(res => {
             this.cnt = res.data.user_group.length
             this.joins = res.data.user_group
+            console.log(this.joins)
+            for(let i of this.joins) {
+              console.log(i.user_id)
+            }
           })
           .catch(err => {
               console.log(err)
           })
-        
-
-
+      },
+      refundGroup: function () {
+        for(let i of this.joins) {
+          if(i.user_id !== this.data.user) {
+            const baseUrl = this.$store.state.baseUrl
+            const apiUrl = baseUrl + 'boards/refund/' + i.user_id
+            this.$http.post(apiUrl)
+            .then(res => {
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+        }
+      },
+      refund: function () {
+        const baseUrl = this.$store.state.baseUrl
+        const apiUrl = baseUrl + 'boards/refund/' + this.userId
+        this.$http.post(apiUrl)
+        .then(res => {
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      },
+      pay: function () {
+        const baseUrl = this.$store.state.baseUrl
+        const apiUrl = baseUrl + 'boards/pay/' + this.userId
+        this.$http.post(apiUrl)
+        .then(res => {
+        })
+        .catch(err => {
+          console.log(err)
+        })
       }
   }
 }

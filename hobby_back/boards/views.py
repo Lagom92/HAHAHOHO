@@ -248,6 +248,7 @@ def participantCheck(request, post_id, user_id):
             cart = post.cart.filter(id=user_id)
             img = user.userImage
             nickName = user.userNickName
+
             if user in cart:
                 post.cart.remove(user)
             participant = ParticipantCheck.objects.create(
@@ -263,6 +264,7 @@ def participantCheck(request, post_id, user_id):
     elif request.method == 'DELETE':
         # delete요청이면 해당 모임에 대해 취소 신청을 했기 때문에 해당 유저 삭제
         participant = ParticipantCheck.objects.get(post=post_id, user=user_id)
+
         participant.delete()
         return Response("delete success")
     else:
@@ -295,6 +297,22 @@ def participantCheckListByUser(request, user_id):
         serializer = PostHobbySerializer(post)
         posts['{}'.format(idx)] = serializer.data  
     return Response(posts)
+
+@api_view(['POST'])
+def refund(request, user_id):
+    user = User.objects.get(id=user_id)
+    point = 2000
+    user.userPoint += point
+    user.save()
+    return Response("Refund complete")
+
+@api_view(['POST'])
+def pay(request, user_id):
+    user = User.objects.get(id=user_id)
+    point = 2000
+    user.userPoint -= point
+    user.save()
+    return Response("Pay complete")
 
 @api_view(['POST'])
 def addCart(request, user_id):

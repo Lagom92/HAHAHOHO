@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests, json
 from .serializers import UserSerializer
-from .models import User, payInfo
+from .models import User, payInfo, Bill
 from django.contrib.auth import get_user_model
 from boards.models import PostHobby
 
@@ -164,6 +164,7 @@ def kakaoPay(request):
     response = requests.post(url+"/v1/payment/ready", params=params, headers=headers)
     response = json.loads(response.text)
     user = User.objects.get(id=user_id)
+    print(response.get('code'))
     if response.get('code'):
         raise NameError
     else:
@@ -171,8 +172,20 @@ def kakaoPay(request):
             user=user, payNum=response.get('tid'), 
             payAmount=request.data.get('amount'), payDate=response.get('created_at')
         )
+        # print("============")
+        # print(user)
+        # print(request.data.get('amount'))
+
+        # Bill.objects.create(
+        #     user = user,
+        #     money = request.data.get('amount'),
+        #     change = 'Kakao pay 충전'
+        # )
         user.userPoint += int(request.data.get('amount'))
         user.save()
+
+        # 결제 내역 저장
+
         return Response(response)
 
 @api_view(['POST'])
