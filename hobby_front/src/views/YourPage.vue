@@ -24,6 +24,18 @@
                       color="#9AB878"
                       small
                       dark
+                      @click="addFollow"
+                      v-if="followState"
+                      >
+                        언팔로우
+                      </v-btn>
+                      <v-btn
+                      class="ma-2"
+                      color="#9AB878"
+                      small
+                      dark
+                      @click="addFollow"
+                      v-else
                       >
                         팔로우
                       </v-btn>
@@ -168,22 +180,37 @@
       </div>
       <!-- 유저가 참여한 목록 -->
       <div>
+        <div>
+          <h2 class="no-background"><span>{{userInfo.userNickName}}의 타임라인</span></h2>
+        </div>
         <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
             <v-timeline-item
             v-for="(meet, i) in meets"
             :key="i"
             color="#EE7785"
             >
-            <template v-slot:opposite>
-                <span
-                :class="`headline font-weight-bold ${meet.color}--text`"
-                v-text="meet.day"
-                ></span>
-            </template>
             <v-card class="elevation-2">
                 <v-card-title class="headline">{{meet.title}}</v-card-title>
                 <v-card-text>
-                    <p>{{meet.content}}</p>
+                  <v-row>
+                    <v-col cols="3">
+                      <v-img :src="meet.photo" height="100"></v-img>
+                    </v-col>
+                    <v-col cols="9">
+                      <div class="mb-4">
+                        <v-icon class="mr-1">mdi-calendar-month</v-icon>
+                        날짜 : {{meet.meetDay}}
+                      </div>
+                      <div class="mb-4">
+                        <v-icon class="mr-1">mdi-map-marker</v-icon>
+                        장소 : {{meet.location}}
+                      </div>
+                      <div class="mb-4">
+                        <v-icon class="mr-1">mdi-text</v-icon>
+                        내용 : {{meet.content}}
+                      </div>
+                    </v-col>
+                  </v-row>
                 </v-card-text>
             </v-card>
             </v-timeline-item>
@@ -203,6 +230,7 @@ export default {
   },
   data () {
     return {
+      followState: false,
       grade:'',
       followCounting: 0,
       followerCounting: 0,
@@ -231,10 +259,52 @@ export default {
       ],
     }
   },
+  watch:{
+    followState: function(){
+      this.followInfo(this.userInfo.id)
+      this.followerInfo(this.userInfo.id)
+    }
+  },
   mounted(){
     this.getUserInfo(this.$route.params.id)
+    this.followInfo(this.$route.params.id)
+    this.followerInfo(this.$route.params.id)
   },
   methods: {
+    followInfo(id){
+      this.$http.get(this.$store.state.baseUrl + 'accounts/follows/' + id).then(res =>{
+        this.followCounting = res.data.length
+        for(let i of res.data){
+          if(i.img == null){
+            i.img = require('../assets/logo.png')
+          }
+        }
+        this.followGroup = res.data    
+      })
+    },
+    followerInfo(id){
+      this.$http.get(this.$store.state.baseUrl + 'accounts/followers/' + id).then(res =>{
+        this.followerCounting = res.data.length
+        for(let i of res.data){
+          if(i.name == this.$store.state.user_name){
+            this.followState = true
+          }
+          if(i.img == 'undefined'){
+            i.img = require('../assets/logo.png')
+          }
+        }
+        this.followerGroup = res.data 
+      })
+    },
+    addFollow(){
+      this.$http.post(this.$store.state.baseUrl + "accounts/following/" + this.$store.state.user_id + "/" + this.userInfo.id).then(res =>{
+        if(this.followState){
+          this.followState = false
+        } else {
+          this.followState = true
+        }
+      })
+    },
     formatDate(date) {
       var d = new Date(date),
           month = '' + (d.getMonth() + 1),
@@ -261,24 +331,6 @@ export default {
         this.userInfo.userImage = 'https://'+image
         this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
       })
-      this.$http.get(this.$store.state.baseUrl + 'accounts/follows/' + id).then(res =>{
-        this.followCounting = res.data.length
-        for(let i of res.data){
-          if(i.img == null){
-            i.img = require('../assets/logo.png')
-          }
-        }
-        this.followGroup = res.data    
-      })
-      this.$http.get(this.$store.state.baseUrl + 'accounts/followers/' + id).then(res =>{
-        this.followerCounting = res.data.length
-        for(let i of res.data){
-          if(i.img == 'undefined'){
-            i.img = require('../assets/logo.png')
-          }
-        }
-        this.followerGroup = res.data 
-      })
       let event = []
       let counts = 0
       this.$http.get(this.$store.state.baseUrl+'boards/participantCheckListByUser/' + id).then(res =>{
@@ -286,17 +338,22 @@ export default {
         let timeInMs = Date.now()
         for(let i in band){
           counts = counts + 1
-          if(timeInMs > band[i].endDay){}
-            console.log(band[i].endDay)
+          if(timeInMs > new Date(band[i].endDay)){
+            let photo = band[i].photo
+            photo = photo.substr(1)
             let moim = {
               day: this.formatDate(band[i].created_at),
               color: 'indigo',
               icon: 'mdi-star',
               title: band[i].title,
-              content: band[i].contents
+              content: band[i].contents,
+              photo: this.$store.state.baseUrl + photo,
+              meetDay: band[i].startDay,
+              location: band[i].location
             }
             event.push(moim)
-          this.bandCount = counts
+            this.bandCount = counts
+          }
         }
       })
       this.meets = event
@@ -308,4 +365,37 @@ export default {
 <style lang="stylus">
 #contain_card
   width 100%
+
+h2 {
+    font: 33px sans-serif;
+    margin-top: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+h2.no-background {
+    position: relative;
+    overflow: hidden;
+    
+    span {
+        display: inline-block;
+        vertical-align: baseline;
+        zoom: 1;
+        *display: inline;
+        *vertical-align: auto;
+        position: relative;
+        padding: 0 20px;
+
+        &:before, &:after {
+            content: '';
+            display: block;
+            width: 1000px;
+            position: absolute;
+            top: 0.73em;
+        }
+
+        &:before { right: 100%; }
+        &:after { left: 100%; }
+    }
+}
 </style>

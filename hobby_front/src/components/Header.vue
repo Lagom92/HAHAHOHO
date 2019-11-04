@@ -22,7 +22,7 @@
             <v-btn v-if="state" text @click.stop="dialog = true">로그인</v-btn>
             <v-row v-else>
               <div class="my-auto">
-                <p class="mb-0 mr-5">{{username}}님 환영합니다</p>
+                <p class="mb-0 mr-5"><router-link to="user">{{username}}</router-link>님 환영합니다</p>
               </div>
               <v-btn text @click.stop="logout()">로그아웃</v-btn>
             </v-row>
@@ -125,7 +125,7 @@ export default {
         location.href('http://localhost:8080/')
         scope.state = true
       })
-    }
+    },
   }
 }
 </script>
