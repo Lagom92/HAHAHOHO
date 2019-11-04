@@ -32,3 +32,12 @@ class PostOnetone(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.TextField()
     answer = models.TextField(blank=True)
+
+class KakaoBill(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    money = models.IntegerField()
+    change = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.change

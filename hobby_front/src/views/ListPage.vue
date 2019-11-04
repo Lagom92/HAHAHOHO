@@ -2,7 +2,7 @@
   <div>
     <TopBanner></TopBanner>
     <v-container>
-      <h1 class="text-center">모임 목록</h1>
+      <h1 class="text-center gamjaFont" id="titlesize">모임</h1>
       <div class="d-flex justify-end mx-3">
         <v-btn 
         fab 
@@ -41,3 +41,8 @@ export default {
   },
 }
 </script>
+
+<style lang="stylus">
+#titlesize
+  font-size 40px
+</style>

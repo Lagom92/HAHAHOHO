@@ -4,7 +4,7 @@
             <v-row>
                 <v-col cols="12" md="6" offset-md="3">
                     <div>
-                        <h1>자유게시판 글쓰기</h1>
+                        <h1 class="gamjaFont">자유게시판 글쓰기</h1>
                     </div>
                     <v-divider></v-divider>
                     <v-form ref="form" v-model="valid">
@@ -21,16 +21,16 @@
                         ></v-textarea>
                     </v-form>
                 </v-col>
-            </v-row>
-            <v-row>
-              <div class="ml-auto">
-                <v-btn 
-                text color="primary"
-                @click="createFree"
-                >
-                  등록하기
-                </v-btn>
-              </div>
+                <v-col cols="12" md="6" offset-md="3">
+                    <div>
+                        <v-btn
+                        text color="primary"
+                        @click="createFree"
+                        >
+                        등록하기
+                        </v-btn>
+                    </div>
+                </v-col>
             </v-row>
         </v-container>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section id='top'>
-      <h1 class="mb-3">공지사항</h1>
+      <h1 class="mb-3 gamjaFont">공지사항</h1>
       <v-divider id='topdivider'></v-divider>
       <v-row class="font-weight-black">
         <v-col cols='2'>번호</v-col>

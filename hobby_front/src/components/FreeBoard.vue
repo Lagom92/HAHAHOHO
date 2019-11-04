@@ -1,8 +1,8 @@
 <template>
   <div>
     <section id='top'>
-      <v-row>
-        <h1 class="mb-3">자유게시판</h1>
+      <v-row class="px-3" align="center">
+        <h1 class="mb-3 gamjaFont">자유게시판</h1>
         <v-spacer></v-spacer>
         <v-btn 
         text 

@@ -7,9 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests, json
 from .serializers import UserSerializer
-from .models import User, payInfo
+from .models import User, payInfo, KakaoBill
 from django.contrib.auth import get_user_model
-from boards.models import PostHobby
 
 # 평판정보 조회 및 새로 추가하는 기능
 # 한명이 한개의 평판을 줄때 그것을을 1로 산정해서 추가해줌, defalt=0
@@ -171,9 +170,29 @@ def kakaoPay(request):
             user=user, payNum=response.get('tid'), 
             payAmount=request.data.get('amount'), payDate=response.get('created_at')
         )
+        KakaoBill.objects.create(
+            user = user,
+            money = request.data.get('amount'),
+            change = "Kakao pay 충전"
+        )
         user.userPoint += int(request.data.get('amount'))
         user.save()
+        # 결제 내역 저장
         return Response(response)
+
+@api_view(['GET'])
+def getBills(request, user_id):
+    queryset = KakaoBill.objects.all().order_by('-id')
+    queryset = queryset.filter(user_id = user_id)
+    data = []
+    for query in queryset:
+        box={}
+        if user_id == query.user.id:
+            box['money'] = query.money
+            box['change'] = query.change
+            box['created_at'] = query.created_at
+            data.append(box)
+    return Response(data)
 
 @api_view(['POST'])
 def following(request, meId, youId):

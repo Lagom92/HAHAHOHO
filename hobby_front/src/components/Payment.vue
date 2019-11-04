@@ -56,11 +56,6 @@ export default {
         .then(res => {
           let payUrl = res.data.next_redirect_pc_url
           location.href = payUrl
-          /*
-          결제 끝나고 현재 home으로 이동하기 때문에
-          개인 유저 페이지로 돌아가게끔 router를 생성해주고
-          해당 router주소를 알려주시면 백엔드에서 처리하겠습니다.
-          */
         })
         .catch(e => {
           alert('에러가 발생했습니다. 다시 시도해주세요')

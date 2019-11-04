@@ -4,7 +4,7 @@
         <v-parallax v-if="slide==1" src="https://www.colorbook.io/imagecreator.php?hex=ee7789&width=1920&height=1080&text=%201920x1080" class="pa-10">
             <v-row align="center" justify="center">
                 <v-col class="text-center" cols="12">
-                    <h1 class="display-2 font-weight-bold mb-4">이것만은 꼭! </h1>
+                    <h1 class="gamjaFont mb-4" id="etiquetteSize">이것만은 꼭! </h1>
                     <h4 class="headline">하하호호는 신뢰있는 서비스를 제공하기 위해 노력하고 있어요.</h4>
                     <h4 class="headline">여러분도 서로를 위해 이것만은 꼭 지켜주세요!</h4>
                 </v-col>
@@ -67,5 +67,8 @@ export default {
 }
 #etiquetteCaro > div > div > div > div > div > div {
     height: 100% !important
+}
+#etiquetteSize{
+    font-size: 100px;
 }
 </style>

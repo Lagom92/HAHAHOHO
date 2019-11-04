@@ -3,9 +3,10 @@ from rest_framework import generics, filters, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
-from .models import PostHobby, PostFree, Faq, Notice, CommentFree, ParticipantCheck, User, CommentHobby
+from .models import PostHobby, PostFree, Faq, Notice, CommentFree, ParticipantCheck, User, CommentHobby, Bill
 from .serializers import PostHobbySerializer, PostFreeSerializer, NoticeSerializer
 from .serializers import FaqSerializer, CommentFreeSerializer, ParticipantCheckSerializer, CommentHobbySerializer
+
 
 class postHobby_list(generics.ListCreateAPIView):
     '''
@@ -248,6 +249,7 @@ def participantCheck(request, post_id, user_id):
             cart = post.cart.filter(id=user_id)
             img = user.userImage
             nickName = user.userNickName
+
             if user in cart:
                 post.cart.remove(user)
             participant = ParticipantCheck.objects.create(
@@ -263,6 +265,7 @@ def participantCheck(request, post_id, user_id):
     elif request.method == 'DELETE':
         # delete요청이면 해당 모임에 대해 취소 신청을 했기 때문에 해당 유저 삭제
         participant = ParticipantCheck.objects.get(post=post_id, user=user_id)
+
         participant.delete()
         return Response("delete success")
     else:
@@ -295,6 +298,53 @@ def participantCheckListByUser(request, user_id):
         serializer = PostHobbySerializer(post)
         posts['{}'.format(idx)] = serializer.data  
     return Response(posts)
+
+@api_view(['POST'])
+def refund(request, post_id, user_id):
+    user = User.objects.get(id=user_id)
+    postHobby = PostHobby.objects.get(id=post_id)
+    point = 2000
+    user.userPoint += point
+    Bill.objects.create(
+        user = user,
+        money = point,
+        postHobby = postHobby,
+        change = "point 환불"
+    )
+    user.save()
+    return Response("Refund complete")
+
+@api_view(['POST'])
+def pay(request, post_id, user_id):
+    user = User.objects.get(id=user_id)
+    postHobby = PostHobby.objects.get(id=post_id)
+    point = 2000
+    user.userPoint -= point
+    Bill.objects.create(
+        user = user,
+        money = point,
+        postHobby = postHobby,
+        change = "point 차감"
+    )
+    user.save()
+    return Response("Pay complete")
+
+@api_view(['GET'])
+def getBills(request, user_id):
+    queryset = Bill.objects.all().order_by('-id')
+    queryset = queryset.filter(user_id = user_id)
+    data = []
+    for query in queryset:
+        box={}
+        if user_id == query.user.id:
+            box['post_title'] = query.postHobby.title
+            box['post_id'] = query.postHobby.id
+            box['money'] = query.money
+            box['change'] = query.change
+            box['created_at'] = query.created_at
+            data.append(box)
+    return Response(data)
+
 
 @api_view(['POST'])
 def addCart(request, user_id):

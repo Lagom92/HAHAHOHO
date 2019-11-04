@@ -188,7 +188,7 @@ export default {
         },
         {
           title: '기타',
-          img: '',
+          img: 'https://cdn.pixabay.com/photo/2015/03/20/17/45/etc-682613_1280.jpg',
           sub: ['기타']
         }
       ],
