@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from .models import Post, Category, Subclass
 from .models import PostHobby, PostFree, Notice, Faq
-from .models import CommentHobby, CommentFree, ParticipantCheck
+from .models import CommentHobby, CommentFree, ParticipantCheck, Bill
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -60,3 +60,7 @@ class CommentFreeAdmin(admin.ModelAdmin):
 class ParticipantCheckAdmin(admin.ModelAdmin):
     list_display = ['user','post']
     
+@admin.register(Bill)
+class BillAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'money', 'change', 'created_at']
+    list_display_links = ['id', 'user']

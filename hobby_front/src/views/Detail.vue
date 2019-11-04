@@ -249,20 +249,16 @@ export default {
           .then(res => {
             this.cnt = res.data.user_group.length
             this.joins = res.data.user_group
-            console.log(this.joins)
-            for(let i of this.joins) {
-              console.log(i.user_id)
-            }
-          })
+            })
           .catch(err => {
-              console.log(err)
+            console.log(err)
           })
       },
       refundGroup: function () {
         for(let i of this.joins) {
           if(i.user_id !== this.data.user) {
             const baseUrl = this.$store.state.baseUrl
-            const apiUrl = baseUrl + 'boards/refund/' + i.user_id
+            const apiUrl = baseUrl + 'boards/refund/' + this.id +'/'+ i.user_id
             this.$http.post(apiUrl)
             .then(res => {
             })
@@ -274,7 +270,7 @@ export default {
       },
       refund: function () {
         const baseUrl = this.$store.state.baseUrl
-        const apiUrl = baseUrl + 'boards/refund/' + this.userId
+        const apiUrl = baseUrl + 'boards/refund/' + this.id +'/'+ this.userId
         this.$http.post(apiUrl)
         .then(res => {
         })
@@ -284,7 +280,7 @@ export default {
       },
       pay: function () {
         const baseUrl = this.$store.state.baseUrl
-        const apiUrl = baseUrl + 'boards/pay/' + this.userId
+        const apiUrl = baseUrl + 'boards/pay/' + this.id + '/'+ this.userId
         this.$http.post(apiUrl)
         .then(res => {
         })

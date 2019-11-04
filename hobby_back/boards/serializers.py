@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import PostHobby, PostFree, Notice, Faq, CommentFree, ParticipantCheck, CommentHobby
+from .models import PostHobby, PostFree, Notice, Faq, CommentFree, ParticipantCheck, CommentHobby, Bill
 
 class ParticipantCheckSerializer(serializers.ModelSerializer):
     
