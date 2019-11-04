@@ -1,27 +1,28 @@
 <template>
   <div>
     <v-container>
-      <v-row>
+      <v-row align="center">
         <v-col cols="12" md="5">
-          <v-chip small color="#9AB878" dark>{{data.subclass}}</v-chip>
+          <v-chip small color="#9AB878" dark class="mb-3">{{data.subclass}}</v-chip>
           <h1>{{data.title}}</h1>
-          <h5 class="mb-2">작성 날짜: {{data.created_at}}</h5>
-          <p>모집 마감: 
-            <v-icon class="mr-1">mdi-calendar-month</v-icon>
-              {{data.endDay}}
-          </p>
         </v-col>
         <v-col cols="12" md="2">
           <v-menu
-          transition="scale-transition"
+            transition="scale-transition"
+            absolute
           >
             <template v-slot:activator="{ on }">
-              <v-chip pill v-on="on" class="mt-8">
-                <v-avatar left>
-                  <v-img :src="data.userimage"></v-img>
-                </v-avatar>
-                {{data.username}}
-              </v-chip>
+              <v-card flat color="#fafafa" v-on="on">
+                <v-row align="center" class="px-3">
+                  <v-avatar tile size="48">
+                    <v-img :src="data.userimage"></v-img>
+                  </v-avatar>
+                  <v-col class="pa-0 ml-5">
+                    <h4>{{data.username}}</h4>
+                    <h5 class="grey--text">모임장</h5>
+                  </v-col>
+                </v-row>
+              </v-card>
             </template>
             <v-card width="300">
               <v-list dark>
@@ -52,25 +53,28 @@
           <!-- 모임 참여 취소하기 -->
             <v-btn block dark color="red" @click="unjoinGroup()">참여 취소하기</v-btn>
         </v-col>
-        <v-col  v-if="data.user === userId">
-          <v-btn block dark color="#F3B749">
-            <router-link 
-            :to="'/list/detail/' + data.id + '/update'"
-            > 
-            글 수정하기
+        <v-col cols="12" md="4" offset-md="1" v-if="data.user === userId">
+          <div class="text-center">
+            <router-link id="editrouter" :to="'/list/detail/' + data.id + '/update'"> 
+              <v-btn text icon class="mr-5">
+                  <v-icon x-large>mdi-file-document-edit-outline</v-icon>
+              </v-btn>
             </router-link>
-          </v-btn>
-          <v-btn block dark color="#F3B749" @click="deleteDetail()">글 삭제하기</v-btn>
+            <v-btn text icon @click="deleteDetail()">
+              <v-icon x-large>mdi-trash-can-outline</v-icon>
+            </v-btn>
+          </div>
         </v-col>
-        
       </v-row>
       <v-row>
         <v-col cols="12" md="7">
-          <v-img
-          :src= "data.photo"
-          class="mb-12"
-          ></v-img>
-          <v-card class="excard">
+          <v-img :src= "data.photo" class="mb-12"></v-img>
+          <div class="mb-5">
+            <h4 class="mb-2">모임 등록 날짜: <v-icon class="mr-1">mdi-calendar-month</v-icon> {{data.created_at}}</h4>
+            <p>모임 모집 마감: <v-icon class="mr-1">mdi-calendar-month</v-icon> {{data.endDay}}</p>
+          </div>
+          <v-divider class="mb-5"></v-divider>
+          <v-card flat color="#fafafa" class="excard">
             <v-card-title class="mb-3">
               모임 소개
             </v-card-title>
@@ -80,7 +84,8 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="4" offset-md="1">
-          <v-card class="excard">
+          <v-divider id="meetDiv"></v-divider>
+          <v-card flat color="#fafafa" class="excard">
             <v-card-title class="mb-3">
               모임 정보
             </v-card-title>
@@ -111,13 +116,14 @@
                 예상 비용: {{data.fee}}원
               </div>
             </v-card-text>
+            <v-divider id="meetDiv"></v-divider>
           </v-card>
           <div class="mb-12" id="mapview">
             <!-- 지도 -->
             <!-- <MapService :address="location"></MapService>   -->
             <MapService></MapService>  
           </div>
-          <v-card class="excard">
+          <v-card flat color="#fafafa" class="excard">
             <div id="member">
               <!-- 모임 멤버 관련 정보 -->
               <v-card-title class="mb-3">
@@ -305,4 +311,11 @@ export default {
 
 #mapview
   height 300px
+
+#meetDiv
+  border-top-width 2px
+  border-color black
+
+#editrouter
+  text-decoration none
 </style>

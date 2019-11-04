@@ -1,14 +1,11 @@
 <template>
     <div>
-        <div>
-            <h2 class="my-3">댓글</h2>
-        </div>
         <div class="mb-1">
             <v-card>
                 <v-container v-if="user !== ''">
                     <p>작성자: {{user}}</p>
                     <v-form>
-                        <input v-model="word" label="댓글 작성" placeholder="댓글을 남겨주세요">
+                        <input class="commentInput mb-3" v-model="word" label="댓글 작성" placeholder="댓글을 남겨주세요">
                         <div class="d-flex justify-end">
                             <v-btn dark color="light-blue" @click="createComment()">작성</v-btn>
                         </div>
