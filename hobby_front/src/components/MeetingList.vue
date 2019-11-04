@@ -11,13 +11,16 @@
       </v-btn-toggle>
     </v-row>
     <v-layout wrap>
-      <v-flex v-for="post in this.posts" :key="post.id" xs12 sm6 md4>
+      <v-flex v-for="post in paginatedData" :key="post.id" xs12 sm6 md4>
         <Meeting
         class='ma-3'
         :data="post"
         ></Meeting>
       </v-flex>
     </v-layout>
+    <div class="text-center my-5">
+        <v-pagination v-model="pageNum" :length="this.size"></v-pagination>
+    </div>
   </div>
 </template>
 
@@ -27,17 +30,29 @@ import Meeting from '@/components/Meeting'
 
 export default {
   name: 'MeetingList',
+  props: {
+    pageSize: { type: Number, required: false, default: 6 }
+  },
   data () {
     return {
       posts: [],
-      text: ''
+      text: '',
+      pageNum: 1,
+      size: null
     }
   },
   components: {
     Meeting
   },
+  computed: {
+    paginatedData() {
+      const start = (this.pageNum - 1) * this.pageSize,
+            end = start + this.pageSize
+      return this.posts.slice(start, end)
+    }
+  },
   mounted () {
-    this.get_hobby();
+    this.get_hobby()
   },
   methods: {
     get_hobby: function () {
@@ -45,7 +60,11 @@ export default {
       const apiUrl = baseUrl + 'boards/hobby'
       this.$http.get(apiUrl)
         .then(res => {
-          this.posts = res.data 
+          this.posts = res.data
+          let listLength = this.posts.length,
+              listSize = this.pageSize,
+              page = Math.floor((listLength - 1) / listSize) + 1
+              this.size = page
         })
         .catch(err => {
           console.log(err)
@@ -54,14 +73,14 @@ export default {
     sortNew() {
       // var sortingField = 'created_at'
       this.posts.sort(function(a, b) {
-        return a.created_at < b.created_at ? -1 : a.created_at < b.created_at ? 1 : 0
+        return a.created_at > b.created_at ? -1 : a.created_at < b.created_at ? 1 : 0
       })
     },
     sortEnd() {
       this.posts.sort(function(a, b) {
-        return a.endDay < b.endDay ? -1 : a.endDay < b.endDay ? 1 : 0
+        return a.endDay < b.endDay ? -1 : a.endDay > b.endDay ? 1 : 0
       })
-    }
+    },
   }  
 }
 </script>
