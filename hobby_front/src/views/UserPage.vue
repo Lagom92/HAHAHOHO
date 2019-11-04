@@ -93,17 +93,17 @@
                                     :key="item.name"
                                     >
                                       <v-list-item-avatar>
-                                        <v-img :src="item.img"></v-img>
+                                        <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.name">
+                                        <v-list-item-title @click="move(item.id)"  v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
                                   </v-list>
                                   <v-list v-else>
                                     <v-list-item-content>
-                                        <h3>팔로워가 없습니다 !</h3>
+                                        <h3 id="center">팔로워가 없습니다 !</h3>
                                       </v-list-item-content>
                                   </v-list>
                                 </v-card-text>
@@ -140,21 +140,22 @@
                                     :key="item.title"
                                     >
                                       <v-list-item-avatar>
-                                        <v-img :src="item.img"></v-img>
+                                        <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.name">
+                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
                                   </v-list>
                                   <v-list v-else>
-                                    <h3>팔로잉한 사람이 없습니다 !</h3>
+                                    <h3 id="center">팔로잉한 사람이 없습니다 !</h3>
                                   </v-list>
                                 </v-card-text>
                                 <v-divider></v-divider>
                                 <v-card-actions>
                                   <v-btn
+                                  class="ml-auto"
                                   color="#2E1E11"
                                   text
                                   @click="followdialog = false"
@@ -374,8 +375,10 @@ export default {
       this.userInfo.userSex = res.data.userSex
       let image = res.data.userImage
       let counts = image.length
-      var strArray = res.data.userLike.split(',')
-      this.tags = strArray
+      if(res.data.userLike != ""){
+        var strArray = res.data.userLike.split(',')
+        this.tags = strArray
+      }
       this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
       // 카카오만
       image = image.substr(14, counts)
@@ -419,7 +422,7 @@ export default {
           selectColor = '#60c5ba'
         }
         var detail = {
-          startDay: this.formatDate(band[i].created_at),
+          startDay: band[i].startDay,
           startTime: band[i].startTime,
           location: band[i].location,
           fee: band[i].fee
@@ -427,8 +430,8 @@ export default {
         var moim = {
           name: band[i].title,
           details: detail,
-          start: this.formatDate(band[i].created_at),
-          end: band[i].endDay,
+          start: band[i].startDay,
+          end: band[i].startDay,
           color: selectColor,
         }
         event.push(moim)
@@ -463,11 +466,12 @@ export default {
     }).catch(error =>{
       console.log(error)
     })
-    console.log(event)
     this.events = event
-    console.log(this.events)
   },
   methods: {
+    move(id){
+      this.$router.push({name: 'yourpage', params:{id:id}})
+    },
     viewMore ({ date }) {
       this.focus = date
     },
@@ -523,4 +527,9 @@ export default {
 <style lang="stylus">
 #contain_card
   width 100%
+
+#center{
+  text-align:center;
+  margin-top:130px
+}
 </style>

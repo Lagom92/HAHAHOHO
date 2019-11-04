@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="nanumFont">
     <v-container>
       <v-row>
         <v-col cols="12" md="8" offset-md="2">
@@ -280,3 +280,9 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus">
+.nanumFont
+  font-family 'Nanum Gothic', sans-serif
+</style>
+

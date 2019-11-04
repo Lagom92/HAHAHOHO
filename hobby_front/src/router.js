@@ -99,7 +99,7 @@ export default new Router({
       component: Search
     },
     {
-      path: '/yourpage',
+      path: '/user/:id',
       name: 'yourpage',
       component: YourPage
     }

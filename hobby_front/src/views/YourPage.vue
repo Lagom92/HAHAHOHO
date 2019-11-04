@@ -24,10 +24,11 @@
                       color="#9AB878"
                       small
                       dark
+                      outlined
                       @click="addFollow"
                       v-if="followState"
                       >
-                        언팔로우
+                        팔로잉
                       </v-btn>
                       <v-btn
                       class="ma-2"
@@ -96,17 +97,17 @@
                                     :key="item.name"
                                     >
                                       <v-list-item-avatar>
-                                        <v-img :src="item.img"></v-img>
+                                        <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.name">
+                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
                                   </v-list>
                                   <v-list v-else>
                                     <v-list-item-content>
-                                        <h3>팔로워가 없습니다 !</h3>
+                                        <h3 id="center">팔로워가 없습니다 !</h3>
                                       </v-list-item-content>
                                   </v-list>
                                 </v-card-text>
@@ -143,16 +144,16 @@
                                     :key="item.title"
                                     >
                                       <v-list-item-avatar>
-                                        <v-img :src="item.img"></v-img>
+                                        <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title v-text="item.name">
+                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
                                   </v-list>
                                   <v-list v-else>
-                                    <h3>팔로잉한 사람이 없습니다 !</h3>
+                                    <h3 id="center">팔로잉한 사람이 없습니다 !</h3>
                                   </v-list>
                                 </v-card-text>
                                 <v-divider></v-divider>
@@ -271,6 +272,13 @@ export default {
     this.followerInfo(this.$route.params.id)
   },
   methods: {
+    move(id){
+      if(id == this.$store.state.user_id){
+        this.$router.push({name: 'user'})
+      } else {
+        this.$router.push({name: 'yourpage', params:{id:id}})
+      }
+    },
     followInfo(id){
       this.$http.get(this.$store.state.baseUrl + 'accounts/follows/' + id).then(res =>{
         this.followCounting = res.data.length
@@ -323,8 +331,10 @@ export default {
       form.append('id', id)
       this.$http.post(this.$store.state.baseUrl + "accounts/userInfo", form).then(res =>{
         this.userInfo = res.data
-        var strArray = res.data.userLike.split(',')
-        this.tags = strArray
+        if(res.data.userLike != ""){
+          var strArray = res.data.userLike.split(',')
+          this.tags = strArray
+        }
         let image = res.data.userImage
         let counts = image.length
         image = image.substr(14, counts)
@@ -397,5 +407,10 @@ h2.no-background {
         &:before { right: 100%; }
         &:after { left: 100%; }
     }
+}
+
+#center{
+  text-align:center;
+  margin-top:130px
 }
 </style>
