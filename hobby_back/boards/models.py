@@ -22,25 +22,10 @@ class Post(models.Model):
     def __str__(self):
         return self.name
 
-# 카테고리 대분류
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-# 카테고리 소분류
-class Subclass(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
 # 취미 게시판
 class PostHobby(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    subclass = models.ForeignKey(Subclass, on_delete=models.CASCADE)
+    subclass = models.CharField(max_length=100)
     title = models.CharField(max_length=300)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  
     contents = models.TextField() 

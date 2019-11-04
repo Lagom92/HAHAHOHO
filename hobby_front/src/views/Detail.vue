@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="5">
-          <v-chip small color="#9AB878" dark>{{data.subclassname}}</v-chip>
+          <v-chip small color="#9AB878" dark>{{data.subclass}}</v-chip>
           <h1>{{data.title}}</h1>
           <h5 class="mb-2">작성 날짜: {{data.created_at}}</h5>
           <p>모집 마감: 
@@ -168,14 +168,14 @@ export default {
     this.userId = this.$store.state.user_id
     this.getDetail()
     this.getJoinMember()
-
 },
   methods: {
     yourPage(){
-      if(this.id == this.$store.state.user_id){
+      console.log(this.data.user)
+      if(this.data.user == this.$store.state.user_id){
         this.$router.push({name: 'user'})
       } else{
-        this.$router.push({name: 'yourpage', params:{id:this.id}})
+        this.$router.push({name: 'yourpage', params:{id:this.data.user}})
       }
     },
     getDetail: function () {
@@ -195,7 +195,7 @@ export default {
 
         res.data.fee = res.data.fee.toLocaleString()
 
-        this.data = res.data        
+        this.data = res.data  
       })
       .catch(err => {
         console.log(err)
