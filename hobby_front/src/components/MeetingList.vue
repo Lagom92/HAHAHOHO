@@ -45,7 +45,25 @@ export default {
       const apiUrl = baseUrl + 'boards/hobby'
       this.$http.get(apiUrl)
         .then(res => {
-          this.posts = res.data 
+          for(let i of res.data){
+            let timeMins = Date.now()
+            let createTime = new Date(i.created_at).getTime()
+            let deadTime = new Date(i.endDay).getTime()
+            let subToCreate = Math.floor(timeMins - createTime)/1000
+            let subToEnd = Math.floor(timeMins - deadTime) / 1000
+            if(Math.floor(subToCreate / 86400) < 1){
+              i.new = 'new'
+            } else {
+              i.new = null
+            }
+            if(subToEnd < 86400) {
+              i.dead = 'dead'
+            } else {
+              i.dead = null
+            }
+          }
+          this.posts = res.data
+          console.log(this.posts)
         })
         .catch(err => {
           console.log(err)
