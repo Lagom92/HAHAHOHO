@@ -17,4 +17,5 @@ urlpatterns = [
     path('following/<int:meId>/<int:youId>', views.following),
     path('follows/<int:id>', views.follows),
     path('followers/<int:id>', views.followers),
+    path('bill/<int:user_id>', views.getBills),
 ]

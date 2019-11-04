@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-row justify="center">
+    <v-row >
       <v-btn-toggle v-model="text" tile color="#EE7785" group>
-        <v-btn value="new" @click="sortNew()">
+        <v-btn value="new" @click="sortNew()" class="nanumFont">
           최신순
         </v-btn>
-        <v-btn value="end" @click="sortEnd()">
+        <v-btn value="end" @click="sortEnd()" class="nanumFont">
           마감임박순
         </v-btn>
       </v-btn-toggle>

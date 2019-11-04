@@ -4,7 +4,7 @@
     <v-container>
       <div>
         <v-card class="pa-3" elevation="0" color="#fafafa">
-          <v-card-title class="justify-center">
+          <v-card-title class="nanumFont justify-center" id="meetingSize">
             모임 목록
             <v-btn text icon to="/list" class="ml-3">
               <v-icon color="#74b4a0">
@@ -33,7 +33,7 @@
                   gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                   height="280px"
                 >
-                  <v-card-title v-text="post.title"></v-card-title>
+                  <v-card-title v-text="post.title" class="nanumFont"></v-card-title>
                 </v-img>
               </v-card>
             </v-slide-item>
@@ -62,7 +62,7 @@
                   gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                   height="300px"
                 >
-                  <v-card-title v-text="post.title"></v-card-title>
+                  <v-card-title v-text="post.title" class="nanumFont"></v-card-title>
                 </v-img>
               </v-card>
             </v-carousel-item>
@@ -72,7 +72,7 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-card class="pa-5" elevation="0" color="#fafafa">
-            <v-card-title class="justify-center">
+            <v-card-title class="nanumFont justify-center" id="noticeSize">
               공지사항
               <v-spacer></v-spacer>
               <v-btn text icon to="/board">
@@ -105,7 +105,7 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-card class="pa-5" elevation="0" color="#fafafa">
-            <v-card-title class="justify-center">
+            <v-card-title class="nanumFont justify-center" id="freeSize">
               자유게시판
               <v-spacer></v-spacer>
               <v-btn text icon to="/board">
@@ -151,7 +151,7 @@
         <v-card-text class="text-center">
           <div class="title font-weight-thin">하하호호는 건전한 취미생활, 밝은 에너지, 신뢰있는 관계를 통해 서비스를 운영하고 있습니다.</div>
           <div class="title font-weight-thin">저희 사이트에 대한 소개를 읽어봐주세요^^</div>
-          <v-btn dark large to="/about" color="#EE7785">
+          <v-btn dark large to="/about" color="#EE7785" class="nanumFont">
             하하호호 알아보기
             <v-icon class="ma-1">mdi-arrow-right-bold</v-icon>
           </v-btn>
@@ -164,9 +164,9 @@
       </v-card-title>
       <v-card-text class="text-center">
         <div class="title font-weight-thin">카카오 플러스 친구를 해보세요~</div>
-        <v-btn dark large color="#EE7785" @click="kakao()">
+        <v-btn dark large color="#EE7785" @click="kakao()" class="nanumFont">
           플러스친구 추가하기
-          <v-icon>mdi-arrow-right-bold</v-icon>
+          <v-icon class="ma-1">mdi-arrow-right-bold</v-icon>
         </v-btn>
       </v-card-text>
     </v-card>
@@ -260,4 +260,18 @@ export default {
 
 .titleDiv
   border-top-width 3px
+
+.gamjaFont
+  font-family 'Gamja Flower', cursive
+  font-weight bold
+  font-size 35px
+
+#meetingSize
+ font-weight bold
+
+#noticeSize
+ font-weight bold
+
+#freeSize
+ font-weight bold
 </style>

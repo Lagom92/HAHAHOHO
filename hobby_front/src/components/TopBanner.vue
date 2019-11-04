@@ -6,9 +6,9 @@
           <v-img id="hahahoho" src="../assets/hahahoho.png" max-width="55%"></v-img>
         </v-col>
         <v-col cols="12" sm="4" class="d-none d-md-flex">
-          <span class="bannerText display-1 font-weight-bold mb-3">
-            취미모임
-            <br>다같이 놀아요
+          <span class="bannerText mb-3 dohyeonFont">
+            다같이
+            <br>놀아요
             <br>룰루랄라
           </span>
         </v-col>
@@ -38,4 +38,8 @@ export default {
 
 .bannerText
   color #EE7785
+
+.dohyeonFont
+  font-family 'Do Hyeon', sans-serif
+  font-size 50px
 </style>

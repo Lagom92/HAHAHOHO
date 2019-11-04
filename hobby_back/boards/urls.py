@@ -26,6 +26,10 @@ urlpatterns = [
     path('participantCheckListByPost/<int:post_id>', views.participantCheckListByPost),
     path('cartList/<int:user_id>', views.CartList),
     path('cart/<int:user_id>', views.addCart),
+
+    path('refund/<int:post_id>/<int:user_id>', views.refund),
+    path('pay/<int:post_id>/<int:user_id>', views.pay),
+    path('bill/<int:user_id>', views.getBills)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

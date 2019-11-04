@@ -118,3 +118,13 @@ class ParticipantCheck(models.Model):
 # class Cart(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     post = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
+
+class Bill(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    postHobby = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    money = models.IntegerField()
+    change = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.change
