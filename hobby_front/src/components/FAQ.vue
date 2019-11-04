@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mb-3">FAQ</h1>
+    <h1 class="mb-3 malarenFont">FAQ</h1>
     <v-divider id='topdivider'></v-divider>
     <v-expansion-panels focusable>
       <v-expansion-panel
@@ -48,4 +48,7 @@ export default {
 #topdivider
   border-top-width 2px
   border-top-color #000
+
+.malarenFont
+  font-family 'Gaegu', cursive
 </style>

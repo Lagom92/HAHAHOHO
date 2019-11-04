@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12" md="6" offset-md="3">
           <div>
-            <h1>모임 생성</h1>
+            <h1 class="gamjaFont">모임 생성</h1>
           </div>
           <v-divider></v-divider>
           <v-file-input 
@@ -40,7 +40,8 @@
                 thumb-label="always"
                 step="10"
                 class="align-center"
-                track-color="grey"
+                color="#EE7785"
+                track-color="#a7a7a2"
                 ></v-range-slider>
               </v-col>
             </v-row>
