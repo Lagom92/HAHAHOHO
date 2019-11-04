@@ -38,6 +38,8 @@
             </v-btn>
             <div class="mb-2" >
               <v-chip x-small color="#74b4a0" dark>{{data.subclass}}</v-chip>
+              <v-chip class="ml-1"  v-if="data.new=='new'" x-small color="red" dark>new</v-chip>
+              <v-chip class="ml-1"  v-if="data.dead=='dead'" x-small color="blue" dark>마감임박</v-chip>
               <h3 class="meetingTitle title mb-2">{{data.title}}</h3>
             </div>
             <v-divider class="my-2"></v-divider>
@@ -61,11 +63,14 @@ export default {
   name: 'Meeting',
   data () {
     return {
-      selected: [],
+      selected: [
+      ],
+      date: '',
     }
   },
   props: {
-    data: {}
+    data: {
+    }
   },
   mounted() {
     this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{
