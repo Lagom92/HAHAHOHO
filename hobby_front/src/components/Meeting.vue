@@ -37,7 +37,7 @@
               <v-icon>mdi-plus</v-icon>
             </v-btn>
             <div class="mb-2" >
-              <v-chip x-small color="#74b4a0" dark>{{data.subclassname}}</v-chip>
+              <v-chip x-small color="#74b4a0" dark>{{data.subclass}}</v-chip>
               <h3 class="meetingTitle title mb-2">{{data.title}}</h3>
             </div>
             <v-divider class="my-2"></v-divider>

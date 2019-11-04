@@ -11,7 +11,6 @@ class PostHobbySerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.userNickName")
     userimage = serializers.CharField(source="user.userImage")
     postname = serializers.CharField(source="post.name")
-    subclassname = serializers.CharField(source="subclass.name")
 
     class Meta:
         model = PostHobby

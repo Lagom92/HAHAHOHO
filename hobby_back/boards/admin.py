@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Post, Category, Subclass
+from .models import Post
 from .models import PostHobby, PostFree, Notice, Faq
 from .models import CommentHobby, CommentFree, ParticipantCheck
 
@@ -9,15 +9,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
     list_display_links = ['id', 'name']
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name']
-    list_display_links = ['id', 'name']
-
-@admin.register(Subclass)
-class SubclassAdmin(admin.ModelAdmin):
-    list_display = ['id', 'category', 'name']
-    list_display_links = ['id', 'name']
 
 @admin.register(PostHobby)
 class HobbyAdmin(admin.ModelAdmin):
