@@ -114,8 +114,8 @@
           </v-card>
           <div class="mb-12" id="mapview">
             <!-- 지도 -->
-            <!-- <MapService :address="location"></MapService>   -->
-            <MapService></MapService>  
+            <MapService :address="data.location"></MapService>  
+            <!-- <MapService></MapService>   -->
           </div>
           <v-card class="excard">
             <div id="member">
@@ -187,7 +187,6 @@ export default {
         let startDay = res.data.startDay
         let endDay = res.data.endDay
         let created_at = res.data.created_at
-
         res.data.startTime = startTime.substring(0,2)+'시 '+startTime.substring(3,5)+'분'  
         res.data.startDay = startDay.substring(0,4)+'년 '+ startDay.substring(5,7)+'월 '+startDay.substring(8,10)+'일'
         res.data.endDay = endDay.substring(0,4)+'년 '+ endDay.substring(5,7)+'월 '+endDay.substring(8,10)+'일'
@@ -195,7 +194,7 @@ export default {
 
         res.data.fee = res.data.fee.toLocaleString()
 
-        this.data = res.data  
+        this.data = res.data 
       })
       .catch(err => {
         console.log(err)

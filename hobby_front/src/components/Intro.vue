@@ -3,10 +3,10 @@
     <v-carousel-item v-for="(slide, i) in slides" :key="i" style="height:100%">
     <v-parallax v-if="slide==1" src="https://cdn.pixabay.com/photo/2016/04/08/19/51/watercolor-1316867_960_720.jpg" class="pa-10">
         <v-row align="center" justify="center">
-            <v-col class="text-center" cols="12">
+            <v-col class="text-center" cols="12"> 
                 <h1 class="gamjaFont mb-4" id="introSize">하하호호에서 즐기는 취미생활</h1>
-                <h4 class="headline">하하호호는 공통된 취미를 연결해 모임을 생성해주는 서비스에요.</h4>
-                <h4 class="headline">바쁜 일상에서 벗어나 잊고 있던 취미생활을 즐겨보는 것은 어떨까요?</h4>
+                <h4 class="headline" id="font">하하호호는 공통된 취미를 연결해 모임을 생성해주는 서비스에요.</h4>
+                <h4 class="headline" id="font">바쁜 일상에서 벗어나 잊고 있던 취미생활을 즐겨보는 것은 어떨까요?</h4>
             </v-col>
         </v-row>
     </v-parallax>
@@ -101,12 +101,16 @@ export default {
 
 <style>
 #introCaro > div > div > div > div {
-    height: 100% !important
+    height: 100% !important;
 }
 #introCaro > div > div > div > div > div > div {
-    height: 100% !important
+    height: 100% !important;
 }
 #introSize {
     font-size: 100px;
+    color: black;
+}
+#font {
+    color: black;
 }
 </style>
