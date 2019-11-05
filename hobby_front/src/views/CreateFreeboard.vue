@@ -66,7 +66,7 @@ export default {
             .then(res => {
                 // window.location.href = 'http://localhost:8080/board';
                 // this.$EventBus.$emit('boardPage', 1)
-                this.$router.push({path: 'board', porops: {poropsPage: 1}})
+                this.$router.push({path: 'board', props: {poropsPage: 1}})
                 // this.$router.go(-1)
             })
             .catch(err => {

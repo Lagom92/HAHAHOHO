@@ -385,11 +385,8 @@ export default {
         this.tags = strArray
       }
       this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
-      // 카카오만
       image = image.substr(14, counts)
       this.userInfo.userImage = 'https://'+image
-      /// 이미지 수정 후
-      // this.userInfo.userImage = 'http://localhost:8000'+res.data.userImage
     }).catch(e =>{
       console.log(e)
     })

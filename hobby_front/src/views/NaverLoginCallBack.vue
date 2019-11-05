@@ -63,7 +63,7 @@ export default {
     },
     // 2. 네이버에 사용자 프로필 정보 요청
     getInfo () {
-      let baseUrl = 'http://localhost:8000/'
+      let baseUrl = this.$store.state.baseUrl
       let form = new FormData()
       console.log(this.userNickName,
         this.userName,

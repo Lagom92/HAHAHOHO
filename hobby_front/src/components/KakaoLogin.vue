@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     async userSave (authObj, res) {
-      // let baseUrl = 'http://localhost:8000/'
       let accessToken = authObj.access_token
       let form = new FormData()
       form.append('access_token', accessToken)
