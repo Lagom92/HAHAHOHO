@@ -5,9 +5,11 @@
         <v-toolbar flat>
           <v-app-bar-nav-icon class="d-sm-none d-flex" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           <v-spacer class="d-sm-none d-flex"></v-spacer>
-          <v-avatar size="36">
+          <v-avatar class="d-none d-sm-flex" size="48">
             <img
+              id="logo"
               src="../assets/hahoicon.png"
+              @click="$router.push('/')"
             >
           </v-avatar>
           <v-toolbar-title class="gamjaFont px-4" @click="$router.push('/')" id="hahahoho">
@@ -177,4 +179,9 @@ export default {
 #userrouter:hover:before, #userrouter:hover:after
   width 100%
   transition 800ms ease all
+
+#logo:hover
+  width 96px
+  height 96px
+  transition 400ms ease all
 </style>
