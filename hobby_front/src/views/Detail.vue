@@ -101,7 +101,7 @@
               모임 소개
             </v-card-title>
             <v-card-text class="text--primary">
-              <p>{{data.contents}}</p>
+              <xmp>{{data.contents}}</xmp>
             </v-card-text>
           </v-card>
         </v-col>
@@ -346,6 +346,10 @@ export default {
 </script>
 
 <style lang="stylus">
+xmp
+  white-space pre-wrap
+  word-wrap break-word
+
 .excard
   margin-bottom 48px
 

@@ -9,7 +9,8 @@
       >
         <v-expansion-panel-header>{{post.title}}</v-expansion-panel-header>
         <v-expansion-panel-content class="pt-5">
-          {{post.contents}} <br/><br>
+          <xmp>{{post.contents}}</xmp>
+          <br/><br/>
           - {{post.name}} -
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -45,6 +46,10 @@ export default {
 </script>
 
 <style lang="stylus">
+xmp
+  white-space pre-wrap
+  word-wrap break-word
+
 #topdivider
   border-top-width 2px
   border-top-color #000
