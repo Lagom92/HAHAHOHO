@@ -71,6 +71,8 @@ export default {
         this.user_id = res.data.id
         this.$store.commit('idSave', this.user_id)
         this.$store.commit('pointSave', res.data.userPoint)
+        this.$store.commit('imgSave', res.data.userImage)
+        this.$store.commit('gradeSave', res.data.userGrade)
       })      
       location.reload()
     }

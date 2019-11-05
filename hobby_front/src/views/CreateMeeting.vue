@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row>
-        <v-col cols="12" md="8" offset-md="3">
+        <v-col cols="12" md="6" offset-md="3">
           <div>
             <h1 class="gamjaFont">모임 생성</h1>
           </div>

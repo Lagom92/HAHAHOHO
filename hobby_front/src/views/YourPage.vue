@@ -336,9 +336,12 @@ export default {
           this.tags = strArray
         }
         let image = res.data.userImage
-        let counts = image.length
-        image = image.substr(14, counts)
-        this.userInfo.userImage = 'https://'+image
+        let counts = image.length 
+        if(image.split('/').slice(3).join('/')){
+          this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
+        } else {
+          this.userInfo.userImage = require('../assets/user.png')
+        }
         this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
       })
       let event = []

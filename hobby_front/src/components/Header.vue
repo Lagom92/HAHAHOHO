@@ -50,7 +50,7 @@
       </v-list-item>
       <v-list-item v-else>
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+          <v-img :src="img"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="title nanumFont">
@@ -93,6 +93,7 @@ export default {
   data () {
     return {
       dialog: false,
+      img: '',
       drawer: false,
       group: null,
       state: true,
@@ -113,6 +114,12 @@ export default {
     if(this.$store.state.user_jwt){
       this.state = false
       this.username = this.$store.state.user_name
+      let image = this.$store.state.user_image
+      if(image.split('/').slice(3).join('/')){
+        this.img = 'https://' + image.split('/').slice(3).join('/')
+      } else {
+        this.img = require('../assets/user.png')
+      }
     }
   },
   methods: {
