@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <SearchBar id="searchPageSearchBar" class="d-flex justify-center my-5"></SearchBar>
+            <SearchBar class="d-flex justify-center my-5"></SearchBar>
             <v-alert border='top' colored-border color="info" elevation="2" class="mt-5 mb-10">
                 <p class="mb-0 mt-3">검색키워드 : <strong>{{word}}</strong></p>
             </v-alert>
@@ -116,7 +116,4 @@ export default {
 <style lang="stylus">
 .rightBorder
     border-right 1px solid rgba(0, 0, 0, 0.12)
-
-#searchPageSearchBar input
-    background #fafafa
 </style>

@@ -1,14 +1,11 @@
 <template>
     <div>
-        <div>
-            <h2 class="my-3">댓글</h2>
-        </div>
         <div class="mb-1">
             <v-card>
                 <v-container v-if="user !== ''">
                     <p>작성자: {{user}}</p>
                     <v-form>
-                        <input v-model="text" label="댓글 작성" placeholder="댓글을 남겨주세요">
+                        <input class="commentInput mb-3" v-model="text" label="댓글 작성" placeholder="댓글을 남겨주세요">
                         <div class="d-flex justify-end">
                             <v-btn dark color="#74B4A0" @click="createComment()">작성</v-btn>
                         </div>
@@ -111,4 +108,6 @@ export default {
     padding-right 10px
     margin-right 10px
 
+.commentInput
+    width 100%
 </style>
