@@ -10,12 +10,14 @@ export default new Vuex.Store({
     user_jwt: '',
     user_name: '',
     user_point: '',
-    baseUrl: "http://54.180.148.99:8000/",
-    // baseUrl: 'http://localhost:8000/',
+    baseUrl: '',
     search_word: ''
   },
   plugins: [createPersistedState()],
   mutations: {
+    urlSave(state, url){
+      state.baseUrl = url
+    },
     idSave (state, id) {
       state.user_id = id
     },
