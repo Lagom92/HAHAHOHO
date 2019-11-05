@@ -10,7 +10,7 @@
                     <v-form ref="form" v-model="valid">
                         <v-text-field
                         v-model="title"
-                        :counter="10"
+                        :counter="30"
                         label="글 제목"
                         ></v-text-field>
 
