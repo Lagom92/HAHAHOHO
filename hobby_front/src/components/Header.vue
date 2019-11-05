@@ -5,6 +5,11 @@
         <v-toolbar flat>
           <v-app-bar-nav-icon class="d-sm-none d-flex" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           <v-spacer class="d-sm-none d-flex"></v-spacer>
+          <v-avatar size="36">
+            <img
+              src="../assets/hahoicon.png"
+            >
+          </v-avatar>
           <v-toolbar-title class="gamjaFont px-4" @click="$router.push('/')" id="hahahoho">
             하하호호
           </v-toolbar-title>
@@ -34,7 +39,7 @@
                 <v-divider class="mx-5 mb-5"></v-divider>
                 <v-card-text>
                   <KakaoLogin class="mb-2"></KakaoLogin>
-                  <NaverLogin></NaverLogin>
+                  <NaverLogin @click="stop()"></NaverLogin>
                 </v-card-text>
               </v-card>
             </v-dialog>
@@ -123,6 +128,9 @@ export default {
     }
   },
   methods: {
+    stop(){
+      window.open()
+    },
     logout() {
       let scope = this
       Kakao.Auth.logout(function (){
