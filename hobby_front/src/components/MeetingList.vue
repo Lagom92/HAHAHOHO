@@ -76,7 +76,8 @@ export default {
             } else {
               i.new = null
             }
-            if(subToEnd < 86400) {
+            console.log(subToEnd)
+            if(0 < subToEnd && subToEnd < 86400) {
               i.dead = 'dead'
             } else {
               i.dead = null
