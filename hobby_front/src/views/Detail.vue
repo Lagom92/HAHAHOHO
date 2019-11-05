@@ -228,7 +228,9 @@ export default {
         res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
 
         res.data.fee = res.data.fee.toLocaleString()
-
+        if(res.data.userimage == "undefined"){
+          res.data.userimage = require('../assets/user.png')
+        }
         this.data = res.data 
       })
       .catch(err => {
@@ -288,6 +290,11 @@ export default {
         this.$http.get(apiUrl)
           .then(res => {
             this.cnt = res.data.user_group.length
+            for(let i of res.data.user_group){
+              if(i.user_image){
+                i.user_image = require('../assets/user.png')
+              }
+            }
             this.joins = res.data.user_group
             
             for (var join of this.joins) {

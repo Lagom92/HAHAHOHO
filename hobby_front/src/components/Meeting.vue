@@ -16,7 +16,7 @@
             height="250px"
             class="text-right pa-2"
             >
-              <v-btn icon dark color="#ff4e50" @click="toggle">
+              <v-btn v-if="id" icon dark color="#ff4e50" @click="toggle">
                 <v-icon>
                   {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
                 </v-icon>
@@ -66,6 +66,7 @@ export default {
       selected: [
       ],
       date: '',
+      id: '',
     }
   },
   props: {
@@ -73,6 +74,7 @@ export default {
     }
   },
   mounted() {
+    this.id = this.$store.state.user_id
     this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{
       for(let i of res.data.post_id){
         if(i == this.data.id){

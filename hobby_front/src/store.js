@@ -10,6 +10,8 @@ export default new Vuex.Store({
     user_jwt: '',
     user_name: '',
     user_point: '',
+    user_image: '',
+    user_grade: '',
     baseUrl: '',
     search_word: ''
   },
@@ -32,6 +34,12 @@ export default new Vuex.Store({
     },
     wordSave (state, word) {
       state.search_word = word
+    },
+    imgSave (state, img){
+      state.user_image = img
+    },
+    gradeSave (state, grade) {
+      state.user_grade = grade
     }
   },
   actions: {

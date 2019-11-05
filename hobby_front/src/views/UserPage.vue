@@ -62,8 +62,12 @@
                     class="mx-auto"
                     ></v-img>
                     <v-list-item-title class="headline mb-1 text-center">
-                      <v-row justify="center">
-                        <span class="my-auto mr-3">포인트 {{userInfo.userPoint}}P</span>
+                      <v-row v-if="userInfo.userGrade == 1" justify="center">
+                        <br><br>
+                        <span  class="my-auto mr-3 body-2">유저정보를 수정해주시면 포인트가 <span class="font-weight-bold">팡팡!</span></span>
+                      </v-row>
+                      <v-row v-else justify="center">
+                        <span  class="my-auto mr-3">포인트 {{userInfo.userPoint}}P</span>
                         <Payment></Payment>
                       </v-row>
                     </v-list-item-title>
@@ -385,9 +389,11 @@ export default {
         this.tags = strArray
       }
       this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
-      // image = image.substr(14, counts)
-      // this.userInfo.userImage = 'https://'+image
-      this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
+      if(image.split('/').slice(3).join('/')){
+        this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
+      } else {
+        this.userInfo.userImage = require('../assets/user.png')
+      }
     }).catch(e =>{
       console.log(e)
     })
