@@ -11,7 +11,7 @@ class Post(models.Model):
         ('공지사항', '공지사항'),
         ('FAQ', 'FAQ')
     )
-    name = models.CharField(max_length=50, choices=what_board, default=hobby)
+    name = models.CharField(max_length=50, choices=what_board, default='모임 게시판')
 
     def __str__(self):
         return self.name
@@ -32,7 +32,7 @@ class PostHobby(models.Model):
         ('남성', '남성'),
         ('여성', '여성')
     )
-    gender = models.CharField(max_length=10, choices=about_gender, default=regardless) 
+    gender = models.CharField(max_length=10, choices=about_gender, default='상관없음') 
     minAge = models.IntegerField(default=10)
     maxAge = models.IntegerField(default=100)  
     member = models.IntegerField() 

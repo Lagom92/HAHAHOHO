@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.naver',
     'corsheaders',
     # 'imagekit',
-    # 'django_extensions',
+    'django_extensions',
     'drf_yasg',
     'debug_toolbar',
     'boards',
@@ -156,10 +156,10 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 # graph model
-# GRAPH_MODELS = {
-#   'all_applications': True,
-#   'group_models': True,
-# }
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
 
 SUIT_CONFIG = {
     'ADMIN_NAME': '관리자 페이지',
