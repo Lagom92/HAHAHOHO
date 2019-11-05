@@ -71,6 +71,7 @@ export default {
       }).then(res => {
         this.user_id = res.data.id
         this.$store.commit('idSave', this.user_id)
+        this.$store.commit('pointSave', res.data.userPoint)
       })      
       location.reload()
     }
