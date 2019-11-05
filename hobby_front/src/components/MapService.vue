@@ -98,7 +98,7 @@ export default {
   },
   props: {
     searchService: { type: Boolean, default: false }, // 장소 검색 기능 사용유무
-    address: { type: String, default: '광주광역시 광산구 하남산단6번로 133' }, // 입력된 주소
+    address: { type: String, default: '서울' }, // 입력된 주소
     mapLevel: { type: Number, default: 4 }, // 지도의 확대 레벨
     height: { type: String, default: '300px' } // 지도 높이
   },
@@ -110,7 +110,6 @@ export default {
     this.ps = new kakao.maps.services.Places()
     this.mainMarker = new kakao.maps.Marker()
     this.searchLocation(this.address)
-    this.createMarker(this.placeY, this.placeX)
     if (this.searchService) {
       this.mapEvents()
     }
@@ -137,6 +136,7 @@ export default {
       })
       // 맵을 클릭하면 마커를 이동시킴
       kakao.maps.event.addListener(this.map, 'click', (mouseEvent) => {
+        this.infowindow.close()
         // 맵의 중심과 마커의 위치를 클릭한 좌표로 이동
         let latlng = mouseEvent.latLng
         this.mainMarker.setPosition(latlng)
@@ -268,6 +268,13 @@ export default {
     scrollToTop () {
       let objMap = document.getElementById('mapWindow')
       objMap.scrollTop = 0
+    }
+  },
+  watch: {
+    address: function () {
+      if (!this.searchService) {
+        this.searchLocation(this.address)
+      }
     }
   }
 }

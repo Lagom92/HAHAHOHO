@@ -4,12 +4,13 @@
       <v-row class="px-3" align="center">
         <h1 class="mb-3 gamjaFont">자유게시판</h1>
         <v-spacer></v-spacer>
-        <v-btn 
+        <v-btn
         text 
         icon
         to= "/createfreeboard"
+        v-if="user !== ''"
         >
-          <v-icon>mdi-pencil-plus</v-icon>
+          <v-icon color="#74b4a0">mdi-pencil-plus</v-icon>
         </v-btn>
       </v-row>
       <v-divider id='topdivider'></v-divider>
@@ -23,14 +24,19 @@
     <v-divider class='middivider'></v-divider>
     <section id='content'>
       <div v-for="post in paginatedData" :key="post.id">
-        <router-link :to="'/free/' + post.id">
+        <v-btn
+          text
+          block
+          height="auto"
+          :to="'/free/' + post.id"
+        > 
           <v-row>
             <v-col cols='2'>{{post.id}} </v-col>
             <v-col cols='6'>{{post.title}}</v-col>
             <v-col cols='2'>{{post.created_at}} </v-col>
             <v-col cols='2'>{{post.username}}</v-col>
           </v-row>
-        </router-link>
+        </v-btn>
         <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>
         <v-divider v-else></v-divider>
       </div>
@@ -51,7 +57,8 @@ export default {
     return {
       posts: [],
       pageNum: 1,
-      size: null
+      size: null,
+      user: this.$store.state.user_id
     }
   },
   computed: {
@@ -70,7 +77,10 @@ export default {
       const apiUrl = baseUrl + 'boards/free'
       this.$http.get(apiUrl)
         .then(res => {
-          this.posts = res.data 
+          this.posts = res.data
+          for (let i of res.data){
+            i.created_at = String(i.created_at).substring(0,10)
+          }
 
           let listLength = this.posts.length,
               listSize = this.pageSize,

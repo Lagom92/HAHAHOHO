@@ -194,7 +194,7 @@ def getBills(request, user_id):
             data.append(box)
     return Response(data)
 
-@api_view(['POST'])
+@api_view(['POST']) 
 def following(request, meId, youId):
     user = User.objects.get(id=meId)
     you = User.objects.get(id=youId)
@@ -213,7 +213,7 @@ def follows(request, id):
     data = []
     for follow in follows:
         box={}
-        # box['id'] = follow.id
+        box['id'] = follow.id
         box['name'] = follow.userNickName
         if follow.userImage == 'undefined':
             box['img'] = None
@@ -236,6 +236,7 @@ def followers(requets, id):
             for j in follower:
                 if j.userName == me.userName:
                     flag = 1
+                    box['id'] = i.id
                     box['name'] = i.userName
                     if i.userName == 'undefined':
                         box['img'] = None

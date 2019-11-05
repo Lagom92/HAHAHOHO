@@ -2,9 +2,9 @@
     <div>
         <v-container>
             <v-row>
-                <v-col cols="12" md="6" offset-md="3">
+                <v-col cols="12" md="8" offset-md="2">
                     <div>
-                        <h1>자유게시판 수정</h1>
+                        <h1 class="gamjaFont">자유게시판 수정하기</h1>
                     </div>
                     <v-divider></v-divider>
                     <v-form ref="form" v-model="valid">
@@ -20,17 +20,14 @@
                         label="글 내용"
                         ></v-textarea>
                     </v-form>
+                    <v-row>
+                        <div class="ml-auto pa-2">
+                            <v-btn @click="updateFree()" dark color="#74b4a0">
+                                수정하기
+                            </v-btn>
+                        </div>
+                    </v-row>
                 </v-col>
-            </v-row>
-            <v-row>
-              <div class="ml-auto">
-                <v-btn 
-                text color="primary"
-                @click="updateFree"
-                >
-                수정하기
-                </v-btn>
-              </div>
             </v-row>
         </v-container>
     </div>

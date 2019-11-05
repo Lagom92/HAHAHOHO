@@ -3,7 +3,7 @@
     <v-container>
       <v-row align="center" class="mb-7">
         <v-col cols="12" md="8" class="d-flex justify-center">
-          <v-img id="hahahoho" src="../assets/hahahoho.png" max-width="75%"></v-img>
+          <v-img src="../assets/hahahoho.png" max-width="75%"></v-img>
         </v-col>
         <v-col cols="12" sm="4" class="d-none d-md-flex">
           <span class="bannerText mb-3 dohyeonFont">

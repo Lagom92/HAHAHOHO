@@ -122,9 +122,10 @@ export default {
         scope.$store.commit('jwtSave', '')
         scope.$store.commit('idSave', '')
         scope.$store.commit('nameSave', '')
+        scope.$store.commit('pointSave', '')
         Kakao.cleanup()
+        scope.$router.push({name:'home'})
         location.reload()
-        location.href('http://localhost:8080/')
         scope.state = true
       })
     },
