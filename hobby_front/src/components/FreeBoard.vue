@@ -14,11 +14,15 @@
         </v-btn>
       </v-row>
       <v-divider id='topdivider'></v-divider>
-      <v-row class="font-weight-black">
+      <v-row class="d-none d-md-flex font-weight-black px-3">
         <v-col cols='2'>번호</v-col>
         <v-col cols='6'>내용</v-col>
         <v-col cols='2'>작성일시</v-col>
         <v-col cols='2'>작성자</v-col>
+      </v-row>
+      <v-row class="d-flex d-md-none font-weight-black px-3">
+        <v-col cols='8'>내용</v-col>
+        <v-col cols='4'>작성자</v-col>
       </v-row>
     </section>
     <v-divider class='middivider'></v-divider>
@@ -30,11 +34,15 @@
           height="auto"
           :to="'/free/' + post.id"
         > 
-          <v-row>
+          <v-row class="d-none d-md-flex px-3">
             <v-col cols='2'>{{post.id}} </v-col>
             <v-col cols='6'>{{post.title}}</v-col>
             <v-col cols='2'>{{post.created_at}} </v-col>
             <v-col cols='2'>{{post.username}}</v-col>
+          </v-row>
+          <v-row class="d-flex d-md-none px-3">
+            <v-col cols='8' class="text-truncate">{{post.title}}</v-col>
+            <v-col cols='4'>{{post.username}}</v-col>
           </v-row>
         </v-btn>
         <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>

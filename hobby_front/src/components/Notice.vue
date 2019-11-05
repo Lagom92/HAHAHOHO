@@ -3,11 +3,15 @@
     <section id='top'>
       <h1 class="mb-3 gamjaFont">공지사항</h1>
       <v-divider id='topdivider'></v-divider>
-      <v-row class="font-weight-black">
-        <v-col cols='2'>번호</v-col>
-        <v-col cols='6'>제목</v-col>
-        <v-col cols='2'>작성일시</v-col>
-        <v-col cols='2'>작성자</v-col>
+      <v-row class="d-none d-md-flex font-weight-black px-3">
+        <v-col cols="2">번호</v-col>
+        <v-col cols="6">제목</v-col>
+        <v-col cols="2">작성일시</v-col>
+        <v-col cols="2">작성자</v-col>
+      </v-row>
+      <v-row class="d-flex d-md-none font-weight-black px-3">
+        <v-col cols="8">제목</v-col>
+        <v-col cols="4">작성자</v-col>
       </v-row>
     </section>
     <v-divider class='middivider'></v-divider>
@@ -19,10 +23,16 @@
           height="auto"
           :to="'/notice/' + post.id"
         > 
-          <v-col cols='2'>{{post.id}}</v-col>
-          <v-col cols='6'>{{post.title}}</v-col>
-          <v-col cols='2'>{{post.created_at}}</v-col>
-          <v-col cols='2'>{{post.name}}</v-col>
+          <v-row class="d-none d-md-flex px-3">
+            <v-col cols="2">{{post.id}}</v-col>
+            <v-col cols="6">{{post.title}}</v-col>
+            <v-col cols="2">{{post.created_at}}</v-col>
+            <v-col cols="2">{{post.name}}</v-col>
+          </v-row>
+          <v-row class="d-flex d-md-none px-3">
+            <v-col cols="8" class="text-truncate">{{post.title}}</v-col>
+            <v-col cols="4">{{post.name}}</v-col>
+          </v-row>
         </v-btn>
         <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>
         <v-divider v-else></v-divider>
