@@ -71,12 +71,10 @@
         </v-snackbar>
         <!-- 유저의 상태에 따라 변경되야함 -->
         <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
-          <!-- 모임 참여하기 함수 추가 -->
-          <v-btn block dark color="#F3B749" @click="joinGroup()">참여하기</v-btn>
-        </v-col>
-        <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
           <!-- 모임 참여 취소하기 -->
-            <v-btn block dark color="red" @click="unjoinGroup()">참여 취소하기</v-btn>
+          <v-btn v-if="distinct" block dark color="red" @click="unjoinGroup()">참여 취소하기</v-btn>
+          <!-- 모임 참여하기 함수 추가 -->
+          <v-btn v-else block dark color="#F3B749" @click="joinGroup()">참여하기</v-btn>
         </v-col>
         <v-col cols="12" md="4" offset-md="1" v-if="data.user === userId">
           <div class="text-center">
@@ -104,7 +102,7 @@
               모임 소개
             </v-card-title>
             <v-card-text class="text--primary">
-              <pre>{{data.contents}}</pre>
+              <p>{{data.contents}}</p>
             </v-card-text>
           </v-card>
         </v-col>
@@ -195,6 +193,7 @@ export default {
       snackbar: false,
       ment: '포인트 충전을 위해 이동하시겠습니까?',
       vertical: true,
+      distinct: false
     }
   },
   mounted () {
@@ -202,7 +201,7 @@ export default {
     this.userId = this.$store.state.user_id
     this.getDetail()
     this.getJoinMember()
-},
+  },
   methods: {
     move(){
       this.$router.push({name: 'user'})
@@ -258,9 +257,9 @@ export default {
           this.$http.post(apiUrl)
           .then(res => {
             this.pay()
-  
             this.cnt += 1
             this.joins.unshift(res.data)
+            this.distinct = true
           })
           .catch(err => {
             console.log(err)
@@ -277,8 +276,8 @@ export default {
         this.$http.delete(apiUrl)
         .then(res => {
           this.refund()
-
           this.$router.go(-1)
+          this.distinct = false
         })
         .catch(err => {
           console.log(err)
@@ -291,7 +290,13 @@ export default {
           .then(res => {
             this.cnt = res.data.user_group.length
             this.joins = res.data.user_group
-            })
+            
+            for (var join of this.joins) {
+              if (this.$store.state.user_name === join.user_name) {
+                this.distinct = true
+              }
+            }
+          })
           .catch(err => {
             console.log(err)
           })
@@ -329,7 +334,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
-      }
+      },
   }
 }
 </script>
