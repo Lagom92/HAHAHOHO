@@ -22,7 +22,7 @@
             </v-card>
         </div>
         <div>
-            <v-card color="#fafafa" flat v-for="(post, idx) in this.posts" :key="post.id">
+            <v-card color="#fafafa" flat v-for="(post, idx) in paginatedData" :key="post.id">
                 <v-container>
                     <div>
                         <v-row class="mx-0">
@@ -41,6 +41,9 @@
                 </v-container>
                 <v-divider></v-divider>
             </v-card>
+            <div class="text-center my-5">
+                <v-pagination v-model="pageNum" :length="this.size" color="#74B4A0"></v-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -48,14 +51,25 @@
 <script>
 export default {
     name: 'Comment',
+    props: {
+        pageSize: { type: Number, required: false, default: 6 }
+    },
     data () {
         return {
             user: '',
             posts: [],
             word: '',
-            userId: ''
+            userId: '',
+            pageNum: 1,
+            size: null
         }
-
+    },
+    computed: {
+        paginatedData() {
+        const start = (this.pageNum - 1) * this.pageSize,
+                end = start + this.pageSize
+        return this.posts.slice(start, end)
+        }
     },
     mounted () {
         this.user = this.$store.state.user_name
@@ -73,7 +87,11 @@ export default {
                         i.created_at = String(i.created_at).substring(0,10)+'  '+String(i.created_at).substring(11,16)
                     }
                     this.posts = res.data 
-                })
+                    let listLength = this.posts.length,
+                        listSize = this.pageSize,
+                        page = Math.floor((listLength - 1) / listSize) + 1
+                        this.size = page
+                            })
                 .catch(err => {
                     console.log(err)
                 })
