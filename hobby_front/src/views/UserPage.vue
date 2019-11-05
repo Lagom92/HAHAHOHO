@@ -88,7 +88,7 @@
                                 <v-divider></v-divider>
                                 <v-card-text style="height: 300px;">
                                   <v-list v-if="followerCounting">
-                                    <v-list-item 
+                                    <v-list-item
                                     v-for="item in followerGroup"
                                     :key="item.name"
                                     >
@@ -347,7 +347,7 @@ export default {
       if (!start || !end) {
         return ''
       }
-      
+
       const startMonth = this.monthFormatter(start)
       const startYear = start.year
 
@@ -385,8 +385,9 @@ export default {
         this.tags = strArray
       }
       this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
-      image = image.substr(14, counts)
-      this.userInfo.userImage = 'https://'+image
+      // image = image.substr(14, counts)
+      // this.userInfo.userImage = 'https://'+image
+      this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
     }).catch(e =>{
       console.log(e)
     })
@@ -398,7 +399,7 @@ export default {
           i.img = require('../assets/logo.png')
         }
       }
-      this.followGroup = res.data    
+      this.followGroup = res.data
     })
     // user 팔로워(나를 하는거)
     this.$http.get(this.$store.state.baseUrl + 'accounts/followers/' + this.$store.state.user_id).then(res =>{
@@ -408,7 +409,7 @@ export default {
           i.img = require('../assets/logo.png')
         }
       }
-      this.followerGroup = res.data 
+      this.followerGroup = res.data
     })
     // user가  참여모임에 대한 모든 정보
     let event = []
@@ -458,7 +459,7 @@ export default {
             details: detail,
             start: this.formatDate(r.data.created_at),
             end: r.data.endDay,
-            color: '#f9c00c'    
+            color: '#f9c00c'
           }
           event.push(moim)
         }).catch(e =>{
@@ -515,9 +516,9 @@ export default {
           day = '' + d.getDate(),
           year = d.getFullYear();
 
-      if (month.length < 2) 
+      if (month.length < 2)
           month = '0' + month;
-      if (day.length < 2) 
+      if (day.length < 2)
           day = '0' + day;
 
       return [year, month, day].join('-');
