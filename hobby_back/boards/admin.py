@@ -9,7 +9,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
     list_display_links = ['id', 'name']
 
-
 @admin.register(PostHobby)
 class HobbyAdmin(admin.ModelAdmin):
     list_display = ['id', 'post', 'subclass', 'title', 'user', 'created_at', 'photo']
