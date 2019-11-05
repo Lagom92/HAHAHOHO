@@ -291,7 +291,7 @@ export default {
           .then(res => {
             this.cnt = res.data.user_group.length
             for(let i of res.data.user_group){
-              if(i.user_image){
+              if(i.user_image == 'undefined'){
                 i.user_image = require('../assets/user.png')
               }
             }

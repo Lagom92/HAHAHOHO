@@ -160,14 +160,15 @@
     </v-card>
     <v-card class="intro">
       <v-img
-        src="https://t1.kakaocdn.net/friends/prod/brand/201803_type1_2880.jpg"
+        src="https://cdn.pixabay.com/photo/2014/03/24/13/51/sticky-note-294627_1280.png"
         class="align-center"
         height="100%"
       >
-        <v-card-title class="justify-center mobiletext">
+        <v-card-title class="justify-center text-center mobiletext">
           하하호호의 소식을 빠르게 알고 싶나요?
         </v-card-title>
         <v-card-text class="text-center">
+          <div class="subtitle-1 font-weight-thin">소식부터 일대일 문의까지 !!</div>
           <div class="subtitle-1 font-weight-thin">카카오 플러스 친구를 해보세요~</div>
           <button id="pbtn" class="nanumFont my-5" @click="kakao()">
             플러스친구 추가하기
@@ -324,5 +325,5 @@ export default {
   color #1AAB8A
 
 .mobiletext
- font-size calc(25px + .8vw)
+  font-size calc(25px + .8vw)
 </style>
