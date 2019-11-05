@@ -62,10 +62,10 @@ export default {
       userForm.append('userImage', res.kakao_account.profile.profile_image_url)
       this.$store.commit('nameSave', res.kakao_account.profile.nickname)
 
-      await axios.post(baseUrl + 'accounts/userSave', userForm).then(res => {
+      await axios.post(this.$store.state.baseUrl + 'accounts/userSave', userForm).then(res => {
         console.log(res.data)
       })
-      await axios.post(baseUrl + 'accounts/userInfo', {
+      await axios.post(this.$store.state.baseUrl + 'accounts/userInfo', {
         // headers: { 'Authorization': 'JWT ' + this.jwt },
         id: this.id
       }).then(res => {
