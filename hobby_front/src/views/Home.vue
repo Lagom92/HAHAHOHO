@@ -158,18 +158,19 @@
         </v-card-text>
       </v-img>
     </v-card>
-    <v-card class="intro">
+    <v-card class="intro2">
       <v-img
-        src="https://cdn.pixabay.com/photo/2014/03/24/13/51/sticky-note-294627_1280.png"
+        src="../assets/55.jpg"
         class="align-center"
+        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="100%"
       >
-        <v-card-title class="justify-center text-center mobiletext">
+        <v-card-title class="justify-center text-center mobiletext whitetext">
           하하호호의 소식을 빠르게 알고 싶나요?
         </v-card-title>
         <v-card-text class="text-center">
-          <div class="subtitle-1 font-weight-thin">소식부터 일대일 문의까지 !!</div>
-          <div class="subtitle-1 font-weight-thin">카카오 플러스 친구를 해보세요~</div>
+          <div class="subtitle-1 font-weight-thin whitetext">소식부터 일대일 문의까지 !!</div>
+          <div class="subtitle-1 font-weight-thin whitetext">카카오 플러스 친구를 해보세요~</div>
           <button id="pbtn" class="nanumFont my-5" @click="kakao()">
             플러스친구 추가하기
             <v-icon class="ml-1">mdi-arrow-right-bold</v-icon>
@@ -262,6 +263,11 @@ export default {
   height 50vh
   background-color #f2f2f2
 
+.intro2
+  position relative
+  height 50vh
+  background-color #f2f2f2
+
 .text-truncate
   width 200px
 
@@ -326,4 +332,8 @@ export default {
 
 .mobiletext
   font-size calc(25px + .8vw)
+
+.whitetext
+  color white
+  text-shadow 2px 2px 2px black
 </style>
