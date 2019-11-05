@@ -43,6 +43,31 @@
             </v-card>
           </v-menu>
         </v-col>
+        <v-snackbar
+          v-model="snackbar"
+          :vertical="vertical"
+          color="success"
+        >
+          {{ ment }}
+          <div class="ml-auto">
+            <v-btn
+              class="ml-auto"
+              color="white"
+              text
+              @click="snackbar = false, move()"
+            >
+              go
+            </v-btn>
+            <v-btn
+              class="ml-auto"
+              color="white"
+              text
+              @click="snackbar = false"
+            >
+              Close
+            </v-btn>
+          </div>
+        </v-snackbar>
         <!-- 유저의 상태에 따라 변경되야함 -->
         <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
           <!-- 모임 참여하기 함수 추가 -->
@@ -161,6 +186,9 @@ export default {
       joins: [],
       cnt: 0,
       flag: false,
+      snackbar: false,
+      ment: '포인트 충전을 위해 이동하시겠습니까?',
+      vertical: true,
     }
   },
   mounted () {
@@ -170,6 +198,9 @@ export default {
     this.getJoinMember()
 },
   methods: {
+    move(){
+      this.$router.push({name: 'user'})
+    },
     yourPage(){
       console.log(this.data.user)
       if(this.data.user == this.$store.state.user_id){
@@ -214,18 +245,24 @@ export default {
         })
       },
       joinGroup: function () {
-        const baseUrl = this.$store.state.baseUrl
-        const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
-        this.$http.post(apiUrl)
-        .then(res => {
-          this.pay()
-
-          this.cnt += 1
-          this.joins.unshift(res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+        let point = this.$store.state.user_point
+        if(point >= 2000){
+          const baseUrl = this.$store.state.baseUrl
+          const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
+          this.$http.post(apiUrl)
+          .then(res => {
+            this.pay()
+  
+            this.cnt += 1
+            this.joins.unshift(res.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        } else {
+          alert("모임신청에 필요한 포인트가 부족합니다 !!")
+          this.snackbar = true
+        }
 
       },
       unjoinGroup: function (idx) {
@@ -240,7 +277,6 @@ export default {
         .catch(err => {
           console.log(err)
         })
-
       },
       getJoinMember: function () {
         const baseUrl = this.$store.state.baseUrl

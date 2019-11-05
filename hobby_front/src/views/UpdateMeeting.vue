@@ -18,7 +18,7 @@
           <v-form ref="form" v-model="valid">
             <v-text-field
             v-model="title"
-            :counter="20"
+            :counter="14"
             :rules="titleRules"
             label="글 제목"
             ></v-text-field>
@@ -343,7 +343,8 @@ export default {
       location: '광주 광역시',
       img: null,
       titleRules: [
-        v => !!v || 'Title is required'
+        v => !!v || 'Title is required',
+        v => (v || '').length <= 14 || 'Max 14 characters',
       ],
       contentsRules: [
         v => !!v || 'Contents is required'

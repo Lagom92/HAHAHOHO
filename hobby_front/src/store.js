@@ -9,6 +9,7 @@ export default new Vuex.Store({
     user_id: '',
     user_jwt: '',
     user_name: '',
+    user_point: '',
     // baseUrl: "http://54.180.148.99:8000/"
     baseUrl: 'http://localhost:8000/',
     search_word: ''
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     nameSave (state, name){
       state.user_name = name
+    },
+    pointSave (state, point){
+      state.user_point = point
     },
     wordSave (state, word) {
       state.search_word = word
