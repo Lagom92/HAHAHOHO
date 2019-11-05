@@ -1,32 +1,45 @@
 <template>
     <div>
         <div class="mb-1">
-            <v-card>
+            <v-card color="#fafafa" flat>
                 <v-container v-if="user !== ''">
-                    <p>작성자: {{user}}</p>
-                    <v-form>
-                        <input class="commentInput mb-3" v-model="text" label="댓글 작성" placeholder="댓글을 남겨주세요">
-                        <div class="d-flex justify-end">
-                            <v-btn dark color="#74B4A0" @click="createComment()">작성</v-btn>
-                        </div>
-                    </v-form>
+                    <v-row align="center" class="createuser px-3">
+                        <div>작성자 : <span class="font-weight-black">{{user}}</span></div>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" text icon @click="createComment()">
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </v-row>
+                    <v-text-field
+                        v-model="word"
+                        label="댓글 작성"
+                        placeholder="주제와 무관한 댓글, 타인의 권리를 침해하거나 명예를 훼손하는 댓글은 별도의 통보 없이 재제를 받을 수 있습니다."
+                        outlined
+                        shaped
+                        @keyup.enter="createComment()"
+                    ></v-text-field>
                 </v-container>
             </v-card>
         </div>
         <div>
-            <v-card>
-                <v-container v-for="(post, idx) in this.posts" :key="post.id">
+            <v-card color="#fafafa" flat v-for="(post, idx) in this.posts" :key="post.id">
+                <v-container>
                     <div>
                         <v-row class="mx-0">
-                            <p><B>{{post.name}}</B></p>
+                            <v-row align="center" class="createuser px-3">
+                                <div class="font-weight-black">{{post.name}}</div>
+                                <v-divider vertical inset class="mx-5"></v-divider>
+                                <div>{{post.created_at}}</div>
+                                <v-spacer></v-spacer>
+                                <v-btn v-if="userId === post.user" text icon @click="deleteComment(post.id, idx)">
+                                    <v-icon color="error">mdi-trash-can-outline</v-icon>
+                                </v-btn>
+                            </v-row>
                         </v-row>
-                        <p>{{post.contents}}</p>
-                        <p>{{post.created_at}}</p>
-                        <div class="d-flex justify-end" v-if="userId === post.user">
-                            <v-btn dark color="red" @click="deleteComment(post.id, idx)">삭제</v-btn>
-                        </div>
+                        <p class="mb-0">{{post.contents}}</p>
                     </div>
                 </v-container>
+                <v-divider></v-divider>
             </v-card>
         </div>
     </div>
@@ -39,7 +52,7 @@ export default {
         return {
             user: '',
             posts: [],
-            text: '',
+            word: '',
             userId: ''
         }
 
@@ -72,14 +85,14 @@ export default {
             form.append('name', this.user)
             form.append('user', this.$store.state.user_id)
             form.append('postFree', this.id)
-            form.append('contents', this.text)
+            form.append('contents', this.word)
 
             const apiUrl = baseUrl + 'boards/free/' + this.id + '/comment'
             this.$http.post(apiUrl, form)
                 .then(res => {
                     res.data.created_at = String(res.data.created_at).substring(0,10)+'  '+String(res.data.created_at).substring(11,16)
                     this.posts.unshift(res.data)
-                    this.text = ''
+                    this.word = ''
                 })
                 .catch(err => {
                     console.log(err)
