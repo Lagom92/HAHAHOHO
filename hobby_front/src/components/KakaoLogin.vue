@@ -40,12 +40,11 @@ export default {
   },
   methods: {
     async userSave (authObj, res) {
-      let baseUrl = 'http://localhost:8000/'
       let accessToken = authObj.access_token
       let form = new FormData()
       form.append('access_token', accessToken)
 
-      await axios.post(baseUrl + 'accounts/rest-auth/kakao', form).then(res => {
+      await axios.post(this.$store.state.baseUrl + 'accounts/rest-auth/kakao', form).then(res => {
         this.jwt = res.data.token
         this.$store.commit('jwtSave', this.jwt)
       }).catch(e => {
@@ -62,10 +61,10 @@ export default {
       userForm.append('userImage', res.kakao_account.profile.profile_image_url)
       this.$store.commit('nameSave', res.kakao_account.profile.nickname)
 
-      await axios.post(baseUrl + 'accounts/userSave', userForm).then(res => {
+      await axios.post(this.$store.state.baseUrl + 'accounts/userSave', userForm).then(res => {
         console.log(res.data)
       })
-      await axios.post(baseUrl + 'accounts/userInfo', {
+      await axios.post(this.$store.state.baseUrl + 'accounts/userInfo', {
         // headers: { 'Authorization': 'JWT ' + this.jwt },
         id: this.id
       }).then(res => {

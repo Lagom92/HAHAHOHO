@@ -193,7 +193,7 @@ export default {
       posts: [],
       notices: [],
       frees: [],
-
+      baseUrl: "http://54.180.148.99:8000/",
     }
   },
   mounted () {
@@ -210,7 +210,7 @@ export default {
       }
     },
     getHobby: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.baseUrl
       const apiUrl = baseUrl + 'boards/main/hobby'
       this.$http.get(apiUrl)
         .then(res => {
@@ -221,7 +221,7 @@ export default {
         })
     },
     getNotice: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.baseUrl
       const apiUrl = baseUrl + 'boards/main/notice'
       this.$http.get(apiUrl)
         .then(res => {
@@ -235,7 +235,7 @@ export default {
         })
     },
     getFree: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.baseUrl
       const apiUrl = baseUrl + 'boards/main/free'
       this.$http.get(apiUrl)
         .then(res => {
