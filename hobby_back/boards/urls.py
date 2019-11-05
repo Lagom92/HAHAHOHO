@@ -12,10 +12,24 @@ urlpatterns = [
     path('notice/<int:pk>', views.notice_detail.as_view()),
     path('faq', views.faq_list.as_view()),
     path('faq/<int:pk>', views.faq_detail.as_view()),
-    path('img', views.img_list.as_view()),
-    path('img/<int:pk>', views.img_detail.as_view()),
+    path('main/hobby', views.main_hobby.as_view()),
+    path('main/notice', views.main_notice.as_view()),
+    path('main/free', views.main_free.as_view()),
     path('free/<int:pk>/comment', views.commentFree_list.as_view()),
-    path('free/<int:pk>/comment/<int:comment_pk>', views.commentFree_detail)
+    path('free/<int:pk>/comments', views.comments),
+    path('comment/<int:pk>', views.commentFree_detail),
+    path('hobby/<int:pk>/comment', views.hobbyComment.as_view()),
+    path('hobby/<int:pk>/comments', views.hobbyComments),
+    path('hobbyComment/<int:pk>', views.hobbyComment_detail),
+    path('participantCheck/<int:post_id>/<int:user_id>', views.participantCheck),
+    path('participantCheckListByUser/<int:user_id>', views.participantCheckListByUser),
+    path('participantCheckListByPost/<int:post_id>', views.participantCheckListByPost),
+    path('cartList/<int:user_id>', views.CartList),
+    path('cart/<int:user_id>', views.addCart),
+
+    path('refund/<int:post_id>/<int:user_id>', views.refund),
+    path('pay/<int:post_id>/<int:user_id>', views.pay),
+    path('bill/<int:user_id>', views.getBills)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

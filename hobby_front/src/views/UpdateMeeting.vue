@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row>
-        <v-col cols="12" md="6" offset-md="3">
+        <v-col cols="12" md="8" offset-md="2">
           <div>
             <h1 class="gamjaFont">모임 생성</h1>
           </div>
@@ -14,6 +14,7 @@
           v-model="img"
           :rules="imageRules"
           ></v-file-input>
+
           <v-form ref="form" v-model="valid">
             <v-text-field
             v-model="title"
@@ -257,7 +258,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <div class="ml-auto">
+              <div class="ml-auto pa-2">
                 <v-btn @click="onUpload()" dark color="#74b4a0">
                   등록하기
                 </v-btn>
@@ -367,7 +368,35 @@ export default {
         }
     },
   },
+  mounted () {
+        this.id = this.$route.params.id
+        this.getDetail();
+    },
   methods: {
+    getDetail: function () {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/hobby/' + this.id 
+      this.$http.get(apiUrl)
+          .then(res => {
+            console.log("---------------")
+            this.title = res.data.title
+            this.contents = res.data.contents
+            this.ageRange = [res.data.minAge, res.data.maxAge] // ?
+            this.gender = res.data.gender
+            this.lineUp = res.data.member
+            this.endDate = res.data.endDay
+            this.endTime = res.data.endTime  
+            this.meetDate = res.data.startDay
+            this.meetTime = res.data.startTime
+            // this.img = res.data.photo // 이미지 가져오는데 에러가 발생함 
+            this.location = res.data.location
+
+            console.log(res.data)
+          })
+          .catch(err => {
+              console.log(err)
+          })
+        },
     backstep() {
       this.step--
       this.CategoryList = {}
@@ -386,15 +415,6 @@ export default {
     selectSubClassification (value) {
       this.groups = value
     },
-    joinGroup: function (postId) {
-      const baseUrl = this.$store.state.baseUrl
-      const apiUrl = baseUrl + 'boards/participantCheck/' + postId + '/' + this.$store.state.user_id
-      this.$http.post(apiUrl)
-      .then(res => {})
-      .catch(err => {
-        console.log(err)
-      })
-    },
     onUpload () {
       const baseUrl = this.$store.state.baseUrl
       let form = new FormData()
@@ -403,10 +423,10 @@ export default {
 
       form.append('username', this.$store.state.user_name)
       form.append('user', this.$store.state.user_id)
-      form.append('userimage', this.$store.state.user_image) //!!
+      form.append('userimage', this.$store.state.user_image)
       form.append('post', 1)  // 모임게시판 default 1
       form.append('postname', '모임 게시판')
-      form.append('subclass', subclassname) // !
+      form.append('subclass', subclassname)
       form.append('title', this.title)
       form.append('contents', this.contents)
       form.append('photo', this.img)
@@ -420,16 +440,21 @@ export default {
       form.append('startTime', this.meetTime)
 
       form.append('endDay', this.endDate)
-      form.append('endTime', this.meetTime) // !
-      const apiUrl = baseUrl + 'boards/hobby'
-      this.$http.post(apiUrl, form)
+      form.append('endTime', this.meetTime)
+
+      const apiUrl = baseUrl + 'boards/hobby/' + this.id
+      this.$http.put(apiUrl, form)
       .then(res => {
-        this.joinGroup(res.data.id)
         this.$router.go(-1)
       })
       .catch(err => {
         console.log(err)
       })
+      // axios.post(apiUrl, form, {
+      //   headers: {
+      //     'Authorization': 'Bearer ' + this.$store.state.user_jwt
+      //   }
+      // })
     },
   }
 }

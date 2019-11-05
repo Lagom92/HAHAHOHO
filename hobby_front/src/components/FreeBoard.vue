@@ -1,43 +1,106 @@
 <template>
-    <div>
-        <section id='top'>
-            <h1 class="mb-3">자유게시판</h1>
-            <v-divider id='topdivider'></v-divider>
-            <v-row class="font-weight-black">
-                <v-col cols='8'>내용</v-col>
-                <v-col cols='2'>작성일시</v-col>
-                <v-col cols='2'>작성자</v-col>
-            </v-row>
-        </section>
-        <v-divider class='middivider'></v-divider>
-        <section id='content'>
-            <div v-for="i in 10" v-bind:key="i">
-                <a href="#">
-                    <v-row>
-                        <v-col cols='8'>자유게시판 내용</v-col>
-                        <v-col cols='2'>2019-10-16</v-col>
-                        <v-col cols='2'>테스트유저</v-col>
-                    </v-row>
-                </a>
-                <v-divider class='middivider' v-if="i % 3 == 0"></v-divider>
-                <v-divider v-else></v-divider>
-            </div>
-        </section>
+  <div>
+    <section id='top'>
+      <v-row class="px-3" align="center">
+        <h1 class="mb-3 gamjaFont">자유게시판</h1>
+        <v-spacer></v-spacer>
+        <v-btn
+        text 
+        icon
+        to= "/createfreeboard"
+        v-if="user !== ''"
+        >
+          <v-icon color="#74b4a0">mdi-pencil-plus</v-icon>
+        </v-btn>
+      </v-row>
+      <v-divider id='topdivider'></v-divider>
+      <v-row class="font-weight-black">
+        <v-col cols='2'>번호</v-col>
+        <v-col cols='6'>내용</v-col>
+        <v-col cols='2'>작성일시</v-col>
+        <v-col cols='2'>작성자</v-col>
+      </v-row>
+    </section>
+    <v-divider class='middivider'></v-divider>
+    <section id='content'>
+      <div v-for="post in paginatedData" :key="post.id">
+        <v-btn
+          text
+          block
+          height="auto"
+          :to="'/free/' + post.id"
+        > 
+          <v-row>
+            <v-col cols='2'>{{post.id}} </v-col>
+            <v-col cols='6'>{{post.title}}</v-col>
+            <v-col cols='2'>{{post.created_at}} </v-col>
+            <v-col cols='2'>{{post.username}}</v-col>
+          </v-row>
+        </v-btn>
+        <v-divider class='middivider' v-if="post % 3 == 0"></v-divider>
+        <v-divider v-else></v-divider>
+      </div>
+    </section>
+    <div class="text-center my-5">
+        <v-pagination v-model="pageNum" :length="this.size" color="#74B4A0"></v-pagination>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'FreeBoard'
+  name: 'FreeBoard',
+  props: {
+    pageSize: { type: Number, required: false, default: 6 }
+  },
+  data () {
+    return {
+      posts: [],
+      pageNum: 1,
+      size: null,
+      user: this.$store.state.user_id
+    }
+  },
+  computed: {
+    paginatedData() {
+      const start = (this.pageNum - 1) * this.pageSize,
+            end = start + this.pageSize
+      return this.posts.slice(start, end)
+    }
+  },
+  mounted () {
+    this.getFrees();
+  },
+  methods: {
+    getFrees: function () {
+      const baseUrl = this.$store.state.baseUrl
+      const apiUrl = baseUrl + 'boards/free'
+      this.$http.get(apiUrl)
+        .then(res => {
+          this.posts = res.data
+          for (let i of res.data){
+            i.created_at = String(i.created_at).substring(0,10)
+          }
+
+          let listLength = this.posts.length,
+              listSize = this.pageSize,
+              page = Math.floor((listLength - 1) / listSize) + 1
+              this.size = page
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+  }  
 }
+
 </script>
 
-<style>
-#topdivider {
-    border-top-width: 2px;
-    border-top-color: #000;
-}
-.middivider {
-    border-top-width: 2px;
-}
+<style lang="stylus">
+#topdivider
+  border-top-width 2px
+  border-top-color #000
+
+.middivider
+  border-top-width 2px
 </style>

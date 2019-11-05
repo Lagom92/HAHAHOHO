@@ -4,7 +4,7 @@
 
 # 하하호호(미정)
 
-
+<br/>
 
 ##### 일 끝나고 머하세요?
 
@@ -12,7 +12,7 @@
 
 ##### 새로운 사람들과 함께 새로운 취미를 즐겨봐요!!
 
-
+<br/>
 
 
 
@@ -20,7 +20,7 @@
 
 취미 모임을 만들어 주는 사이트
 
-
+<br/>
 
 
 
@@ -28,7 +28,7 @@
 
 하하호호
 
-
+<br/>
 
 
 
@@ -36,7 +36,7 @@
 
 문동식, 이지선, 김훈, 조호근, 양시영, 안현상
 
-
+<br/>
 
 
 
@@ -50,26 +50,29 @@
 | 김훈   | UI/UX         |
 | 조호근 | 카카오 맵 API |
 
-
+<br/>
 
 #### BE
 
-|        |              |
-| ------ | ------------ |
-| 문동식 | Login 기능   |
-| 양시영 | Boards model |
-| 안현상 | Boards CRUD  |
+|        | 담당 업무                                         |
+| ------ | ------------------------------------------------- |
+| 문동식 | Login 기능(카카오, 네이버), 결제 기능(카카오페이) |
+| 양시영 | Boards model, 문서 작업, admin custom, Docker     |
+| 안현상 | Boards CRUD, 댓글 기능, follow/following          |
 
+<br/>
 
+#### 
 
 
 
 ### ERD
 
-
 ![erd](/hobby_back/my_project_visualized.png)
 
+<br/>
 
+#### 
 
 ### version
 
@@ -87,14 +90,15 @@ vuetify - 2.1.3
 node.js - 10.16.3 LTS
 ```
 
+<br/>
 
+#### 
 
 
 
 ### requirements
 
 ```
-
 chardet==3.0.4
 coreapi==2.3.3
 coreschema==0.0.4
@@ -136,10 +140,11 @@ sqlparse==0.3.0
 uritemplate==3.0.0
 urllib3==1.25.6
 wincertstore==0.2
-
 ```
 
+<br/>
 
+#### 
 
 
 
@@ -157,11 +162,22 @@ python manage.py runserver
 npm run serve
 ```
 
+<br/>
 
+#### 
+
+### REST API Doc
+
+http://54.180.148.99:8000/docs
+
+
+<br/>
 
 
 
 ### 실행 결과
+
+
 
 
 
