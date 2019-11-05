@@ -1,7 +1,6 @@
 import os
 from django.db import models
 from django.conf import settings
-from django.contrib.postgres.fields import ArrayField
 from accounts.models import User
 
 # 게시판 대분류
