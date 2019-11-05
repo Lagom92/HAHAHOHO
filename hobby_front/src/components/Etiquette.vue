@@ -5,8 +5,8 @@
             <v-row align="center" justify="center">
                 <v-col class="text-center" cols="12">
                     <h1 class="gamjaFont mb-4" id="etiquetteSize">이것만은 꼭! </h1>
-                    <h4 class="headline">하하호호는 신뢰있는 서비스를 제공하기 위해 노력하고 있어요.</h4>
-                    <h4 class="headline">여러분도 서로를 위해 이것만은 꼭 지켜주세요!</h4>
+                    <h4 class="title">하하호호는 신뢰있는 서비스를 제공하기 위해 노력하고 있어요.</h4>
+                    <h4 class="title">여러분도 서로를 위해 이것만은 꼭 지켜주세요!</h4>
                 </v-col>
             </v-row>
         </v-parallax>
@@ -70,7 +70,7 @@ export default {
     height: 100% !important
 }
 #etiquetteSize{
-    font-size: 100px;
+    font-size: calc(50px + .8vw);
 }
 #textColor{
     color: black;
@@ -79,7 +79,7 @@ export default {
     margin-left:10px;
 }
 #subTitle{
-    font-size: 70px;
+    font-size: calc(50px + .8vw);
     color:black;
 }
 .top{

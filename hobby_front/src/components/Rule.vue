@@ -5,8 +5,8 @@
         <v-row align="center" justify="center">
             <v-col class="text-center" cols="12">
                 <h1 class="gamjaFont mb-4" id="ruleSize">하하호호 운영방침</h1>
-                <h4 class="headline">하하호호는 함께 만들어나가는 사이트 입니다 :)</h4>
-                <h4 class="headline">하하호호 운영 방식에 대해서 알려드릴게요~</h4>
+                <h4 class="title">하하호호는 함께 만들어나가는 사이트 입니다 :)</h4>
+                <h4 class="title">하하호호 운영 방식에 대해서 알려드릴게요~</h4>
             </v-col>
         </v-row>
     </v-parallax>
@@ -160,10 +160,10 @@ export default {
     height: 100% !important
 }
 #ruleSize {
-    font-size: 100px;
+    font-size: calc(50px + .8vw);
 }
 #subTitle {
-    font-size: 70px;
+    font-size: calc(50px + .8vw);
     color:black; 
 }
 #textColor{
