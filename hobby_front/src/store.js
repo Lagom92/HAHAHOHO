@@ -10,8 +10,8 @@ export default new Vuex.Store({
     user_jwt: '',
     user_name: '',
     user_point: '',
-    // baseUrl: "http://54.180.148.99:8000/"
-    baseUrl: 'http://localhost:8000/',
+    baseUrl: "http://54.180.148.99:8000/",
+    // baseUrl: 'http://localhost:8000/',
     search_word: ''
   },
   plugins: [createPersistedState()],

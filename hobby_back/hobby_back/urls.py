@@ -21,6 +21,7 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 admin.site.site_header = "HAHAHOHO 관리자"
 admin.site.site_title = "HAHAHOHO 관리자 페이지"
@@ -31,3 +32,4 @@ if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls))
     ] 
+

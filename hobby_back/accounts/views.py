@@ -89,6 +89,8 @@ def editUser(request, id):
  
 @api_view(['GET'])
 def Naver_Login(request):
+    # localhost = "http://localhost:8080"
+    deploy = "http://54.180.148.99"
     code = request.GET.get('code')
     state = request.GET.get('state')
     clientId = 'IaquHgHTmPlf_gc_a8es'
@@ -105,7 +107,8 @@ def Naver_Login(request):
     }
     auth_response = requests.post("http://127.0.0.1:8000/accounts/rest-auth/naver/", data=body)
     auth_response = json.loads(auth_response.text)
-    redirect_url = "http://localhost:8080"
+    # redirect_url = "http://localhost:8080"
+    redirect_url = deploy
     redirect_url += "?jwt=" + auth_response.get('token')
 
     headers = {
@@ -139,7 +142,9 @@ def Naver_Login(request):
 def kakaoPay(request):
     # request에 회원 id, 결제가격을 같이 보내줘야 함 : db에 결제정보를 저장하기 위해서
     url = "https://kapi.kakao.com"
-    front_url = 'http://localhost:8080'
+    # front_url = 'http://localhost:8080'
+    front_url = "http://54.180.148.99"
+
     headers = {
         'Authorization': "KakaoAK " + "25f3b072b7bff63ee9a201aa1f5dc9d6",
         'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',

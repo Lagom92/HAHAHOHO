@@ -40,12 +40,12 @@ export default {
   },
   methods: {
     async userSave (authObj, res) {
-      let baseUrl = 'http://localhost:8000/'
+      // let baseUrl = 'http://localhost:8000/'
       let accessToken = authObj.access_token
       let form = new FormData()
       form.append('access_token', accessToken)
 
-      await axios.post(baseUrl + 'accounts/rest-auth/kakao', form).then(res => {
+      await axios.post(this.$store.state.baseUrl + 'accounts/rest-auth/kakao', form).then(res => {
         this.jwt = res.data.token
         this.$store.commit('jwtSave', this.jwt)
       }).catch(e => {
