@@ -100,7 +100,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)"  v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)"  v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -147,7 +147,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -249,7 +249,7 @@
                     <v-btn icon>
                       <v-icon>mdi-bell-alert</v-icon>
                     </v-btn>
-                    <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                    <v-toolbar-title id="link" @click="moveTo(selectedEvent.id)" v-html="selectedEvent.name"></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="selectedOpen = false">
                       <v-icon>mdi-close</v-icon>
@@ -388,7 +388,15 @@ export default {
         var strArray = res.data.userLike.split(',')
         this.tags = strArray
       }
-      this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
+      if(this.userInfo.userGrade > 1){
+        this.grade = require('../assets/2.png')
+      } else if(this.userInfo.userGrade > 100){
+        this.grade = require('../assets/3.png')
+      } else if(this.userInfo.userGrade > 500){
+        this.grade = require('../assets/4.png')
+      } else if(this.userInfo.userGrade > 1000){
+        this.grade = require('../assets/5.png')
+      }
       if(image.split('/').slice(3).join('/')){
         this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
       } else {
@@ -437,6 +445,7 @@ export default {
           fee: band[i].fee
         }
         var moim = {
+          id: band[i].id,
           name: band[i].title,
           details: detail,
           start: band[i].startDay,
@@ -478,6 +487,9 @@ export default {
     this.events = event
   },
   methods: {
+    moveTo(id){
+      this.$router.push({name: 'detail', params:{id:id}})
+    },
     move(id){
       this.$router.push({name: 'yourpage', params:{id:id}})
     },
@@ -541,4 +553,9 @@ export default {
   text-align:center;
   margin-top:130px
 }
+</style>
+
+<style lang="stylus">
+#link
+  cursor pointer
 </style>

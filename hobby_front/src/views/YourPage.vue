@@ -100,7 +100,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -147,7 +147,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -416,4 +416,6 @@ h2.no-background {
   text-align:center;
   margin-top:130px
 }
+#link
+  cursor pointer
 </style>
