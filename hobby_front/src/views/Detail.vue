@@ -261,6 +261,7 @@ export default {
             this.cnt += 1
             this.joins.unshift(res.data)
             this.distinct = true
+            this.$store.commit('pointSave', point-2000)
           })
           .catch(err => {
             console.log(err)
