@@ -141,6 +141,7 @@ export default {
         scope.$store.commit('idSave', '')
         scope.$store.commit('nameSave', '')
         scope.$store.commit('pointSave', '')
+        scope.$store.commit('gradeSave', '')
         Kakao.cleanup()
         scope.$router.push({name:'home'})
         location.reload()
