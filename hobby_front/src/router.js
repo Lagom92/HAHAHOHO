@@ -16,6 +16,8 @@ import FreeBoardDetail from './components/FreeBoardDetail.vue'
 import Search from './views/SearchPage.vue'
 import UpdateMeeting from './views/UpdateMeeting.vue'
 import YourPage from './views/YourPage.vue'
+import Notworking from './views/Notworking.vue'
+
 
 Vue.use(Router)
 
@@ -102,6 +104,11 @@ export default new Router({
       path: '/user/:id',
       name: 'yourpage',
       component: YourPage
+    },
+    {
+      path: '/notWorking',
+      name: 'notworking',
+      component: Notworking
     }
   ],
   scrollBehavior (to, from, savedPosition) {

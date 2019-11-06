@@ -41,7 +41,8 @@
                 <v-divider class="mx-5 mb-5"></v-divider>
                 <v-card-text>
                   <KakaoLogin class="mb-2"></KakaoLogin>
-                  <NaverLogin @click="stop()"></NaverLogin>
+                  <img @click="stop()" width="222" height="49" src="../assets/naver.png">
+                  <!-- <NaverLogin  @click="stop()"></NaverLogin> -->
                 </v-card-text>
               </v-card>
             </v-dialog>
@@ -131,7 +132,7 @@ export default {
   },
   methods: {
     stop(){
-      window.open()
+      window.open('http://localhost:8080/notWorking', 'window팝업', 'width=700, height=700, menubar=no, status=no, toolbar=no');
     },
     logout() {
       let scope = this

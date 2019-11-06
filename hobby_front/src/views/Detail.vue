@@ -190,7 +190,7 @@ export default {
       cnt: 0,
       flag: false,
       snackbar: false,
-      ment: '포인트 충전을 위해 이동하시겠습니까?',
+      ment: '',
       vertical: true,
       distinct: false
     }
@@ -239,7 +239,6 @@ export default {
     },
     deleteDetail: function () {
       this.refundGroup()
-
       const baseUrl = this.$store.state.baseUrl
       const apiUrl = baseUrl + 'boards/hobby/' + this.id
       this.$http.delete(apiUrl)
@@ -251,26 +250,33 @@ export default {
         })
       },
       joinGroup: function () {
+        let grade = this.$store.state.user_grade
         let point = this.$store.state.user_point
-        if(point >= 2000){
-          const baseUrl = this.$store.state.baseUrl
-          const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
-          this.$http.post(apiUrl)
-          .then(res => {
-            this.pay()
-            this.cnt += 1
-            this.joins.unshift(res.data)
-            this.distinct = true
-            this.$store.commit('pointSave', point-2000)
-          })
-          .catch(err => {
-            console.log(err)
-          })
+        if(grade > 1){
+          if(point >= 2000){
+            const baseUrl = this.$store.state.baseUrl
+            const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
+            this.$http.post(apiUrl)
+            .then(res => {
+              this.pay()
+              this.cnt += 1
+              this.joins.unshift(res.data)
+              this.distinct = true
+              this.$store.commit('pointSave', point-2000)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          } else {
+            alert("모임신청에 필요한 포인트가 부족합니다 !!")
+            this.ment = "포인트 충전을 위해 이동하시겠습니까?"
+            this.snackbar = true
+          }
         } else {
-          alert("모임신청에 필요한 포인트가 부족합니다 !!")
+          alert("유저 정보 수정이 필요합니다")
+          this.ment = "유저 정보 수정을 위해 이동하시겠습니까?"
           this.snackbar = true
         }
-
       },
       unjoinGroup: function (idx) {
         const baseUrl = this.$store.state.baseUrl
