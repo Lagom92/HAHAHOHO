@@ -162,7 +162,7 @@ http://54.180.148.99:8000/docs
 
 ### 실행 결과
 
-![main](/img/hobby.gif)
+![main](./img/hobby.gif)
 
 
 
