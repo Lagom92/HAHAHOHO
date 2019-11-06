@@ -10,36 +10,29 @@
         v-model="selected"
         multiple
         >
-          <v-item v-slot:default="{ active, toggle }">
+          <router-link id="detailLink" :to="'/list/detail/' + data.id">
             <v-img
             :src= "data.photo"
             height="250px"
             class="text-right pa-2"
             >
-              <v-btn v-if="id" icon dark color="#ff4e50" @click="toggle">
-                <v-icon>
-                  {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
-                </v-icon>
-              </v-btn>
             </v-img>
-          </v-item>
+          </router-link>
           <v-card-text class="plusbtn pt-6">
-            <v-btn
-            absolute
-            color="#EE7785"
-            class="white--text"
-            fab
-            small
-            right
-            top
-            :to="'/list/detail/' + data.id"
-            >
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
             <div class="mb-2" >
-              <v-chip x-small color="#74b4a0" dark>{{data.subclass}}</v-chip>
-              <v-chip class="ml-1"  v-if="data.new=='new'" x-small color="red" dark>new</v-chip>
-              <v-chip class="ml-1"  v-if="data.dead=='dead'" x-small color="blue" dark>마감임박</v-chip>
+              <v-row align="center" class="px-3">
+                <v-chip x-small color="#74b4a0" dark>{{data.subclass}}</v-chip>
+                <v-chip class="ml-1"  v-if="data.new=='new'" x-small color="red" dark>new</v-chip>
+                <v-chip class="ml-1"  v-if="data.dead=='dead'" x-small color="blue" dark>마감임박</v-chip>
+                <v-spacer></v-spacer>
+                <v-item v-slot:default="{ active, toggle }">
+                  <v-btn v-if="id" icon dark color="#ff4e50" @click="toggle">
+                    <v-icon>
+                      {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
+                    </v-icon>
+                  </v-btn>
+                </v-item>
+              </v-row>
               <h3 class="meetingTitle title mb-2">{{data.title}}</h3>
             </div>
             <v-divider class="my-2"></v-divider>
@@ -75,7 +68,7 @@ export default {
   },
   mounted() {
     this.id = this.$store.state.user_id
-    this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{
+    this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{        
       for(let i of res.data.post_id){
         if(i == this.data.id){
           this.selected[0] = 1
@@ -107,4 +100,7 @@ export default {
 
 .plusbtn
   position relative
+
+#detailLink
+  text-decoration none 
 </style>

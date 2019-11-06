@@ -76,7 +76,6 @@ export default {
             } else {
               i.new = null
             }
-            console.log(subToEnd)
             if(0 < subToEnd && subToEnd < 86400) {
               i.dead = 'dead'
             } else {
@@ -84,7 +83,6 @@ export default {
             }
           }
           this.posts = res.data
-          console.log(this.posts)
         })
         .catch(err => {
           console.log(err)

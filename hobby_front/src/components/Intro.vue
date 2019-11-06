@@ -14,21 +14,21 @@
                     <v-row>
                         <v-col cols="12" md="4" class="px-10">
                             <v-card color="#00ff0000" elevation="0">
-                                <v-icon id="icon" color="black" x-large>mdi-numeric-1-circle</v-icon>
+                                <v-icon class="mb-5" id="icon" color="black" x-large>mdi-numeric-1-circle</v-icon>
                                 <v-img class="d-none d-md-flex" height="200" width="200" src="../assets/business.png"></v-img>
                                 <v-card-title class="headline font-weight-bold" id="textColor">함께 만나요</v-card-title>
                             </v-card>
                         </v-col>
                         <v-col cols="12" md="4" class="px-10">
                             <v-card color="#00ff0000" elevation="0">
-                                <v-icon id="icon" color="black" x-large>mdi-numeric-2-circle</v-icon>
+                                <v-icon class="mb-5" id="icon" color="black" x-large>mdi-numeric-2-circle</v-icon>
                                 <v-img class="d-none d-md-flex" height="200" width="200" src="../assets/pinky-promise.png"></v-img>
                                 <v-card-title class="headline font-weight-bold" id="textColor">신뢰, 즐거움</v-card-title>
                             </v-card>
                         </v-col>
                         <v-col cols="12" md="4" class="px-10">
                             <v-card color="#00ff0000" elevation="0">
-                                <v-icon id="icon" color="black" x-large>mdi-numeric-3-circle</v-icon>
+                                <v-icon class="mb-5" id="icon" color="black" x-large>mdi-numeric-3-circle</v-icon>
                                 <v-img class="d-none d-md-flex" height="200" width="200" src="../assets/laugh.png"></v-img>
                                 <v-card-title class="headline font-weight-bold" id="textColor">무슨 사이트</v-card-title>
                             </v-card>
@@ -39,7 +39,7 @@
             <div id="introSlide3" v-else-if="slide==3">
                 <v-row align="center" justify="center">
                     <v-col class="text-center" cols="12">
-                        <h1 class="gamjaFont mb-4" id="subTitle">하하호호 100% 즐기기</h1>
+                        <h1 class="gamjaFont mt-10 mb-5" id="subTitle">하하호호 100% 즐기기</h1>
                         <v-row>
                             <v-col cols="12" md="8" offset-md="2">
                                 <v-carousel 
@@ -59,7 +59,7 @@
                                             align="center"
                                             justify="center"
                                         >
-                                            <div class="display-2 font-weight-bold" >{{ item.content }}</div>
+                                            <div class="display-2 font-weight-bold white--text" >{{ item.content }}</div>
                                         </v-row>
                                     </v-carousel-item>
                                 </v-carousel>
