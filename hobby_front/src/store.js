@@ -10,12 +10,16 @@ export default new Vuex.Store({
     user_jwt: '',
     user_name: '',
     user_point: '',
-    // baseUrl: "http://54.180.148.99:8000/"
-    baseUrl: 'http://localhost:8000/',
+    user_image: '',
+    user_grade: '',
+    baseUrl: '',
     search_word: ''
   },
   plugins: [createPersistedState()],
   mutations: {
+    urlSave(state, url){
+      state.baseUrl = url
+    },
     idSave (state, id) {
       state.user_id = id
     },
@@ -30,6 +34,12 @@ export default new Vuex.Store({
     },
     wordSave (state, word) {
       state.search_word = word
+    },
+    imgSave (state, img){
+      state.user_image = img
+    },
+    gradeSave (state, grade) {
+      state.user_grade = grade
     }
   },
   actions: {

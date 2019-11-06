@@ -5,18 +5,13 @@ from accounts.models import User
 
 # 게시판 대분류
 class Post(models.Model):
-    hobby = '모임 게시판'
-    free = '자유 게시판'
-    notice = '공지사항'
-    faq = 'FAQ'
-    
     what_board = (
-        (hobby, '모임 게시판'),
-        (free, '자유 게시판'),
-        (notice, '공지사항'),
-        (faq, 'FAQ')
+        ('모임 게시판', '모임 게시판'),
+        ('자유 게시판', '자유 게시판'),
+        ('공지사항', '공지사항'),
+        ('FAQ', 'FAQ')
     )
-    name = models.CharField(max_length=50, choices=what_board, default=hobby)
+    name = models.CharField(max_length=50, choices=what_board, default='모임 게시판')
 
     def __str__(self):
         return self.name
@@ -32,15 +27,12 @@ class PostHobby(models.Model):
     startDay = models.DateField()
     startTime = models.TimeField()
     endDay = models.DateField()
-    regardless = '상관없음'
-    male = '남성'
-    female = '여성'
     about_gender = (
-        (regardless, '상관없음'),
-        (male, '남성'),
-        (female, '여성')
+        ('상관없음', '상관없음'),
+        ('남성', '남성'),
+        ('여성', '여성')
     )
-    gender = models.CharField(max_length=10, choices=about_gender, default=regardless) 
+    gender = models.CharField(max_length=10, choices=about_gender, default='상관없음') 
     minAge = models.IntegerField(default=10)
     maxAge = models.IntegerField(default=100)  
     member = models.IntegerField() 
@@ -108,7 +100,6 @@ class CommentFree(models.Model):
 
     def __str__(self):
         return self.contents
-
 
 class ParticipantCheck(models.Model):
     post = models.ForeignKey(PostHobby, on_delete=models.CASCADE)

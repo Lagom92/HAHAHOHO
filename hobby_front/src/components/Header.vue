@@ -5,6 +5,13 @@
         <v-toolbar flat>
           <v-app-bar-nav-icon class="d-sm-none d-flex" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           <v-spacer class="d-sm-none d-flex"></v-spacer>
+          <v-avatar class="d-none d-sm-flex" size="48">
+            <img
+              id="logo"
+              src="../assets/hahoicon.png"
+              @click="$router.push('/')"
+            >
+          </v-avatar>
           <v-toolbar-title class="gamjaFont px-4" @click="$router.push('/')" id="hahahoho">
             하하호호
           </v-toolbar-title>
@@ -34,7 +41,8 @@
                 <v-divider class="mx-5 mb-5"></v-divider>
                 <v-card-text>
                   <KakaoLogin class="mb-2"></KakaoLogin>
-                  <NaverLogin></NaverLogin>
+                  <img @click="stop()" width="222" height="49" src="../assets/naver.png">
+                  <!-- <NaverLogin  @click="stop()"></NaverLogin> -->
                 </v-card-text>
               </v-card>
             </v-dialog>
@@ -50,7 +58,7 @@
       </v-list-item>
       <v-list-item v-else>
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+          <v-img :src="img"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="title nanumFont">
@@ -93,6 +101,7 @@ export default {
   data () {
     return {
       dialog: false,
+      img: '',
       drawer: false,
       group: null,
       state: true,
@@ -113,9 +122,18 @@ export default {
     if(this.$store.state.user_jwt){
       this.state = false
       this.username = this.$store.state.user_name
+      let image = this.$store.state.user_image
+      if(image.split('/').slice(3).join('/')){
+        this.img = 'https://' + image.split('/').slice(3).join('/')
+      } else {
+        this.img = require('../assets/user.png')
+      }
     }
   },
   methods: {
+    stop(){
+      window.open('http://localhost:8080/notWorking', 'window팝업', 'width=700, height=700, menubar=no, status=no, toolbar=no');
+    },
     logout() {
       let scope = this
       Kakao.Auth.logout(function (){
@@ -123,6 +141,7 @@ export default {
         scope.$store.commit('idSave', '')
         scope.$store.commit('nameSave', '')
         scope.$store.commit('pointSave', '')
+        scope.$store.commit('gradeSave', '')
         Kakao.cleanup()
         scope.$router.push({name:'home'})
         location.reload()
@@ -162,4 +181,9 @@ export default {
 #userrouter:hover:before, #userrouter:hover:after
   width 100%
   transition 800ms ease all
+
+#logo:hover
+  width 96px
+  height 96px
+  transition 400ms ease all
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <full-page ref="fullpage" :options="options" id="fullpage">
-            <Intro style="height:100%" class="section"/>
+            <Intro class="section"/>
             <!-- 에티켓 -->
             <Etiquette class="section"/>
             <!-- 운영방침 -->

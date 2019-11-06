@@ -9,20 +9,20 @@
                     <tr>
                         <th>우편번호</th>
                         <td>
-                            <input type="hidden" id="confmKey" name="confmKey" value=""  >
-                            <input type="text" id="zipNo" name="zipNo" readonly style="width:100px">
-                            <input type="button"  value="주소검색" @click="goPopup()">
+                            <input type="hidden" id="confmKey" name="confmKey" value="">
+                            <input type="text" id="zipNo" name="zipNo" readonly>
+                            <input type="button" value="주소검색" @click="goPopup()">
                         </td>
                     </tr>
                     <tr>
                         <th>도로명주소</th>
-                        <td><input type="text" id="roadAddrPart1" style="width:85%"></td>
+                        <td><input type="text" id="roadAddrPart1"></td>
                     </tr>
                     <tr>
                         <th>상세주소</th>
                         <td>
-                            <input type="text" id="addrDetail" style="width:40%" value="">
-                            <input type="text" id="roadAddrPart2"  style="width:40%" value="">
+                            <input type="text" id="addrDetail" value="">
+                            <input type="text" id="roadAddrPart2" value="">
                         </td>
                     </tr>
                 </tbody>
@@ -48,5 +48,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
+#zipNo
+    width 100px
+
+#roadAddrPart1
+    width 85%
+
+#addrDetail
+    width 40%
+
+#roadAddrPart2
+    width 40%
 </style>

@@ -234,6 +234,7 @@ export default {
       form.append('userAddress', this.result)
       form.append('userNickName', this.name)
       this.$http.post(this.$store.state.baseUrl + 'accounts/user/'+this.$store.state.user_id, form).then(res =>{
+        this.$store.commit('gradeSave', this.$store.state.user_grade)
         this.$router.push('/user')
       })
     }

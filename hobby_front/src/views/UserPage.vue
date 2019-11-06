@@ -62,8 +62,12 @@
                     class="mx-auto"
                     ></v-img>
                     <v-list-item-title class="headline mb-1 text-center">
-                      <v-row justify="center">
-                        <span class="my-auto mr-3">포인트 {{userInfo.userPoint}}P</span>
+                      <v-row v-if="userInfo.userGrade == 1" justify="center">
+                        <br><br>
+                        <span  class="my-auto mr-3 body-2">유저정보를 수정해주시면 포인트가 <span class="font-weight-bold">팡팡!</span></span>
+                      </v-row>
+                      <v-row v-else justify="center">
+                        <span  class="my-auto mr-3">포인트 {{userInfo.userPoint}}P</span>
                         <Payment></Payment>
                       </v-row>
                     </v-list-item-title>
@@ -88,7 +92,7 @@
                                 <v-divider></v-divider>
                                 <v-card-text style="height: 300px;">
                                   <v-list v-if="followerCounting">
-                                    <v-list-item 
+                                    <v-list-item
                                     v-for="item in followerGroup"
                                     :key="item.name"
                                     >
@@ -96,7 +100,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)"  v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)"  v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -143,7 +147,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -245,7 +249,7 @@
                     <v-btn icon>
                       <v-icon>mdi-bell-alert</v-icon>
                     </v-btn>
-                    <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                    <v-toolbar-title id="link" @click="moveTo(selectedEvent.id)" v-html="selectedEvent.name"></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="selectedOpen = false">
                       <v-icon>mdi-close</v-icon>
@@ -347,7 +351,7 @@ export default {
       if (!start || !end) {
         return ''
       }
-      
+
       const startMonth = this.monthFormatter(start)
       const startYear = start.year
 
@@ -384,12 +388,20 @@ export default {
         var strArray = res.data.userLike.split(',')
         this.tags = strArray
       }
-      this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
-      // 카카오만
-      image = image.substr(14, counts)
-      this.userInfo.userImage = 'https://'+image
-      /// 이미지 수정 후
-      // this.userInfo.userImage = 'http://localhost:8000'+res.data.userImage
+      if(this.userInfo.userGrade > 1){
+        this.grade = require('../assets/2.png')
+      } else if(this.userInfo.userGrade > 100){
+        this.grade = require('../assets/3.png')
+      } else if(this.userInfo.userGrade > 500){
+        this.grade = require('../assets/4.png')
+      } else if(this.userInfo.userGrade > 1000){
+        this.grade = require('../assets/5.png')
+      }
+      if(image.split('/').slice(3).join('/')){
+        this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
+      } else {
+        this.userInfo.userImage = require('../assets/user.png')
+      }
     }).catch(e =>{
       console.log(e)
     })
@@ -401,7 +413,7 @@ export default {
           i.img = require('../assets/logo.png')
         }
       }
-      this.followGroup = res.data    
+      this.followGroup = res.data
     })
     // user 팔로워(나를 하는거)
     this.$http.get(this.$store.state.baseUrl + 'accounts/followers/' + this.$store.state.user_id).then(res =>{
@@ -411,7 +423,7 @@ export default {
           i.img = require('../assets/logo.png')
         }
       }
-      this.followerGroup = res.data 
+      this.followerGroup = res.data
     })
     // user가  참여모임에 대한 모든 정보
     let event = []
@@ -433,6 +445,7 @@ export default {
           fee: band[i].fee
         }
         var moim = {
+          id: band[i].id,
           name: band[i].title,
           details: detail,
           start: band[i].startDay,
@@ -461,7 +474,7 @@ export default {
             details: detail,
             start: this.formatDate(r.data.created_at),
             end: r.data.endDay,
-            color: '#f9c00c'    
+            color: '#f9c00c'
           }
           event.push(moim)
         }).catch(e =>{
@@ -474,6 +487,9 @@ export default {
     this.events = event
   },
   methods: {
+    moveTo(id){
+      this.$router.push({name: 'detail', params:{id:id}})
+    },
     move(id){
       this.$router.push({name: 'yourpage', params:{id:id}})
     },
@@ -518,9 +534,9 @@ export default {
           day = '' + d.getDate(),
           year = d.getFullYear();
 
-      if (month.length < 2) 
+      if (month.length < 2)
           month = '0' + month;
-      if (day.length < 2) 
+      if (day.length < 2)
           day = '0' + day;
 
       return [year, month, day].join('-');
@@ -537,4 +553,9 @@ export default {
   text-align:center;
   margin-top:130px
 }
+</style>
+
+<style lang="stylus">
+#link
+  cursor pointer
 </style>

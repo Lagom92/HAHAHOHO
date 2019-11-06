@@ -5,7 +5,7 @@
       <div>
         <v-card class="pa-3" elevation="0" color="#fafafa">
           <v-card-title class="nanumFont justify-center" id="meetingSize">
-            모임 목록
+            모임
             <v-btn text icon to="/list" class="ml-3">
               <v-icon color="#74b4a0">
                 mdi-plus-circle
@@ -145,12 +145,12 @@
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="100%"
       >
-        <v-card-title class="display-1 justify-center">
+        <v-card-title class="justify-center mobiletext">
           하하호호에 처음 오셨나요?
         </v-card-title>
         <v-card-text class="text-center">
-          <div class="title font-weight-thin">하하호호는 건전한 취미생활, 밝은 에너지, 신뢰있는 관계를 통해 서비스를 운영하고 있습니다.</div>
-          <div class="title font-weight-thin">저희 사이트에 대한 소개를 읽어봐주세요^^</div>
+          <div class="subtitle-1 font-weight-thin">하하호호는 건전한 취미생활, 밝은 에너지, 신뢰있는 관계를 통해 서비스를 운영하고 있습니다.</div>
+          <div class="subtitle-1 font-weight-thin">저희 사이트에 대한 소개를 읽어봐주세요^^</div>
           <button id="pbtn" class="nanumFont my-5" @click="$router.push('/about')">
             하하호호 알아보기
             <v-icon class="ml-1">mdi-arrow-right-bold</v-icon>
@@ -158,17 +158,19 @@
         </v-card-text>
       </v-img>
     </v-card>
-    <v-card class="intro">
+    <v-card class="intro2">
       <v-img
-        src="https://t1.kakaocdn.net/friends/prod/brand/201803_type1_2880.jpg"
+        src="../assets/55.jpg"
         class="align-center"
+        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="100%"
       >
-        <v-card-title class="display-1 justify-center">
+        <v-card-title class="justify-center text-center mobiletext whitetext">
           하하호호의 소식을 빠르게 알고 싶나요?
         </v-card-title>
         <v-card-text class="text-center">
-          <div class="title font-weight-thin">카카오 플러스 친구를 해보세요~</div>
+          <div class="subtitle-1 font-weight-thin whitetext">소식부터 일대일 문의까지 !!</div>
+          <div class="subtitle-1 font-weight-thin whitetext">카카오 플러스 친구를 해보세요~</div>
           <button id="pbtn" class="nanumFont my-5" @click="kakao()">
             플러스친구 추가하기
             <v-icon class="ml-1">mdi-arrow-right-bold</v-icon>
@@ -193,7 +195,7 @@ export default {
       posts: [],
       notices: [],
       frees: [],
-
+      baseUrl: "http://54.180.148.99:8000/",
     }
   },
   mounted () {
@@ -210,7 +212,7 @@ export default {
       }
     },
     getHobby: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.baseUrl
       const apiUrl = baseUrl + 'boards/main/hobby'
       this.$http.get(apiUrl)
         .then(res => {
@@ -221,7 +223,7 @@ export default {
         })
     },
     getNotice: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.baseUrl
       const apiUrl = baseUrl + 'boards/main/notice'
       this.$http.get(apiUrl)
         .then(res => {
@@ -235,7 +237,7 @@ export default {
         })
     },
     getFree: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.baseUrl
       const apiUrl = baseUrl + 'boards/main/free'
       this.$http.get(apiUrl)
         .then(res => {
@@ -257,6 +259,11 @@ export default {
 
 <style lang="stylus">
 .intro
+  position relative
+  height 50vh
+  background-color #f2f2f2
+
+.intro2
   position relative
   height 50vh
   background-color #f2f2f2
@@ -286,8 +293,8 @@ export default {
   color #fff
   border none
   position relative
-  height 45px
-  font-size 1.6em
+  height 40px
+  font-size 1.0em
   padding 0 1.5em
   cursor pointer
   transition 800ms ease all
@@ -323,4 +330,10 @@ export default {
 #pbtn:hover > i
   color #1AAB8A
 
+.mobiletext
+  font-size calc(25px + .8vw)
+
+.whitetext
+  color white
+  text-shadow 2px 2px 2px black
 </style>

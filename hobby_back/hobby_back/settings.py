@@ -4,12 +4,13 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR = os.path.dirname(BASE_DIR)
-SECRETS_PATH = os.path.join(ROOT_DIR, 'hobby_back/secrets.json')
-secrets = json.loads(open(SECRETS_PATH).read())
-
+# SECRETS_PATH = os.path.join(ROOT_DIR, 'hobby_back/secrets.json')
+# secrets = json.loads(open(SECRETS_PATH).read())
 # Secret Key
-for key, value in secrets.items():
-    setattr(sys.modules[__name__], key, value)
+# for key, value in secrets.items():
+#     setattr(sys.modules[__name__], key, value)
+
+SECRET_KEY = '-vy6&3jcv%chue-&m6pvlzb5vvpy59opby06ezxr6s8o!-&@y2'
 
 DEBUG = True
 
@@ -35,7 +36,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.naver',
     'corsheaders',
     # 'imagekit',
-    # 'django_extensions',
+    'django_extensions',
     'drf_yasg',
     'debug_toolbar',
     'boards',
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'hobby_back.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,15 +75,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hobby_back.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'hobby',
+#         'USER': 'admin',
+#         'PASSWORD': '1234',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hobby',
-        'USER': 'admin',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -111,6 +118,8 @@ USE_L10N = True
 USE_TZ = False
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 
@@ -147,10 +156,10 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 # graph model
-# GRAPH_MODELS = {
-#   'all_applications': True,
-#   'group_models': True,
-# }
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
 
 SUIT_CONFIG = {
     'ADMIN_NAME': '관리자 페이지',

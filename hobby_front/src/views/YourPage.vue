@@ -100,7 +100,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -147,7 +147,7 @@
                                         <v-img @click="move(item.id)" :src="item.img"></v-img>
                                       </v-list-item-avatar>
                                       <v-list-item-content>
-                                        <v-list-item-title @click="move(item.id)" v-text="item.name">
+                                        <v-list-item-title id="link" @click="move(item.id)" v-text="item.name">
                                         </v-list-item-title>
                                       </v-list-item-content>
                                     </v-list-item>
@@ -336,9 +336,12 @@ export default {
           this.tags = strArray
         }
         let image = res.data.userImage
-        let counts = image.length
-        image = image.substr(14, counts)
-        this.userInfo.userImage = 'https://'+image
+        let counts = image.length 
+        if(image.split('/').slice(3).join('/')){
+          this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
+        } else {
+          this.userInfo.userImage = require('../assets/user.png')
+        }
         this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
       })
       let event = []
@@ -413,4 +416,6 @@ h2.no-background {
   text-align:center;
   margin-top:130px
 }
+#link
+  cursor pointer
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <SearchBar id="searchPageSearchBar" class="d-flex justify-center my-5"></SearchBar>
+            <SearchBar class="d-flex justify-center my-5"></SearchBar>
             <v-alert border='top' colored-border color="info" elevation="2" class="mt-5 mb-10">
                 <p class="mb-0 mt-3">검색키워드 : <strong>{{word}}</strong></p>
             </v-alert>
@@ -14,16 +14,14 @@
                 <v-divider class="minDiv my-3"></v-divider>
                 <v-layout wrap>
                     <v-flex v-for="post in this.posts" v-bind:key="post.id" xs12 sm6 md4>
-                        <v-card class="ma-3">
+                        <v-card class="ma-3" :to="'/list/detail/' + post.id">
                             <v-img :src="post.photo" height="200px"/>
                             <v-card-title primary-title>
-                                <router-link :to="'/list/detail/' + post.id">
-                                    <div>
-                                        <div class='headline'>{{post.title}}</div>
-                                        <span class='grey--text'>{{post.contents}}</span>
-                                    </div>
-                                </router-link>
+                                <div class="headline">{{post.title}}</div>
                             </v-card-title>
+                            <v-card-text>
+                                <p id="postContent" class="grey--text">{{post.contents}}</p>
+                            </v-card-text>
                         </v-card>
                     </v-flex>
                     <!-- 검색 모임이 없는 경우 -->
@@ -44,13 +42,15 @@
                         <v-col cols='2' class="text-center">작성자</v-col>
                     </v-row>
                     <div v-for="free in frees" v-bind:key="free.id">
-                        <router-link :to="'/free/' + free.id">
-                            <v-row class="my-2">
-                                <v-col cols='8' class="rightBorder">{{free.contents}}</v-col>
-                                <v-col cols='2' class="rightBorder text-center">{{free.created_at}}</v-col>
-                                <v-col cols='2' class="text-center">{{free.username}}</v-col>
-                            </v-row>
-                        </router-link>
+                        <v-row class="my-2">
+                            <v-col cols='8' class="rightBorder">
+                                <router-link id="postContent" tag="p" :to="'/free/' + free.id" text-color="black">
+                                    {{free.contents}}
+                                </router-link>
+                            </v-col>
+                            <v-col cols='2' class="rightBorder text-center">{{free.created_at}}</v-col>
+                            <v-col cols='2' class="text-center">{{free.username}}</v-col>
+                        </v-row>
                         <v-divider></v-divider>
                     </div>
                     <!-- 검색 모임이 없는 경우 -->
@@ -114,9 +114,12 @@ export default {
 </script>
 
 <style lang="stylus">
+#postContent
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
+    cursor pointer
+
 .rightBorder
     border-right 1px solid rgba(0, 0, 0, 0.12)
-
-#searchPageSearchBar input
-    background #fafafa
 </style>

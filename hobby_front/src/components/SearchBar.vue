@@ -76,7 +76,7 @@ export default {
   border: none;
   box-sizing: border-box;
   border-radius: 50px;
-  background: #f2f2f2;
+  background: #fafafa;
   transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 0.5) 600ms;
   color: #EE7785;
 }

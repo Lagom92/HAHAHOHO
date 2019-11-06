@@ -1,36 +1,49 @@
 <template>
     <div>
-        <div>
-            <h2 class="my-3">댓글</h2>
-        </div>
         <div class="mb-1">
-            <v-card>
+            <v-card color="#fafafa" flat>
                 <v-container v-if="user !== ''">
-                    <p>작성자: {{user}}</p>
-                    <v-form>
-                        <input v-model="word" label="댓글 작성" placeholder="댓글을 남겨주세요">
-                        <div class="d-flex justify-end">
-                            <v-btn dark color="light-blue" @click="createComment()">작성</v-btn>
-                        </div>
-                    </v-form>
+                    <v-row align="center" class="createuser px-3">
+                        <div>작성자 : <span class="font-weight-black">{{user}}</span></div>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" text icon @click="createComment()">
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </v-row>
+                    <v-text-field
+                        v-model="word"
+                        label="댓글 작성"
+                        placeholder="주제와 무관한 댓글, 타인의 권리를 침해하거나 명예를 훼손하는 댓글은 별도의 통보 없이 재제를 받을 수 있습니다."
+                        outlined
+                        shaped
+                        @keyup.enter="createComment()"
+                    ></v-text-field>
                 </v-container>
             </v-card>
         </div>
         <div>
-            <v-card>
-                <v-container v-for="(post, idx) in this.posts" :key="post.id">
+            <v-card color="#fafafa" flat v-for="(post, idx) in paginatedData" :key="post.id">
+                <v-container>
                     <div>
                         <v-row class="mx-0">
-                            <p><B>{{post.name}}</B></p>
+                            <v-row align="center" class="createuser px-3">
+                                <div class="font-weight-black">{{post.name}}</div>
+                                <v-divider vertical inset class="mx-5"></v-divider>
+                                <div>{{post.created_at}}</div>
+                                <v-spacer></v-spacer>
+                                <v-btn v-if="userId === post.user" text icon @click="deleteComment(post.id, idx)">
+                                    <v-icon color="error">mdi-trash-can-outline</v-icon>
+                                </v-btn>
+                            </v-row>
                         </v-row>
-                        <p>{{post.contents}}</p>
-                        <p>{{post.created_at}}</p>
-                        <div class="d-flex justify-end" v-if="userId === post.user">
-                            <v-btn dark color="red" @click="deleteComment(post.id, idx)">삭제</v-btn>
-                        </div>
+                        <p class="mb-0">{{post.contents}}</p>
                     </div>
                 </v-container>
+                <v-divider></v-divider>
             </v-card>
+            <div class="text-center my-5">
+                <v-pagination v-model="pageNum" :length="this.size" color="#74B4A0"></v-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -38,14 +51,25 @@
 <script>
 export default {
     name: 'CommentHobby',
+    props: {
+        pageSize: { type: Number, required: false, default: 6 }
+    },
     data () {
         return {
             user: '',
             posts: [],
             word: '',
-            userId: ''
+            userId: '',
+            pageNum: 1,
+            size: null
         }
-
+    },
+    computed: {
+        paginatedData() {
+        const start = (this.pageNum - 1) * this.pageSize,
+                end = start + this.pageSize
+        return this.posts.slice(start, end)
+        }
     },
     mounted () {
         this.user = this.$store.state.user_name
@@ -62,7 +86,11 @@ export default {
                     for (let i of res.data) {
                         i.created_at = String(i.created_at).substring(0,10)+'  '+String(i.created_at).substring(11,16)
                     }
-                    this.posts = res.data 
+                    this.posts = res.data
+                    let listLength = this.posts.length,
+                        listSize = this.pageSize,
+                        page = Math.floor((listLength - 1) / listSize) + 1
+                        this.size = page
                 })
                 .catch(err => {
                     console.log(err)
@@ -98,7 +126,6 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-
         }
     }
 
@@ -111,4 +138,6 @@ export default {
     padding-right 10px
     margin-right 10px
 
+.createuser
+    height 45px
 </style>

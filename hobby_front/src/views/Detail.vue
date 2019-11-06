@@ -1,27 +1,28 @@
 <template>
   <div>
     <v-container>
-      <v-row>
+      <v-row align="center">
         <v-col cols="12" md="5">
-          <v-chip small color="#9AB878" dark>{{data.subclass}}</v-chip>
+          <v-chip small color="#9AB878" dark class="mb-3">{{data.subclass}}</v-chip>
           <h1>{{data.title}}</h1>
-          <h5 class="mb-2">작성 날짜: {{data.created_at}}</h5>
-          <p>모집 마감: 
-            <v-icon class="mr-1">mdi-calendar-month</v-icon>
-              {{data.endDay}}
-          </p>
         </v-col>
         <v-col cols="12" md="2">
           <v-menu
-          transition="scale-transition"
+            transition="scale-transition"
+            absolute
           >
             <template v-slot:activator="{ on }">
-              <v-chip pill v-on="on" class="mt-8">
-                <v-avatar left>
-                  <v-img :src="data.userimage"></v-img>
-                </v-avatar>
-                {{data.username}}
-              </v-chip>
+              <v-card flat color="#fafafa" v-on="on">
+                <v-row align="center" class="px-3">
+                  <v-avatar tile size="48">
+                    <v-img :src="data.userimage"></v-img>
+                  </v-avatar>
+                  <v-col class="pa-0 ml-5">
+                    <h4>{{data.username}}</h4>
+                    <h5 class="grey--text">모임장</h5>
+                  </v-col>
+                </v-row>
+              </v-card>
             </template>
             <v-card width="300">
               <v-list dark>
@@ -31,7 +32,6 @@
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-list-item-title>{{data.username}}</v-list-item-title>
-                    <v-list-item-subtitle>친절함 활발함</v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action>
                     <v-btn icon >
@@ -70,42 +70,44 @@
         </v-snackbar>
         <!-- 유저의 상태에 따라 변경되야함 -->
         <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
-          <!-- 모임 참여하기 함수 추가 -->
-          <v-btn block dark color="#F3B749" @click="joinGroup()">참여하기</v-btn>
-        </v-col>
-        <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
           <!-- 모임 참여 취소하기 -->
-            <v-btn block dark color="red" @click="unjoinGroup()">참여 취소하기</v-btn>
+          <v-btn v-if="distinct" block dark color="red" @click="unjoinGroup()">참여 취소하기</v-btn>
+          <!-- 모임 참여하기 함수 추가 -->
+          <v-btn v-else block dark color="#F3B749" @click="joinGroup()">참여하기</v-btn>
         </v-col>
-        <v-col  v-if="data.user === userId">
-          <v-btn block dark color="#F3B749">
-            <router-link 
-            :to="'/list/detail/' + data.id + '/update'"
-            > 
-            글 수정하기
+        <v-col cols="12" md="4" offset-md="1" v-if="data.user === userId">
+          <div class="text-center">
+            <router-link id="editrouter" :to="'/list/detail/' + data.id + '/update'"> 
+              <v-btn text icon class="mr-5">
+                  <v-icon x-large>mdi-file-document-edit-outline</v-icon>
+              </v-btn>
             </router-link>
-          </v-btn>
-          <v-btn block dark color="#F3B749" @click="deleteDetail()">글 삭제하기</v-btn>
+            <v-btn text icon @click="deleteDetail()">
+              <v-icon x-large>mdi-trash-can-outline</v-icon>
+            </v-btn>
+          </div>
         </v-col>
-        
       </v-row>
       <v-row>
         <v-col cols="12" md="7">
-          <v-img
-          :src= "data.photo"
-          class="mb-12"
-          ></v-img>
-          <v-card class="excard">
+          <v-img :src= "data.photo" class="mb-12"></v-img>
+          <div class="mb-5">
+            <h4 class="mb-2">모임 등록 날짜: <v-icon class="mr-1">mdi-calendar-month</v-icon> {{data.created_at}}</h4>
+            <p>모임 모집 마감: <v-icon class="mr-1">mdi-calendar-month</v-icon> {{data.endDay}}</p>
+          </div>
+          <v-divider class="mb-5"></v-divider>
+          <v-card flat color="#fafafa" class="excard">
             <v-card-title class="mb-3">
               모임 소개
             </v-card-title>
             <v-card-text class="text--primary">
-              <pre>{{data.contents}}</pre>
+              <xmp>{{data.contents}}</xmp>
             </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="4" offset-md="1">
-          <v-card class="excard">
+          <v-divider id="meetDiv"></v-divider>
+          <v-card flat color="#fafafa" class="excard">
             <v-card-title class="mb-3">
               모임 정보
             </v-card-title>
@@ -136,13 +138,14 @@
                 예상 비용: {{data.fee}}원
               </div>
             </v-card-text>
+            <v-divider id="meetDiv"></v-divider>
           </v-card>
           <div class="mb-12" id="mapview">
             <!-- 지도 -->
             <MapService :address="data.location"></MapService>  
             <!-- <MapService></MapService>   -->
           </div>
-          <v-card class="excard">
+          <v-card flat color="#fafafa" class="excard">
             <div id="member">
               <!-- 모임 멤버 관련 정보 -->
               <v-card-title class="mb-3">
@@ -187,8 +190,9 @@ export default {
       cnt: 0,
       flag: false,
       snackbar: false,
-      ment: '포인트 충전을 위해 이동하시겠습니까?',
+      ment: '',
       vertical: true,
+      distinct: false
     }
   },
   mounted () {
@@ -196,7 +200,7 @@ export default {
     this.userId = this.$store.state.user_id
     this.getDetail()
     this.getJoinMember()
-},
+  },
   methods: {
     move(){
       this.$router.push({name: 'user'})
@@ -224,7 +228,9 @@ export default {
         res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
 
         res.data.fee = res.data.fee.toLocaleString()
-
+        if(res.data.userimage == "undefined"){
+          res.data.userimage = require('../assets/user.png')
+        }
         this.data = res.data 
       })
       .catch(err => {
@@ -233,7 +239,6 @@ export default {
     },
     deleteDetail: function () {
       this.refundGroup()
-
       const baseUrl = this.$store.state.baseUrl
       const apiUrl = baseUrl + 'boards/hobby/' + this.id
       this.$http.delete(apiUrl)
@@ -245,25 +250,33 @@ export default {
         })
       },
       joinGroup: function () {
+        let grade = this.$store.state.user_grade
         let point = this.$store.state.user_point
-        if(point >= 2000){
-          const baseUrl = this.$store.state.baseUrl
-          const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
-          this.$http.post(apiUrl)
-          .then(res => {
-            this.pay()
-  
-            this.cnt += 1
-            this.joins.unshift(res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
+        if(grade > 1){
+          if(point >= 2000){
+            const baseUrl = this.$store.state.baseUrl
+            const apiUrl = baseUrl + 'boards/participantCheck/' + this.id + '/' + this.userId
+            this.$http.post(apiUrl)
+            .then(res => {
+              this.pay()
+              this.cnt += 1
+              this.joins.unshift(res.data)
+              this.distinct = true
+              this.$store.commit('pointSave', point-2000)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          } else {
+            alert("모임신청에 필요한 포인트가 부족합니다 !!")
+            this.ment = "포인트 충전을 위해 이동하시겠습니까?"
+            this.snackbar = true
+          }
         } else {
-          alert("모임신청에 필요한 포인트가 부족합니다 !!")
+          alert("유저 정보 수정이 필요합니다")
+          this.ment = "유저 정보 수정을 위해 이동하시겠습니까?"
           this.snackbar = true
         }
-
       },
       unjoinGroup: function (idx) {
         const baseUrl = this.$store.state.baseUrl
@@ -271,8 +284,8 @@ export default {
         this.$http.delete(apiUrl)
         .then(res => {
           this.refund()
-
           this.$router.go(-1)
+          this.distinct = false
         })
         .catch(err => {
           console.log(err)
@@ -284,8 +297,19 @@ export default {
         this.$http.get(apiUrl)
           .then(res => {
             this.cnt = res.data.user_group.length
+            for(let i of res.data.user_group){
+              if(i.user_image == 'undefined'){
+                i.user_image = require('../assets/user.png')
+              }
+            }
             this.joins = res.data.user_group
-            })
+            
+            for (var join of this.joins) {
+              if (this.$store.state.user_name === join.user_name) {
+                this.distinct = true
+              }
+            }
+          })
           .catch(err => {
             console.log(err)
           })
@@ -323,12 +347,16 @@ export default {
         .catch(err => {
           console.log(err)
         })
-      }
+      },
   }
 }
 </script>
 
 <style lang="stylus">
+xmp
+  white-space pre-wrap
+  word-wrap break-word
+
 .excard
   margin-bottom 48px
 
@@ -340,4 +368,11 @@ export default {
 
 #mapview
   height 300px
+
+#meetDiv
+  border-top-width 2px
+  border-color black
+
+#editrouter
+  text-decoration none
 </style>

@@ -18,8 +18,17 @@ schema_view = get_schema_view(
         하하호호 Open API 문서 페이지 입니다.
 
         하하호호는 취미 모임을 만들어주는 웹입니다.
+
+        해보고 싶은 취미가 있는데 기회가 없었지 않나요?...
+
+        하고 싶은 취미가 있는데 같이 할 사람 찾기가 어렵나요??...
+
+        저희 하하호호 로 오세요!
+
+        URL: http://54.180.148.99
         
         팀원: 문동식, 이지선, 김훈, 조호근, 양시영, 안현상
+        
         ''',
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="ehdtlr9376@gmail.com"),
