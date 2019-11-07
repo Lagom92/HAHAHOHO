@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row >
+    <v-row>
       <v-btn-toggle v-model="text" tile color="#EE7785" group>
         <v-btn value="new" @click="sortNew()" class="nanumFont">
           최신순
@@ -23,7 +23,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import Meeting from '@/components/Meeting'
@@ -65,7 +64,7 @@ export default {
               listSize = this.pageSize,
               page = Math.floor((listLength - 1) / listSize) + 1
               this.size = page
-          for(let i of res.data){
+          for (let i of res.data) {
             let timeMins = Date.now()
             let createTime = new Date(i.created_at).getTime()
             let deadTime = new Date(i.endDay).getTime()
@@ -76,7 +75,7 @@ export default {
             } else {
               i.new = null
             }
-            if(0 < subToEnd && subToEnd < 86400) {
+            if (0 < subToEnd && subToEnd < 86400) {
               i.dead = 'dead'
             } else {
               i.dead = null
