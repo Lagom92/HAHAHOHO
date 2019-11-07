@@ -342,7 +342,18 @@ export default {
         } else {
           this.userInfo.userImage = require('../assets/user.png')
         }
-        this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
+        // this.grade = require('../assets/' + this.userInfo.userGrade + '.png')
+        if(this.userInfo.userGrade > 1){
+          this.grade = require('../assets/2.png')
+        } else if(this.userInfo.userGrade > 100){
+          this.grade = require('../assets/3.png')
+        } else if(this.userInfo.userGrade > 500){
+          this.grade = require('../assets/4.png')
+        } else if(this.userInfo.userGrade > 1000){
+          this.grade = require('../assets/5.png')
+        } else {
+          this.grade = require('../assets/1.png')
+        }
       })
       let event = []
       let counts = 0

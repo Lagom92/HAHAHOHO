@@ -23,14 +23,14 @@
                             <v-card color="#00ff0000" elevation="0">
                                 <v-icon class="mb-5" id="icon" color="black" x-large>mdi-numeric-2-circle</v-icon>
                                 <v-img class="d-none d-md-flex" height="200" width="200" src="../assets/pinky-promise.png"></v-img>
-                                <v-card-title class="headline font-weight-bold" id="textColor">신뢰, 즐거움</v-card-title>
+                                <v-card-title class="headline font-weight-bold" id="textColor">신뢰</v-card-title>
                             </v-card>
                         </v-col>
                         <v-col cols="12" md="4" class="px-10">
                             <v-card color="#00ff0000" elevation="0">
                                 <v-icon class="mb-5" id="icon" color="black" x-large>mdi-numeric-3-circle</v-icon>
                                 <v-img class="d-none d-md-flex" height="200" width="200" src="../assets/laugh.png"></v-img>
-                                <v-card-title class="headline font-weight-bold" id="textColor">무슨 사이트</v-card-title>
+                                <v-card-title class="headline font-weight-bold" id="textColor">즐거움</v-card-title>
                             </v-card>
                         </v-col>
                     </v-row>

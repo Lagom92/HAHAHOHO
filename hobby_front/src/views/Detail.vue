@@ -152,7 +152,7 @@
                 모임 멤버 ({{cnt}} / {{data.member}})
               </v-card-title>
               <div v-for="join in joins" :key="join.id"> 
-                <v-chip pill class="ma-3">
+                <v-chip pill class="ma-3" @click="moveTo(join.user_id)">
                   <v-avatar left>
                     <v-img :src="join.user_image"></v-img>
                   </v-avatar>
@@ -202,6 +202,10 @@ export default {
     this.getJoinMember()
   },
   methods: {
+    moveTo(id){
+      console.log(id)
+      this.$router.push({name: 'yourpage', params: { id: id }})
+    },
     move(){
       this.$router.push({name: 'user'})
     },
