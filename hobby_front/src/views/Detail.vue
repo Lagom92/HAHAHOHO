@@ -71,9 +71,9 @@
         <!-- 유저의 상태에 따라 변경되야함 -->
         <v-col cols="12" md="4" offset-md="1" class="d-flex align-center" v-if="userId !== '' & data.user !== userId">
           <!-- 모임 참여 취소하기 -->
-          <v-btn v-if="distinct" block dark color="red" @click="unjoinGroup()">참여 취소하기</v-btn>
+          <v-btn v-if="distinct" block dark color="red" @click.stop="unjoinGroup()">참여 취소하기</v-btn>
           <!-- 모임 참여하기 함수 추가 -->
-          <v-btn v-else block dark color="#F3B749" @click="joinGroup()">참여하기</v-btn>
+          <v-btn v-else block dark color="#F3B749" @click.stop="joinGroup()">참여하기</v-btn>
         </v-col>
         <v-col cols="12" md="4" offset-md="1" v-if="data.user === userId">
           <div class="text-center">

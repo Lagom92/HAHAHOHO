@@ -396,6 +396,8 @@ export default {
         this.grade = require('../assets/4.png')
       } else if(this.userInfo.userGrade > 1000){
         this.grade = require('../assets/5.png')
+      } else {
+        this.grade = require('../assets/1.png')
       }
       if(image.split('/').slice(3).join('/')){
         this.userInfo.userImage = 'https://' + image.split('/').slice(3).join('/')
