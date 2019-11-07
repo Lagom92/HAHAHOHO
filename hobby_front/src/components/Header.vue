@@ -9,29 +9,29 @@
             <img
               id="logo"
               src="../assets/hahoicon.png"
-              @click="$router.push('/')"
+              @click="$router.push('/').catch(err => {})"
             >
           </v-avatar>
-          <v-toolbar-title class="gamjaFont px-4" @click="$router.push('/')" id="hahahoho">
+          <v-toolbar-title class="gamjaFont px-4" @click="$router.push('/').catch(err => {})" id="hahahoho">
             하하호호
           </v-toolbar-title>
           <v-toolbar-items class="d-sm-flex d-none">
-            <v-btn text @click="$router.push('/about')" class="nanumFont">소개</v-btn>
-            <v-btn text @click="$router.push('/list')" class="nanumFont">모임</v-btn>
-            <v-btn text @click="$router.push('/board')" class="nanumFont">커뮤니티</v-btn>
+            <v-btn text @click="$router.push('/about').catch(err => {})" class="nanumFont">소개</v-btn>
+            <v-btn text @click="$router.push('/list').catch(err => {})" class="nanumFont">모임</v-btn>
+            <v-btn text @click="$router.push('/board').catch(err => {})" class="nanumFont">커뮤니티</v-btn>
           </v-toolbar-items>
           <v-spacer></v-spacer>
           <v-btn v-if="state" icon class="d-sm-none d-flex" @click.stop="dialog = true">
             <v-icon>mdi-account</v-icon>
           </v-btn>
-          <v-btn v-else icon class="d-sm-none d-flex" @click="$router.push('/user')">
+          <v-btn v-else icon class="d-sm-none d-flex" @click="$router.push('/user').catch(err => {})">
             <v-icon>mdi-account</v-icon>
           </v-btn>
           <v-toolbar-items class="d-sm-flex d-none align-center">
             <v-btn v-if="state" text @click.stop="dialog = true" class="nanumFont">로그인</v-btn>
             <v-row v-else>
               <div class="my-auto">
-                <p id="userrouter" class="mb-0 mr-5" @click="$router.push('/user')">{{username}}님 환영합니다</p>
+                <p id="userrouter" class="mb-0 mr-5" @click="$router.push('/user').catch(err => {})">{{username}}님 환영합니다</p>
               </div>
               <v-btn text @click.stop="logout()" class="nanumFont">로그아웃</v-btn>
             </v-row>
