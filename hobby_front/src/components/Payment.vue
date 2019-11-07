@@ -55,6 +55,7 @@ export default {
       axios.post(this.$store.state.baseUrl + 'accounts/kakaoPay', form)
         .then(res => {
           let payUrl = res.data.next_redirect_pc_url
+          this.$store.commit('pointSave', this.$store.state.user_point + this.value)
           location.href = payUrl
         })
         .catch(e => {
