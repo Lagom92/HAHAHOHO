@@ -60,13 +60,15 @@ export default {
   },
   mounted() {
     this.id = this.$store.state.user_id
-    this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{        
-      for(let i of res.data.post_id){
-        if(i === this.data.id){
-          this.active = true
+    if(this.$store.state.user_id){
+      this.$http.get(this.$store.state.baseUrl + "boards/cartList/" + this.$store.state.user_id).then(res =>{        
+        for(let i of res.data.post_id){
+          if(i === this.data.id){
+            this.active = true
+          }
         }
-      }
-    })
+      })
+    }
   },
   methods: {
     selected() {
