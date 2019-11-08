@@ -18,7 +18,6 @@ import UpdateMeeting from './views/UpdateMeeting.vue'
 import YourPage from './views/YourPage.vue'
 import Notworking from './views/Notworking.vue'
 
-
 Vue.use(Router)
 
 export default new Router({
@@ -58,12 +57,12 @@ export default new Router({
     {
       path: '/notice/:id',
       name: 'notice',
-      component: NoticeDetail 
+      component: NoticeDetail
     },
     {
       path: '/free/:id',
       name: 'free',
-      component: FreeBoardDetail 
+      component: FreeBoardDetail
     },
     {
       path: '/login',

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px" persistent>
       <template v-slot:activator="{ on }">
         <v-btn class="ma-2" color="#9AB878" fab outlined x-small dark v-on="on">
           <v-icon>mdi-credit-card-outline</v-icon>
@@ -27,8 +27,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">취소</v-btn>
-          <v-btn color="blue darken-1" text @click="pay">결제</v-btn>
+          <v-btn @click="dialog = false" color="blue darken-1" text>취소</v-btn>
+          <v-btn @click="pay" color="blue darken-1" text>결제</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'Payment',
   data () {
@@ -52,9 +50,11 @@ export default {
       let form = new FormData()
       form.append('amount', this.value)
       form.append('userId', this.$store.state.user_id)
-      axios.post(this.$store.state.baseUrl + 'accounts/kakaoPay', form)
+      this.$http.post(this.$store.state.base_url + 'accounts/kakaoPay', form)
         .then(res => {
           let payUrl = res.data.next_redirect_pc_url
+          this.$store.commit(
+            'pointSave', this.$store.state.user_point + this.value)
           location.href = payUrl
         })
         .catch(e => {

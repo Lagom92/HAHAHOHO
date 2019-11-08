@@ -8,42 +8,37 @@ from rest_framework.response import Response
 import requests, json
 from .serializers import UserSerializer
 from .models import User, payInfo, KakaoBill
-from django.contrib.auth import get_user_model
-
-# 평판정보 조회 및 새로 추가하는 기능
-# 한명이 한개의 평판을 줄때 그것을을 1로 산정해서 추가해줌, defalt=0
-@api_view(['POST'])
-def fame_update(request):
-    user = User.objects.get(id = request.data.get('user_id'))
-    #유저아이디를 가지고 User 모델에서 데이터를 가져와 user 변수에 추가합니다.
-    print(user)
-    #1. 먼저 기존의 유저 정보의 평판 목록을 보는 프린트. ex)[0,0,0,0]
-    #2. 데이터 형식이 {"vote" : "energetic"} 으로 들어올경우 첫번째 리스트의 숫자가 1증가함
-    if request.data.get("vote") == 'energetic':
-        user.userFame[0] += 1
-    elif request.data.get("vote") == 'humorous':
-        user.userFame[1] += 1
-    elif request.data.get("vote") == 'leadership':
-        user.userFame[2] += 1
-    elif request.data.get("vote") == 'gentle':
-        user.userFame[3] += 1
-    #3. 데이터를 저장합니다.
-    user.save()
-
-    #4. 저장된 데이터를 확인하는 프린트 ex)[1,0,0,0]
-    #5. 평판의 정보는 user변수 내에 userFame에 저장되어 있기에 user.userFame으로 불러옵니다.
-    # print(user.userFame)
 
 
-    
 class KakaoLogin(SocialLoginView):
+    '''
+    카카오 로그인
+
+    ---
+    
+    
+    '''
     adapter_class = KakaoOAuth2Adapter    
 
 class NaverLogin(SocialLoginView):
+    '''
+    네이버 로그인
+
+    ---
+    
+    
+    '''
     adapter_class = NaverOAuth2Adapter
 
 @api_view(['POST'])
 def userInfo(request):
+    '''
+    유저 정보 가져오기
+
+    ---
+    
+    
+    '''
     userId = request.data.get('id')
     if userId[0] == "k" or userId[0] == "n":
         userSet = User.objects.get(userId=userId)
@@ -54,9 +49,13 @@ def userInfo(request):
 
 @api_view(['POST'])
 def userSave(request):
-    ## 수정
-    ### 프론트와 카카오가 통신
-    ### 프론트는 백하고 통신
+    '''
+    로그인시 유저 정보 저장
+
+    ---
+    
+    
+    '''
     userName = request.data.get('userName')
     userNickName = request.data.get("nickname")
     userId = request.data.get('userId')
@@ -76,6 +75,13 @@ def userSave(request):
 
 @api_view(['POST'])
 def editUser(request, id):
+    '''
+    유저 정보 수정
+
+    ---
+    
+    
+    '''
     user = User.objects.get(id=id)
     if request.data.get('userAddress'):
         user.userAddress = request.data.get('userAddress')
@@ -89,6 +95,13 @@ def editUser(request, id):
  
 @api_view(['GET'])
 def Naver_Login(request):
+    '''
+    네이버 로그인
+
+    ---
+    
+    
+    '''
     deploy = "http://54.180.148.99"
     code = request.GET.get('code')
     state = request.GET.get('state')
@@ -133,12 +146,15 @@ def Naver_Login(request):
     redirect_url += "&id="+str(ids)
     return redirect(redirect_url)
     
-
-
-
 @api_view(['POST'])
 def kakaoPay(request):
-    # request에 회원 id, 결제가격을 같이 보내줘야 함 : db에 결제정보를 저장하기 위해서
+    '''
+    카카오 페이 결제
+
+    ---
+    
+    
+    '''
     url = "https://kapi.kakao.com"
     front_url = "http://54.180.148.99"
 
@@ -179,11 +195,17 @@ def kakaoPay(request):
         )
         user.userPoint += int(request.data.get('amount'))
         user.save()
-        # 결제 내역 저장
         return Response(response)
 
 @api_view(['GET'])
 def getBills(request, user_id):
+    '''
+    카카오 페이 충전 내역 조회
+
+    ---
+    
+    
+    '''
     queryset = KakaoBill.objects.all().order_by('-id')
     queryset = queryset.filter(user_id = user_id)
     data = []
@@ -198,6 +220,13 @@ def getBills(request, user_id):
 
 @api_view(['POST']) 
 def following(request, meId, youId):
+    '''
+    팔로잉
+
+    ---
+    
+    
+    '''
     user = User.objects.get(id=meId)
     you = User.objects.get(id=youId)
     if user != you:
@@ -210,6 +239,13 @@ def following(request, meId, youId):
 
 @api_view(['GET'])
 def follows(request, id):
+    '''
+    팔로워
+
+    ---
+    
+    
+    '''
     user = User.objects.get(id=id)
     follows = user.followings.all().order_by('id')
     data = []
@@ -226,6 +262,13 @@ def follows(request, id):
 
 @api_view(['GET'])
 def followers(requets, id):
+    '''
+    팔로워
+
+    ---
+    
+    
+    '''
     me = User.objects.get(id=id)
     data = []
     print(me.userName)
@@ -248,27 +291,3 @@ def followers(requets, id):
             if flag:
                 data.append(box)
     return Response(data)
-
-# @api_view(['POST'])
-# def Cart(request, user_id, post_id):
-#     user = User.objects.get(id=user_id)
-#     cart = user.userCart
-#     if post_id in cart:
-#         del cart[cart.index(post_id)]
-#         user.userCart = sorted(cart)
-#         user.save()
-#         return Response("false")
-#     else:
-#         cart.append(post_id)
-#         user.userCart = sorted(cart)
-#         user.save()
-#         return Response("true")
-
-# @api_view(['POST'])
-# def CartList(request, user_id):
-#     print(request.data)
-#     print("-------")
-#     user = User.objects.get(id=user_id)
-#     post_id = request.data.get('post_id')
-#     post = PostHobby.objects.get(id=post_id)
-#     print(post)

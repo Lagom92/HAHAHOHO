@@ -4,8 +4,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'naverLoginCallBack',
   data () {
@@ -35,17 +33,13 @@ export default {
   methods: {
     async temp () {
       await this.naver_id_login.get_naver_userprofile(this.setInfo())
-      console.log(this.naver_id_login)
       await this.getInfo()
     },
-    tempA () { console.log('123456') },
     // 1. 백서버에 로그인 요청 (access_toekn + code)
     naverLogin () {
-      console.log(this.$store.access_token)
-      axios.post(this.$store.state.baseUrl + 'accounts/rest-auth/naver/', {
+      this.$http.post(this.$store.state.baseUrl + 'accounts/rest-auth/naver/', {
         access_token: this.$store.access_token
       }).then(res => {
-        console.log(res)
         this.jwt = res.data.token
         this.$store.jwt = res.data.token
       }).catch(e => {
@@ -63,7 +57,7 @@ export default {
     },
     // 2. 네이버에 사용자 프로필 정보 요청
     getInfo () {
-      let baseUrl = this.$store.state.baseUrl
+      let baseUrl = this.$store.state.base_url
       let form = new FormData()
       console.log(this.userNickName,
         this.userName,
@@ -78,7 +72,7 @@ export default {
       form.append('userAge', this.userAge)
       form.append('userImage', this.userImage)
       form.append('userId', 'naver_' + this.userId.toString())
-      // axios.post(baseUrl+'accounts/userSave/', {
+      // this.$http.post(baseUrl+'accounts/userSave/', {
       //     headers:{
       //         'Authorization':'Jwt '+this.jwt
       //     },

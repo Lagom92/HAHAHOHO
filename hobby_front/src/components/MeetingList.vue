@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-row >
-      <v-btn-toggle v-model="text" tile color="#EE7785" group>
-        <v-btn value="new" @click="sortNew()" class="nanumFont">
+    <v-row>
+      <v-btn-toggle v-model="text" color="#EE7785" tile group>
+        <v-btn @click="sortNew()" value="new" class="nanumFont">
           최신순
         </v-btn>
-        <v-btn value="end" @click="sortEnd()" class="nanumFont">
+        <v-btn @click="sortEnd()" value="end" class="nanumFont">
           마감임박순
         </v-btn>
       </v-btn-toggle>
@@ -19,11 +19,11 @@
       </v-flex>
     </v-layout>
     <div class="text-center my-5">
-        <v-pagination v-model="pageNum" :length="this.size" color="#74B4A0"></v-pagination>
+        <v-pagination :length="this.size" v-model="pageNum" color="#74B4A0">
+        </v-pagination>
     </div>
   </div>
 </template>
-
 
 <script>
 import Meeting from '@/components/Meeting'
@@ -44,39 +44,39 @@ export default {
   components: {
     Meeting
   },
-  computed: {
-    paginatedData() {
-      const start = (this.pageNum - 1) * this.pageSize,
-            end = start + this.pageSize
-      return this.posts.slice(start, end)
-    }
-  },
   mounted () {
     this.get_hobby()
   },
+  computed: {
+    paginatedData () {
+      const start = (this.pageNum - 1) * this.pageSize
+      const end = start + this.pageSize
+      return this.posts.slice(start, end)
+    }
+  },
   methods: {
     get_hobby: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.$store.state.base_url
       const apiUrl = baseUrl + 'boards/hobby'
       this.$http.get(apiUrl)
         .then(res => {
           this.posts = res.data
-          let listLength = this.posts.length,
-              listSize = this.pageSize,
-              page = Math.floor((listLength - 1) / listSize) + 1
-              this.size = page
-          for(let i of res.data){
+          let listLength = this.posts.length
+          let listSize = this.pageSize
+          let page = Math.floor((listLength - 1) / listSize) + 1
+          this.size = page
+          for (let i of res.data) {
             let timeMins = Date.now()
             let createTime = new Date(i.created_at).getTime()
             let deadTime = new Date(i.endDay).getTime()
-            let subToCreate = Math.floor(timeMins - createTime)/1000
+            let subToCreate = Math.floor(timeMins - createTime) / 1000
             let subToEnd = Math.floor(timeMins - deadTime) / 1000
-            if(Math.floor(subToCreate / 86400) < 1){
+            if (Math.floor(subToCreate / 86400) < 1) {
               i.new = 'new'
             } else {
               i.new = null
             }
-            if(0 < subToEnd && subToEnd < 86400) {
+            if (subToEnd > 0 && subToEnd < 86400) {
               i.dead = 'dead'
             } else {
               i.dead = null
@@ -88,17 +88,16 @@ export default {
           console.log(err)
         })
     },
-    sortNew() {
-      // var sortingField = 'created_at'
-      this.posts.sort(function(a, b) {
+    sortNew () {
+      this.posts.sort(function (a, b) {
         return a.created_at > b.created_at ? -1 : a.created_at < b.created_at ? 1 : 0
       })
     },
-    sortEnd() {
-      this.posts.sort(function(a, b) {
+    sortEnd () {
+      this.posts.sort(function (a, b) {
         return a.endDay < b.endDay ? -1 : a.endDay > b.endDay ? 1 : 0
       })
-    },
-  }  
+    }
+  }
 }
 </script>

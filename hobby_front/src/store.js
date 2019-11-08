@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from "vuex-persistedstate"
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -12,13 +12,13 @@ export default new Vuex.Store({
     user_point: '',
     user_image: '',
     user_grade: '',
-    baseUrl: '',
+    base_url: '',
     search_word: ''
   },
   plugins: [createPersistedState()],
   mutations: {
-    urlSave(state, url){
-      state.baseUrl = url
+    urlSave (state, url) {
+      state.base_url = url
     },
     idSave (state, id) {
       state.user_id = id
@@ -26,16 +26,16 @@ export default new Vuex.Store({
     jwtSave (state, jwt) {
       state.user_jwt = jwt
     },
-    nameSave (state, name){
+    nameSave (state, name) {
       state.user_name = name
     },
-    pointSave (state, point){
+    pointSave (state, point) {
       state.user_point = point
     },
     wordSave (state, word) {
       state.search_word = word
     },
-    imgSave (state, img){
+    imgSave (state, img) {
       state.user_image = img
     },
     gradeSave (state, grade) {

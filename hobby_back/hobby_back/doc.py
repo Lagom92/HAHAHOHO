@@ -12,7 +12,7 @@ schema_url_patterns = [
 schema_view = get_schema_view(
     openapi.Info(
         title="하하호호 Open API",
-        default_version='v1',
+        default_version='v2',
         description = 
         '''
         하하호호 Open API 문서 페이지 입니다.
