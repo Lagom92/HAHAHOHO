@@ -13,7 +13,6 @@ urlpatterns = [
     path('naverLogin', views.Naver_Login),
     path('kakaoPay', views.kakaoPay),
     path('user/<int:id>', views.editUser),
-    path('fame', views.fame_update),
     path('following/<int:meId>/<int:youId>', views.following),
     path('follows/<int:id>', views.follows),
     path('followers/<int:id>', views.followers),

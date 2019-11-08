@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Post
-from .models import PostHobby, PostFree, Notice, Faq
+from .models import Post, PostHobby, PostFree, Notice, Faq
 from .models import CommentHobby, CommentFree, ParticipantCheck, Bill
 
 @admin.register(Post)
