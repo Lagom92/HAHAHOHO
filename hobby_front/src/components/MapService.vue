@@ -2,9 +2,9 @@
   <div id="mapWindow" :style="'height: ' + height + '; overflow: auto;'">
     <v-responsive min-height="100%">
       <v-btn
-      id="searchBtn"
-      @click="openSearch"
       v-if="mapWindow === '100%' && searchService"
+      @click="openSearch"
+      id="searchBtn"
       fab
       dark
       small
@@ -12,24 +12,24 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
       <v-btn
-      id="searchBtn"
-      @click="closeSearch"
       v-if="mapWindow === '0%' && searchService"
+      @click="closeSearch"
+      id="searchBtn"
       text
       icon
       >
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-responsive id="map" :min-height="mapWindow"></v-responsive>
-      <v-container id="search" v-if="mapWindow === '0%' && searchService">
+      <v-container v-if="mapWindow === '0%' && searchService" id="search">
         <v-row>
           <v-col>
             <v-text-field
+            @keydown.enter="searchPlaces"
             v-model="keyword"
             :rules="searchRules"
             :counter="15"
             label="키워드"
-            @keydown.enter="searchPlaces"
             ></v-text-field>
             <v-card v-if="places">
               <v-list two-line>
@@ -55,10 +55,10 @@
                 <v-row class="justify-center">
                   <div v-for="i in (1, pagination.last)" :key="i">
                     <v-btn
-                    small
-                    text
                     @click="pagination.gotoPage(i), scrollToTop()"
                     :color="(i==pagination.current ? 'light-blue' : '')"
+                    small
+                    text
                     >
                       {{i}}
                     </v-btn>

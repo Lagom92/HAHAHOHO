@@ -7,12 +7,12 @@
             <h1 class="gamjaFont">모임 생성</h1>
           </div>
           <v-divider></v-divider>
-          <v-file-input 
-          chips 
-          accept="image/*" 
-          label="모임 커버 사진" 
+          <v-file-input
+          accept="image/*"
+          label="모임 커버 사진"
           v-model="img"
           :rules="imageRules"
+          chips
           ></v-file-input>
           <v-form ref="form" v-model="valid">
             <v-text-field
@@ -21,14 +21,12 @@
             :rules="titleRules"
             label="글 제목"
             ></v-text-field>
-
             <v-textarea
-            outlined
             v-model="contents"
             :rules="contentsRules"
             label="글 내용"
+            outlined
             ></v-textarea>
-
             <v-row>
               <v-col class="px-4">
                 <v-range-slider
@@ -36,16 +34,15 @@
                 label="연령범위"
                 :max="agemax"
                 :min="agemin"
-                hide-details
                 thumb-label="always"
                 step="10"
                 class="align-center"
                 color="#EE7785"
                 track-color="#a7a7a2"
+                hide-details
                 ></v-range-slider>
               </v-col>
             </v-row>
-
             <v-row>
               <v-col cols="12" md="6">
                 <v-select
@@ -74,15 +71,15 @@
                 :close-on-content-click="false"
                 :nudge-right="40"
                 transition="scale-transition"
-                offset-y
                 min-width="290px"
+                offset-y
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
                     v-model="endDate"
                     label="모집 마감 날짜"
-                    readonly
                     v-on="on"
+                    readonly
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -100,15 +97,15 @@
                 :close-on-content-click="false"
                 :nudge-right="40"
                 transition="scale-transition"
-                offset-y
                 min-width="290px"
+                offset-y
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
                     v-model="meetDate"
                     label="만나는 날짜"
-                    readonly
                     v-on="on"
+                    readonly
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -125,31 +122,31 @@
                 :nudge-right="40"
                 :return-value.sync="meetTime"
                 transition="scale-transition"
-                offset-y
                 max-width="290px"
                 min-width="290px"
+                offset-y
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
                     v-model="meetTime"
                     label="만나는 시간"
                     :rules="timeRules"
-                    readonly
                     v-on="on"
+                    readonly
                     ></v-text-field>
                   </template>
                   <v-time-picker
                   v-if="meetingTime"
                   v-model="meetTime"
-                  full-width
                   @click:minute="$refs.menu.save(meetTime)"
+                  full-width
                   ></v-time-picker>
                 </v-menu>
               </v-col>
             </v-row>
             <div class="mb-5" id="mapsize">
               <!-- 지도 -->
-              <MapService 
+              <MapService
               :searchService="true"
               :address.sync="location"
               :height="'200px'"
@@ -158,7 +155,9 @@
             <v-row>
               <v-col cols="12">
                 <v-card class="mx-auto" >
-                  <v-card-title class="title font-weight-regular justify-space-between">
+                  <v-card-title
+                  class="title font-weight-regular justify-space-between"
+                  >
                     <span>{{ currentTitle }}</span>
                     <v-avatar
                       color="#ee7785"
@@ -167,7 +166,6 @@
                       v-text="step"
                     ></v-avatar>
                   </v-card-title>
-
                   <v-window v-model="step">
                     <v-window-item :value="1">
                       <v-card
@@ -199,7 +197,10 @@
                                           {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
                                         </v-icon>
                                       </v-btn>
-                                      <v-card-title v-text="card.title" class="justify-center"></v-card-title>
+                                      <v-card-title
+                                      v-text="card.title"
+                                      class="justify-center"
+                                      ></v-card-title>
                                     </v-img>
                                   </v-item>
                                 </v-card>
@@ -209,22 +210,20 @@
                         </v-container>
                       </v-card>
                     </v-window-item>
-
                     <v-window-item :value="2">
-                      <v-card-text 
+                      <v-card-text
                         v-for="(sub,category) in CategoryList"
                         :key="category">
                         <h3 class="title mb-2">{{category}}</h3>
-
                         <v-chip-group
-                          column
                           v-model="selected2[category]"
+                          column
                         >
-                          <v-chip 
-                            filter 
-                            outlined
+                          <v-chip
                             v-for="s in sub"
                             :key="s"
+                            filter
+                            outlined
                           >
                             {{s}}
                           </v-chip>
@@ -232,23 +231,21 @@
                       </v-card-text>
                     </v-window-item>
                   </v-window>
-
                   <v-divider></v-divider>
-
                   <v-card-actions>
                     <v-btn
                       :disabled="step === 1"
-                      text
                       @click="backstep()"
+                      text
                     >
                       Back
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn
                       :disabled="step === 2"
+                      @click="nextstep()"
                       depressed
                       text
-                      @click="nextstep()"
                     >
                       Next
                     </v-btn>
@@ -258,7 +255,7 @@
             </v-row>
             <v-row>
               <div class="ml-auto">
-                <v-btn @click="onUpload()" dark color="#74b4a0">
+                <v-btn @click="onUpload()" color="#74b4a0"  dark>
                   등록하기
                 </v-btn>
               </div>
@@ -272,7 +269,6 @@
 
 <script>
 import MapService from '../components/MapService'
-import axios from 'axios'
 
 export default {
   name: 'createmeeting',
@@ -286,7 +282,7 @@ export default {
       ageRange: [20, 40],
       gender: '상관없음',
       lineUp: '',
-      endDate: new Date().toISOString().substr(0, 10),  // 모집 마감
+      endDate: new Date().toISOString().substr(0, 10), // 모집 마감
       endTime: null,
       meetDate: new Date().toISOString().substr(0, 10), // 만나는 날짜
       meetTime: null,
@@ -298,27 +294,47 @@ export default {
         '여성'
       ],
       cards: [
-        { 
-          title: '스포츠', 
+        {
+          title: '스포츠',
           img: 'https://cdn.pixabay.com/photo/2015/01/26/22/40/child-613199_1280.jpg',
-          sub: ['축구', '볼링','자전거','낚시','야구','농구','당구','탁구', '클라이밍', '헬스', '요가/필라테스', '스케이트', '보드', '골프', '배드민턴', '댄스', '기타']
+          sub: [
+            '축구', '볼링', '자전거', '낚시', '야구', '농구', '당구', '탁구',
+            '클라이밍', '헬스', '요가/필라테스', '스케이트', '보드', '골프',
+            '배드민턴', '댄스', '기타'
+          ]
         },
-        { 
-          title: '여행', 
+        {
+          title: '여행',
           img: 'https://cdn.pixabay.com/photo/2015/07/11/23/02/plane-841441_1280.jpg',
-          sub: ['캠핑', '글램핑','국내여행', '해외여행', '드라이브', '라이딩', '출사', '천체관측', '기타']  
+          sub: [
+            '캠핑', '글램핑', '국내여행', '해외여행', '드라이브', '라이딩', '출사',
+            '천체관측', '기타'
+          ]
         },
-        { title: '문화/공연', 
+        {
+          title: '문화/공연',
           img: 'https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg',
-          sub: ['영화 관람', '뮤지컬 관람','전시회 관람','연극 관람', '축제', '스포츠 관람', '코스프레', '버스킹', '기타']  
+          sub: [
+            '영화 관람', '뮤지컬 관람', '전시회 관람', '연극 관람', '축제',
+            '스포츠 관람', '코스프레', '버스킹', '기타'
+          ]
         },
-        { title: '창작', 
+        {
+          title: '창작',
           img: 'https://cdn.pixabay.com/photo/2016/01/19/17/53/books-1149959_1280.jpg',
-          sub: ['캘리그라피', '플라워아트','뜨개질','캔들/디퓨저/석고', '비누/화장품', '가죽공예', '소품공예', '프라모델', '그림그리기', '연주', '작곡', '글쓰기', '프로그래밍', '기타']
+          sub: [
+            '캘리그라피', '플라워아트', '뜨개질', '캔들/디퓨저/석고', '비누/화장품',
+            '가죽공예', '소품공예', '프라모델', '그림그리기', '연주', '작곡',
+            '글쓰기', '프로그래밍', '기타'
+          ]
         },
-        { title: '사교/인맥', 
+        {
+          title: '사교/인맥',
           img: 'https://cdn.pixabay.com/photo/2015/07/31/15/01/guitar-869217_1280.jpg',
-          sub: ['커피', '독서','술','맛집', '반려동물', '육아', '보드게임', '온라인 게임', '콘솔게임', '타로', '봉사활동', '증권투자', '기타']
+          sub: [
+            '커피', '독서', '술', '맛집', '반려동물', '육아', '보드게임',
+            '온라인 게임', '콘솔게임', '타로', '봉사활동', '증권투자', '기타'
+          ]
         },
         {
           title: '기타',
@@ -332,7 +348,7 @@ export default {
       selected2: {},
       sections: '',
       selectSubClass: '',
-      endingDate: false,  // 마감 날짜
+      endingDate: false, // 마감 날짜
       endingTime: false,
       meetingDate: false, // 만나는 날짜
       meetingTime: false,
@@ -343,7 +359,7 @@ export default {
       img: null,
       titleRules: [
         v => !!v || 'Title is required',
-        v => (v || '').length <= 14 || 'Max 14 characters',
+        v => (v || '').length <= 14 || 'Max 14 characters'
       ],
       contentsRules: [
         v => !!v || 'Contents is required'
@@ -356,23 +372,23 @@ export default {
       ],
       imageRules: [
         v => !!v || 'Image is required'
-      ],
+      ]
     }
   },
   computed: {
     currentTitle () {
-        switch (this.step) {
-          case 1: return '대분류'
-          case 2: return '소분류'
-        }
-    },
+      switch (this.step) {
+        case 1: return '대분류'
+        case 2: return '소분류'
+      }
+    }
   },
   methods: {
-    backstep() {
+    backstep () {
       this.step--
       this.CategoryList = {}
     },
-    nextstep() {
+    nextstep () {
       this.step++
       let data = {}
       this.CategoryList[this.cards[this.selected].title] = this.cards[this.selected].sub
@@ -387,26 +403,28 @@ export default {
       this.groups = value
     },
     joinGroup: function (postId) {
-      const baseUrl = this.$store.state.baseUrl
-      const apiUrl = baseUrl + 'boards/participantCheck/' + postId + '/' + this.$store.state.user_id
+      const baseUrl = this.$store.state.base_url
+      const apiUrl =
+        baseUrl + 'boards/participantCheck/' +
+        postId + '/' + this.$store.state.user_id
       this.$http.post(apiUrl)
-      .then(res => {})
-      .catch(err => {
-        console.log(err)
-      })
+        .then(res => {})
+        .catch(err => {
+          console.log(err)
+        })
     },
     onUpload () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.$store.state.base_url
       let form = new FormData()
       let subclass = this.selected2[this.cards[this.selected].title]
       let subclassname = this.cards[this.selected].sub[subclass]
 
       form.append('username', this.$store.state.user_name)
       form.append('user', this.$store.state.user_id)
-      form.append('userimage', this.$store.state.user_image) //!!
-      form.append('post', 1)  // 모임게시판 default 1
+      form.append('userimage', this.$store.state.user_image)
+      form.append('post', 1) // 모임게시판 default 1
       form.append('postname', '모임 게시판')
-      form.append('subclass', subclassname) // !
+      form.append('subclass', subclassname)
       form.append('title', this.title)
       form.append('contents', this.contents)
       form.append('photo', this.img)
@@ -420,21 +438,17 @@ export default {
       form.append('startTime', this.meetTime)
 
       form.append('endDay', this.endDate)
-      form.append('endTime', this.meetTime) // !
+      form.append('endTime', this.meetTime)
       const apiUrl = baseUrl + 'boards/hobby'
       this.$http.post(apiUrl, form)
-      .then(res => {
-        this.joinGroup(res.data.id)
-        this.$router.go(-1)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    },
+        .then(res => {
+          this.joinGroup(res.data.id)
+          this.$router.go(-1)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>
-
-<style lang="stylus">
-
-</style>

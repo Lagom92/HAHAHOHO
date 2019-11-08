@@ -51,11 +51,11 @@ export default {
     FAQ
   },
   props: {
-    propsPage: { type: Number, default: 0}
+    propsPage: { type: Number, default: 0 }
   },
   data () {
     return {
-      currentpage: this.propsPage 
+      currentpage: this.propsPage
     }
   }
 }

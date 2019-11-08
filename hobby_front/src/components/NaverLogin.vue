@@ -17,7 +17,7 @@ export default {
     // )
     // let state = this.naver_id_login.getUniqState()
     // this.naver_id_login.setButton('green', 4, 48)
-    // this.naver_id_login.setDomain(this.$store.state.baseUrl)
+    // this.naver_id_login.setDomain(this.$store.state.base_url)
     // this.naver_id_login.setState(state)
     // this.naver_id_login.setPopup()
     // this.naver_id_login.init_naver_id_login()
@@ -26,7 +26,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-
-</style>

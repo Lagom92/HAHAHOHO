@@ -1,5 +1,5 @@
 <template>
-  <v-container> 
+  <v-container>
     <v-flex class="pa-7">
       <div>
         <h1>{{post.title}}</h1>
@@ -29,7 +29,7 @@ export default {
   name: 'NoticeDetail',
   data () {
     return {
-      post: {},
+      post: {}
     }
   },
   mounted () {
@@ -38,19 +38,21 @@ export default {
   },
   methods: {
     getDetail () {
-      const baseUrl = this.$store.state.baseUrl
-      const apiUrl = baseUrl + 'boards/notice/' + this.id 
+      const baseUrl = this.$store.state.base_url
+      const apiUrl = baseUrl + 'boards/notice/' + this.id
       this.$http.get(apiUrl)
         .then(res => {
-          let created_at = res.data.created_at
-          res.data.created_at = created_at.substring(0,4)+'년 '+created_at.substring(5,7)+'월 '+created_at.substring(8,10)+'일' 
-          this.post = res.data 
+          let createdAt = res.data.created_at
+          res.data.created_at = createdAt.substring(0, 4) + '년 ' +
+                                createdAt.substring(5, 7) + '월 ' +
+                                createdAt.substring(8, 10) + '일'
+          this.post = res.data
         })
         .catch(err => {
           console.log(err)
         })
-    },
-  }  
+    }
+  }
 }
 </script>
 

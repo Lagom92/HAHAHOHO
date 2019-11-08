@@ -18,11 +18,11 @@
     <section id='content'>
       <div v-for="post in paginatedData" :key="post.id">
         <v-btn
-          text
-          block
-          height="auto"
-          :to="'/notice/' + post.id"
-        > 
+        text
+        block
+        height="auto"
+        :to="'/notice/' + post.id"
+        >
           <v-row class="d-none d-md-flex px-3">
             <v-col cols="2">{{post.id}}</v-col>
             <v-col cols="6">{{post.title}}</v-col>
@@ -39,7 +39,11 @@
       </div>
     </section>
     <div class="text-center my-5">
-        <v-pagination v-model="pageNum" :length="this.size" color="#74B4A0"></v-pagination>
+        <v-pagination
+        :length="this.size"
+        v-model="pageNum"
+        color="#74B4A0"
+        ></v-pagination>
     </div>
   </div>
 </template>
@@ -57,31 +61,31 @@ export default {
       size: null
     }
   },
-  computed: {
-    paginatedData() {
-      const start = (this.pageNum - 1) * this.pageSize,
-            end = start + this.pageSize
-      return this.posts.slice(start, end)
-    }
-  },
   mounted () {
     this.getNotice()
   },
+  computed: {
+    paginatedData () {
+      const start = (this.pageNum - 1) * this.pageSize
+      const end = start + this.pageSize
+      return this.posts.slice(start, end)
+    }
+  },
   methods: {
     getNotice: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.$store.state.base_url
       const apiUrl = baseUrl + 'boards/notice'
       this.$http.get(apiUrl)
         .then(res => {
           this.posts = res.data
-          for (let i of res.data){
-            i.created_at = String(i.created_at).substring(0,10)
+          for (let i of res.data) {
+            i.created_at = String(i.created_at).substring(0, 10)
           }
 
-          let listLength = this.posts.length,
-              listSize = this.pageSize,
-              page = Math.floor((listLength - 1) / listSize) + 1
-              this.size = page
+          let listLength = this.posts.length
+          let listSize = this.pageSize
+          let page = Math.floor((listLength - 1) / listSize) + 1
+          this.size = page
         })
         .catch(err => {
           console.log(err)
