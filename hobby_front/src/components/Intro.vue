@@ -59,8 +59,8 @@
             </v-col>
             <v-col cols="12" md="4" class="px-10">
               <v-card color="#00ff0000" elevation="0">
-                <v-icon class="mb-5" id="icon" color="black" x-large>m
-                  di-numeric-3-circle
+                <v-icon class="mb-5" id="icon" color="black" x-large>
+                  mdi-numeric-3-circle
                 </v-icon>
                 <v-img
                 src="../assets/laugh.png"

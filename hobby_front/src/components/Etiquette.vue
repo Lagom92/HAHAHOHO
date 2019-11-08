@@ -107,9 +107,9 @@ export default {
 
 #etiquetteSlide1
   background-color #ee7789
-    height 100% !important
+  height 100% !important
 
 #etiquetteSlide2
   background-color #f1bbba
-    height 100% !important
+  height 100% !important
 </style>
