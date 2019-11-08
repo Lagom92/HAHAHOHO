@@ -13,16 +13,21 @@ class postHobby_list(generics.ListCreateAPIView):
     취미 게시판 list page를 생성, 조회 하는 API
 
     ---
-    ## `/boards/hobby/`
+    ## `/boards/hobby`
     ## 내용
         - title: 게시판 제목
         - contents: 게시판 내용
-        - startDate: 모임 시작시간
+        - subclass: 카테고리 소분류
+        - startDay: 모임 날짜
+        - startTime: 모임 시간
+        - endDay: 모임 모집 마감 날짜
         - gender: 모임 성별 여부
-        - age: 연령대
-        - member: 총 인원
+        - minAge: 희망 최소 연령
+        - maxAge: 희망 최대 연령
+        - member: 최대 인원
         - location: 모임을 할 장소
         - fee: 비용
+        - photo: 이미지
     '''
     search_fields = ['title', 'contents', 'location']
     filter_backends = (filters.SearchFilter,)
@@ -34,16 +39,21 @@ class postHobby_detail(generics.RetrieveUpdateDestroyAPIView):
     취미 게시판 detail page를 조회, 수정, 삭제 하는 API
 
     ---
-    ## `/boards/hobby/{id}/`
+    ## `/boards/hobby/{id}`
     ## 내용
-        - title: 게시판 제목
+       - title: 게시판 제목
         - contents: 게시판 내용
-        - startDate: 모임 시작시간
+        - subclass: 카테고리 소분류
+        - startDay: 모임 날짜
+        - startTime: 모임 시간
+        - endDay: 모임 모집 마감 날짜
         - gender: 모임 성별 여부
-        - age: 연령대
-        - member: 총 인원
+        - minAge: 희망 최소 연령
+        - maxAge: 희망 최대 연령
+        - member: 최대 인원
         - location: 모임을 할 장소
         - fee: 비용
+        - photo: 이미지
     '''
     queryset = PostHobby.objects.all()
     serializer_class = PostHobbySerializer
@@ -55,14 +65,12 @@ class postFree_list(generics.ListCreateAPIView):
     자유 게시판 list page를 생성, 조회 하는 API
     
     ---
-    ## `/boards/free/`
+    ## `/boards/free`
     ## 내용
         - title: 게시판 제목
         - contents: 게시판 내용
-        - startDate: 모임 시작 시간
-        - created_at: 게시판 작성 시간
-        - group: 카테고리 소분류
         - user: 게시판 작성자
+        - created_at: 게시판 작성 날짜 및 시간
     '''
     search_fields = ['title', 'contents']
     filter_backends = (filters.SearchFilter,)
@@ -74,14 +82,12 @@ class postFree_detail(generics.RetrieveUpdateDestroyAPIView):
     자유 게시판 detail page를 조회, 수정, 삭제 하는 API
     
     ---
-    ## `/boards/free/{id}/`
+    ## `/boards/free/{id}`
     ## 내용
         - title: 게시판 제목
         - contents: 게시판 내용
-        - startDate: 모임 시작 시간
-        - created_at: 게시판 작성 시간
-        - group: 카테고리 소분류
         - user: 게시판 작성자
+        - created_at: 게시판 작성 날짜 및 시간
     '''
     queryset = PostFree.objects.all()
     serializer_class = PostFreeSerializer
@@ -91,7 +97,7 @@ class notice_list(generics.ListAPIView):
     공지사항 게시판 list page를 조회 하는 API
     
     ---
-    ## `/boards/notice/`
+    ## `/boards/notice`
     ## 내용
         - title: 게시판 제목
         - name: 게시판 작성자
@@ -106,7 +112,7 @@ class notice_detail(generics.RetrieveAPIView):
     공지사항 게시판 detail page를 조회 하는 API
     
     ---
-    ## `/boards/notice/{id}/`
+    ## `/boards/notice/{id}`
     ## 내용
         - title: 게시판 제목
         - name: 게시판 작성자
@@ -121,7 +127,7 @@ class faq_list(generics.ListAPIView):
     FAQ 게시판 list page를 조회 하는 API
     
     ---
-    ## `/boards/faq/`
+    ## `/boards/faq`
     ## 내용
         - title: 게시판 제목
         - name: 게시판 작성자
@@ -136,7 +142,7 @@ class faq_detail(generics.RetrieveAPIView):
     FAQ 게시판 detail page를 조회 하는 API
     
     ---
-    ## `/boards/faq/{id}/`
+    ## `/boards/faq/{id}`
     ## 내용
         - title: 게시판 제목
         - name: 게시판 작성자
@@ -148,12 +154,11 @@ class faq_detail(generics.RetrieveAPIView):
 
 class main_hobby(generics.ListAPIView):
     '''
-    메인 페이지에서 보여주는 모임들
-    최근 만들어진 순으로 정렬
-    최대 6개
+    메인 페이지에서 보여주는 모임 목록들
+    최신순으로 정렬, 최대 6개
 
     ---
-    ## 내용
+    ## `/boards/main/hobby`
 
     '''
     queryset = PostHobby.objects.all().order_by('-id')[:6]
@@ -161,12 +166,11 @@ class main_hobby(generics.ListAPIView):
 
 class main_notice(generics.ListAPIView):
     '''
-    메인 페이지에서 보여주는 모임들
-    최근 만들어진 순으로 정렬
-    최대 6개
+    메인 페이지에서 보여주는 공지사항들
+    최신순으로 정렬, 최대 5개
 
     ---
-    ## 내용
+    ## `/boards/main/notice`
 
     '''
     queryset = Notice.objects.all().order_by('-id')[:5]
@@ -174,12 +178,11 @@ class main_notice(generics.ListAPIView):
 
 class main_free(generics.ListAPIView):
     '''
-    메인 페이지에서 보여주는 모임들
-    최근 만들어진 순으로 정렬
-    최대 6개
+    메인 페이지에서 보여주는 자유게시판들
+    최신순으로 정렬, 최대 5개
 
     ---
-    ## 내용
+    ## `/boards/main/free`
 
     '''
     queryset = PostFree.objects.all().order_by('-id')[:5]
@@ -190,7 +193,6 @@ class commentFree_list(generics.CreateAPIView):
     자유게시판의 댓글 생성 기능
 
     ---
-    ## 내용
 
     '''
     queryset = CommentFree.objects.all()
@@ -202,7 +204,6 @@ def comments(request, pk):
     자유게시판의 댓글 list 기능
 
     ---
-    ## 내용
 
     '''
     queryset = CommentFree.objects.all().order_by('-id')
@@ -224,7 +225,6 @@ def commentFree_detail(request, pk):
     자유게시판의 댓글 detail, delete 기능
 
     ---
-    ## 내용
 
     '''
     commentfree = get_object_or_404(CommentFree, pk=pk)
@@ -238,8 +238,14 @@ def commentFree_detail(request, pk):
 
 @api_view(['POST',  'DELETE'])
 def participantCheck(request, post_id, user_id):
+    '''
+    모임 목록에 유저 추가 및 삭제
+
+    ---
+    
+    
+    '''
     if request.method == 'POST':
-        # post요청이면 모임목록에 유저 추가  
         try:
             ParticipantCheck.objects.get(post=post_id, user=user_id)          
             return Response("이미 모임에 존재하는 유저입니다")
@@ -260,10 +266,8 @@ def participantCheck(request, post_id, user_id):
                 'user_name': nickName,
                 'user_image': str(img)
             }
-            # return Response("{}".format(datas))
             return Response(datas)
     elif request.method == 'DELETE':
-        # delete요청이면 해당 모임에 대해 취소 신청을 했기 때문에 해당 유저 삭제
         participant = ParticipantCheck.objects.get(post=post_id, user=user_id)
 
         participant.delete()
@@ -273,7 +277,13 @@ def participantCheck(request, post_id, user_id):
 
 @api_view(['GET'])
 def participantCheckListByPost(request, post_id):
-    # 포스트 이름으로 참여자 목록 찾기
+    '''
+    포스트 이름으로 참여자 목록 찾기
+
+    ---
+    
+    
+    '''
     participant = ParticipantCheck.objects.filter(post_id=post_id).values()
     user_groups = {
         'user_group' : []
@@ -289,7 +299,13 @@ def participantCheckListByPost(request, post_id):
 
 @api_view(['GET'])
 def participantCheckListByUser(request, user_id):
-    # 유저로 참가한 포스트 찾기
+    '''
+    유저로 참가한 포스트 찾기
+
+    ---
+    
+    
+    '''
     participant = ParticipantCheck.objects.filter(user_id=user_id).values()
     posts = {}
     for idx, i in enumerate(participant):
@@ -301,6 +317,13 @@ def participantCheckListByUser(request, user_id):
 
 @api_view(['POST'])
 def refund(request, post_id, user_id):
+    '''
+    포인트 환불
+
+    ---
+    
+    
+    '''
     user = User.objects.get(id=user_id)
     postHobby = PostHobby.objects.get(id=post_id)
     point = 2000
@@ -316,6 +339,13 @@ def refund(request, post_id, user_id):
 
 @api_view(['POST'])
 def pay(request, post_id, user_id):
+    '''
+    포인트 결제
+
+    ---
+    
+    
+    '''
     user = User.objects.get(id=user_id)
     postHobby = PostHobby.objects.get(id=post_id)
     point = 2000
@@ -331,6 +361,13 @@ def pay(request, post_id, user_id):
 
 @api_view(['GET'])
 def getBills(request, user_id):
+    '''
+    포인트 내역 조회
+
+    ---
+    
+    
+    '''
     queryset = Bill.objects.all().order_by('-id')
     queryset = queryset.filter(user_id = user_id)
     data = []
@@ -348,6 +385,13 @@ def getBills(request, user_id):
 
 @api_view(['POST'])
 def addCart(request, user_id):
+    '''
+    찜하기
+
+    ---
+    
+    
+    '''
     user = User.objects.get(id=user_id)
     post_id = request.data.get('post_id')
     post = PostHobby.objects.get(id=post_id)
@@ -361,7 +405,13 @@ def addCart(request, user_id):
 
 @api_view(['GET'])
 def CartList(request, user_id):
-    # print(request.data)
+    '''
+    찜 내역 조회
+
+    ---
+    
+    
+    '''
     user = User.objects.get(id=user_id)
     post = PostHobby.objects.all()
     post_group = {'post_id':[]}
@@ -378,7 +428,6 @@ class hobbyComment(generics.CreateAPIView):
     모임 게시판의 댓글 생성 기능
 
     ---
-    ## 내용
 
     '''
     queryset = CommentHobby.objects.all()
@@ -390,7 +439,6 @@ def hobbyComments(request, pk):
     모임 게시판의 댓글 list 기능
 
     ---
-    ## 내용
 
     '''
     queryset = CommentHobby.objects.all().order_by('-id')
@@ -412,7 +460,6 @@ def hobbyComment_detail(request, pk):
     모임 게시판의 댓글 detail, delete 기능
 
     ---
-    ## 내용
 
     '''
     commenthobby = get_object_or_404(CommentHobby, pk=pk)
