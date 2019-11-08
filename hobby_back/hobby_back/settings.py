@@ -4,13 +4,11 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR = os.path.dirname(BASE_DIR)
-# SECRETS_PATH = os.path.join(ROOT_DIR, 'hobby_back/secrets.json')
-# secrets = json.loads(open(SECRETS_PATH).read())
-# Secret Key
-# for key, value in secrets.items():
-#     setattr(sys.modules[__name__], key, value)
 
-SECRET_KEY = '-vy6&3jcv%chue-&m6pvlzb5vvpy59opby06ezxr6s8o!-&@y2'
+SECRETS_PATH = os.path.join(ROOT_DIR, 'hobby_back/secrets.json')
+secrets = json.loads(open(SECRETS_PATH).read())
+for key, value in secrets.items():
+    setattr(sys.modules[__name__], key, value)
 
 DEBUG = True
 
@@ -30,12 +28,10 @@ INSTALLED_APPS = [
     'rest_auth',
     'allauth',
     'allauth.account',
-    # 'rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.kakao',
     'allauth.socialaccount.providers.naver',
     'corsheaders',
-    # 'imagekit',
     'django_extensions',
     'drf_yasg',
     'debug_toolbar',
@@ -75,21 +71,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hobby_back.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'hobby',
-#         'USER': 'admin',
-#         'PASSWORD': '1234',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hobby',
+        'USER': 'admin',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -127,8 +117,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.IsAdminUser',
         'rest_framework.permissions.AllowAny',
 
     ),
@@ -140,10 +128,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'SEARCH_PARAM': 'q',    
 }
-
-# JWT_AUTH = { 
-#     'JWT_ALLOW_REFRESH': True, 
-# }
 
 REST_USE_JWT = True
 
@@ -167,5 +151,4 @@ SUIT_CONFIG = {
     'HEADER_TIME_FORMAT': 'h:i',    
 }
 
-# 해당 IP에서 디버그 툴바가 보인다.
 INTERNAL_IPS = ('127.0.0.1',)

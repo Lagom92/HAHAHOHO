@@ -105,10 +105,6 @@ class ParticipantCheck(models.Model):
     post = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-# class Cart(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     post = models.ForeignKey(PostHobby, on_delete=models.CASCADE)
-
 class Bill(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     postHobby = models.ForeignKey(PostHobby, on_delete=models.CASCADE)

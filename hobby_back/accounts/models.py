@@ -1,8 +1,5 @@
-from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
 
 class User(models.Model):
     userName = models.CharField(max_length=100)
@@ -15,7 +12,6 @@ class User(models.Model):
     userAddress = models.CharField(max_length=200, blank=True)
     userPoint = models.IntegerField(default=5000)
     userLike = models.CharField(max_length=1000, blank=True)
-    userFame = [0,0,0,0]
     followings = models.ManyToManyField('self', related_name="followers", symmetrical=False, blank=True)
 
     def __str__(self):
@@ -26,11 +22,6 @@ class payInfo(models.Model):
     payNum = models.CharField(max_length=100)
     payAmount = models.IntegerField()
     payDate = models.CharField(max_length=100)
-
-class PostOnetone(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    contents = models.TextField()
-    answer = models.TextField(blank=True)
 
 class KakaoBill(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
