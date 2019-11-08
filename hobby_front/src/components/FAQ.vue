@@ -27,15 +27,15 @@ export default {
     }
   },
   mounted () {
-    this.getFaq();
+    this.getFaq()
   },
   methods: {
     getFaq: function () {
-      const baseUrl = this.$store.state.baseUrl
+      const baseUrl = this.$store.state.base_url
       const apiUrl = baseUrl + 'boards/faq'
       this.$http.get(apiUrl)
         .then(res => {
-          this.posts = res.data 
+          this.posts = res.data
         })
         .catch(err => {
           console.log(err)

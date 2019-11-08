@@ -1,9 +1,15 @@
 <template>
-<div class="text-center">
-  <div class="search-box">
-      <input id="searchInput" v-model="word" type="text" @keyup.enter="search()" placeholder=" " /><span></span>
+  <div class="text-center">
+    <div class="search-box">
+        <input
+        @keyup.enter="search()"
+        id="searchInput"
+        v-model="word"
+        type="text"
+        placeholder=" "/>
+        <span></span>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -15,22 +21,25 @@ export default {
     }
   },
   methods: {
-    search: function () {
+    search () {
       this.$store.commit('wordSave', this.word)
-      var nowPosition = this.$router.history.current.name
-      var searchBox = document.querySelectorAll('.search-box input[type="text"] + span');
+      let nowPosition = this.$router.history.current.name
+      let searchBox = document.querySelectorAll(
+        '.search-box input[type="text"] + span'
+      )
 
-        searchBox.forEach((elm) => {
-            elm.addEventListener('click', () => {
-                elm.previousElementSibling.value = '';
-            });
-        });
-      if (nowPosition == 'search') {
+      searchBox.forEach((elm) => {
+        elm.addEventListener('click', () => {
+          elm.previousElementSibling.value = ''
+        })
+      })
+
+      if (nowPosition === 'search') {
         window.location.reload()
       } else {
         this.$router.replace('search')
       }
-    },
+    }
   }
 }
 </script>
@@ -83,19 +92,24 @@ export default {
 .search-box #searchInput:focus {
   outline: none;
 }
-.search-box #searchInput:focus, .search-box #searchInput:not(:placeholder-shown) {
+.search-box #searchInput:focus,
+.search-box #searchInput:not(:placeholder-shown) {
   width: 300px;
   transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 1.5);
 }
-.search-box #searchInput:focus + span, .search-box #searchInput:not(:placeholder-shown) + span {
+.search-box #searchInput:focus + span,
+.search-box #searchInput:not(:placeholder-shown) + span {
   bottom: 6px;
   right: 10px;
   transition: bottom 300ms ease-out 800ms, right 300ms ease-out 800ms;
 }
-.search-box #searchInput:focus + span:after, .search-box #searchInput:not(:placeholder-shown) + span:after {
+.search-box #searchInput:focus + span:after,
+.search-box #searchInput:not(:placeholder-shown) + span:after {
   top: 0;
   right: 8px;
   opacity: 1;
-  transition: top 300ms ease-out 1100ms, right 300ms ease-out 1100ms, opacity 300ms ease 1100ms;
+  transition: top 300ms ease-out 1100ms,
+              right 300ms ease-out 1100ms,
+              opacity 300ms ease 1100ms;
 }
 </style>

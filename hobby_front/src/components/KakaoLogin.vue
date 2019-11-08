@@ -6,15 +6,13 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'KakaoLogin',
   data () {
     return {
       jwt: '',
       id: '',
-      user_id: '',
+      user_id: ''
     }
   },
   mounted () {
@@ -44,14 +42,17 @@ export default {
       let form = new FormData()
       form.append('access_token', accessToken)
 
-      await axios.post(this.$store.state.baseUrl + 'accounts/rest-auth/kakao', form).then(res => {
+      await this.$http.post(
+        this.$store.state.base_url + 'accounts/rest-auth/kakao',
+        form
+      ).then(res => {
         this.jwt = res.data.token
         this.$store.commit('jwtSave', this.jwt)
       }).catch(e => {
         console.log(e)
       })
       this.id = 'kakao_' + (res.id).toString()
-      
+
       let userForm = new FormData()
       userForm.append('userName', res.kakao_account.profile.nickname)
       userForm.append('userNickName', res.kakao_account.profile.nickname)
@@ -61,19 +62,24 @@ export default {
       userForm.append('userImage', res.kakao_account.profile.profile_image_url)
       this.$store.commit('nameSave', res.kakao_account.profile.nickname)
 
-      await axios.post(this.$store.state.baseUrl + 'accounts/userSave', userForm).then(res => {
+      await this.$http.post(
+        this.$store.state.base_url + 'accounts/userSave',
+        userForm
+      ).then(res => {
         console.log(res.data)
       })
-      await axios.post(this.$store.state.baseUrl + 'accounts/userInfo', {
-        // headers: { 'Authorization': 'JWT ' + this.jwt },
-        id: this.id
-      }).then(res => {
+      await this.$http.post(
+        this.$store.state.base_url + 'accounts/userInfo',
+        {
+          // headers: { 'Authorization': 'JWT ' + this.jwt },
+          id: this.id
+        }).then(res => {
         this.user_id = res.data.id
         this.$store.commit('idSave', this.user_id)
         this.$store.commit('pointSave', res.data.userPoint)
         this.$store.commit('imgSave', res.data.userImage)
         this.$store.commit('gradeSave', res.data.userGrade)
-      })      
+      })
       location.reload()
     }
   }

@@ -20,7 +20,7 @@ export default {
       //
     }
   },
-  mounted() {
+  mounted () {
     Kakao.init('b9b23d9b337a41dca3e1632a4677e0af')
     this.$store.commit('urlSave', 'http://54.180.148.99:8000/')
   },
