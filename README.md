@@ -180,17 +180,12 @@ npm run serve
 
 
 
-### 배포 URL
+### URL
 
-http://54.180.148.99
+http://bucket.hahahoho-front.s3-website-us-east-1.amazonaws.com/
 
 <br>
 
-
-
-### REST API Doc
-
-http://54.180.148.99:8000/docs
 
 <br/>
 
